@@ -1,0 +1,26 @@
+{
+  "name": "back-indaym",
+  "version": "1.0.0",
+  "description": "server for Indaym project",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+      "start": "node server.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Indaym/Back-Indaym.git"
+  },
+  "author": "djavrell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Indaym/Back-Indaym/issues"
+  },
+  "homepage": "https://gitlab.com/Indaym/Back-Indaym#README",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
