@@ -1,6 +1,9 @@
-var express = require('express');
+const express = require('express');
+const app = express();
 
-var app = express();
+const forum = require('./src/forum/forum');
+
+app.use('/forum', forum);
 
 app.get('/', (req, res) => {
     console.log("get on /");
