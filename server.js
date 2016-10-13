@@ -4,12 +4,15 @@ const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
 
 const DBconfig = require('./config/waterlineConfig').DBconfig;
+const forum = require('./src/forum/forum');
 
 // orm.loadCollection(Message);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());
+
+app.use('/forum', forum);
 
 app.get('/', (req, res) => {
     console.log("get on /");
