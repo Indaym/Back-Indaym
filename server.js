@@ -14,6 +14,8 @@ app.use(methodOverRide());
 
 app.use('/forum', forum);
 
+app.use('/forum', routes.forum);
+
 app.get('/', (req, res) => {
     console.log("get on /");
     res.send("go to see things on /messages");

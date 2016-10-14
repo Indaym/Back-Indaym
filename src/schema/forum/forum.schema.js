@@ -3,18 +3,17 @@
  */
 
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
-const objectId = mongoose.ObjectId;
 
-const forum = new Schema({
+const subForum = require('./subForum.schema');
+
+const forumSchema = new Schema({
     name: String,
-    like: Number,
-    read: Boolean
+    description: String,
+    read: Boolean,
+    subForum: [subForum]
 });
 
-forum.methods.getAll =  function() {
-    return this.model('forum').find({ type: this.type});
-};
+let forum = mongoose.model('forum', forumSchema);
 
 module.exports = forum;
