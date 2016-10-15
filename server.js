@@ -15,11 +15,24 @@ app.use(methodOverRide());
 app.use('/forum', forum);
 
 app.use('/forum', routes.forum);
+/**
+ * Log all the call on the API
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+const logCall = (req, res, next) => {
+  console.log('%s %s %s', req.method, req.url, req.pathname);
+  next();
+};
 
 app.get('/', (req, res) => {
     console.log("get on /");
     res.send("go to see things on /messages");
 });
+// app.use(logCall);
+app.use('/forum', routes.forumRouter);
 
 
 orm.initialize(DBconfig, (err, models) => {

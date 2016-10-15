@@ -2,25 +2,31 @@
  * Created by djavrell on 13/10/16.
  */
 
-const express = require('express');
-const router = express.Router();
+const config = require('../../config/config');
 const mongoose = require('mongoose');
+const express = require('express');
+const subForumRouter = require('./subForum/subForum');
 
-const forum = require('../schema/forum/forum.schema');
+const forumModel = require('../schema/forum/forum.schema');
 
-router.use((req, res, next) => {
-    console.log('call forum API');
-    next();
-});
 
-router.get('/', (req, res) => {
-    res.send('welcome to the forum\n');
-});
+const forumRouter = express.Router(config.routerConfig);
 
-router.post('/', (req, res) => {
-    forum.create({name: 'test', description: 'totot toto', read: false});
-    console.log(forum.findOne({ name: 'test'}).description);
-    res.send(req.params);
-});
+forumRouter.use('/sub_forum', subForumRouter);
 
-module.exports = router;
+const getHandler = (req, res, next) => {
+  res.send('welcome to the forum\n');
+  next();
+};
+
+const postHandler = (req, res, next) => {
+  res.send(req.params);
+  next();
+};
+
+
+forumRouter.route('/')
+  .get(getHandler)
+  .post(postHandler);
+
+module.exports = forumRouter;
