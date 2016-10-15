@@ -2,6 +2,7 @@
  * Import section
  */
 const config = require('./config/config');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./src/routes/routes');
@@ -25,11 +26,11 @@ db.on('error', (err) => {
  * @param next
  */
 const logCall = (req, res, next) => {
-  console.log('%s %s %s', req.method, req.url, req.pathname);
+  console.log('%s %s %s', req.method, req.url, req.path);
   next();
 };
 
-// app.use(logCall);
+app.use(logCall);
 app.use('/forum', routes.forumRouter);
 
 app.listen(3000);
