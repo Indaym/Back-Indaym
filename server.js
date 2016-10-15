@@ -2,6 +2,11 @@ const app = require('express')();
 const orm = new require('waterline')();
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
+const config = require('./config/config');
+ */
+ * Import section
+/**
+const routes = require('./src/routes/routes');
 
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 const forum = require('./src/forum/forum');
@@ -23,7 +28,7 @@ app.use('/forum', routes.forum);
  * @param next
  */
 const logCall = (req, res, next) => {
-  console.log('%s %s %s', req.method, req.url, req.pathname);
+  console.log('%s %s %s', req.method, req.url, req.path);
   next();
 };
 
@@ -32,6 +37,7 @@ app.get('/', (req, res) => {
     res.send("go to see things on /messages");
 });
 // app.use(logCall);
+app.use(logCall);
 app.use('/forum', routes.forumRouter);
 
 
