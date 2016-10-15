@@ -7,6 +7,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const objectId = mongoose.ObjectId;
 
-const message = new Schema({
-
+const messageSchema = new Schema({
+  content: String,
+  like: Number,
+  unLike: Number
 });
+
+module.exports = mongoose.model('message', messageSchema);

@@ -1,22 +1,35 @@
+/**
+ * Import section
+ */
 const config = require('./config/config');
 const express = require('express');
-const app = express();
-
 const mongoose = require('mongoose');
 const routes = require('./src/routes/routes');
 
-let db = mongoose.createConnection(config.uri);
+/**
+ * Declaration section
+ */
+const app = express();
+const db = mongoose.createConnection(config.uri);
+
+
 db.on('error', (err) => {
     console.error('connection error' + err);
 });
 
-app.use('/forum', routes.forum);
+/**
+ * Log all the call on the API
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+const logCall = (req, res, next) => {
+  console.log('%s %s %s', req.method, req.url, req.pathname);
+  next();
+};
 
-app.get('/', (req, res) => {
-    console.log("get on /");
-    res.send("hello world!");
-});
+// app.use(logCall);
+app.use('/forum', routes.forumRouter);
 
-app.listen(3000, () => {
-    console.log("listen on port 3000");
-});
+app.listen(3000);
