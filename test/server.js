@@ -7,11 +7,11 @@ describe('1st bunch of test', () => {
     var logger = sinon.spy();
 
     request('http://localhost:3000')
-    .get('/')
-    .expect(200)
-    .end((err, res) => {
-      if (err) return done(err)
-      done()
+      .get('/')
+      .expect(200)
+      .end((err, res) => {
+    if (err) return done(err)
+    done()
     })
   })
 });
