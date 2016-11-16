@@ -1,7 +1,7 @@
 # what do you need
 
- * [node.js] [1]
- * [npm] [2] ([video tutorial (fr)] [4])
+ * [Node.js] [1]
+ * [Npm] [2] ([video tutorial (fr)] [4])
  * [Yarn][5]
 
 
