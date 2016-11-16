@@ -24,7 +24,8 @@
   "dependencies": {
     "express": "^4.14.0",
     "sails-mysql": "^0.11.5",
-    "waterline": "^0.11.6"
+    "waterline": "^0.11.6",
+    "waterline-postgresql": "^0.14.8"
   },
   "devDependencies": {
     "sails-memory": "^0.10.7"
