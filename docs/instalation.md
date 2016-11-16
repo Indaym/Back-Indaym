@@ -1,4 +1,4 @@
-# what do you need
+# What do you need
 
  * [Node.js] [1]
  * [Npm] [2] ([video tutorial (fr)] [4])
@@ -11,9 +11,9 @@
 
 # How to install the project
 
-  * If it is the first installation
+  * If it's the first installation
     * `yarn install`
-  * if it's a re installation
+  * If it's a re installation
     * `rm -rf node_modules`
     * `yarn install`
 
