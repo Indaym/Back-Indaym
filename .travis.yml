@@ -1,4 +1,4 @@
-langage: node_js
+language: node_js
 node_js:
   - "6"
 
@@ -6,6 +6,9 @@ notifications:
   slack:
     rooms:
       - indaym:q8No60ybN9tfQyWop7cW0zWY#back-end-ci
+
+before_install:
+  - yarn --version
 
 install:
   - npm install
