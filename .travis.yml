@@ -3,7 +3,7 @@ node_js:
   - "6"
 
 install:
-  - npm install
+  - yarn install
 
 script:
-  - npm run lint
+  - yarn run lint
