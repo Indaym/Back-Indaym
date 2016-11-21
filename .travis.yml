@@ -2,6 +2,9 @@ langage: node_js
 node_js:
   - "6"
 
+before_install:
+  - npm install yarn
+
 install:
   - yarn install
 
