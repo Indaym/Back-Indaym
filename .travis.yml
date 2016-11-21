@@ -1,0 +1,12 @@
+langage: node_js
+node_js:
+  - "6"
+
+before_install:
+  - npn install yarn
+
+install:
+  - yarn install
+
+script:
+  - yarn run lint
