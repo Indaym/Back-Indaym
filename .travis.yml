@@ -7,6 +7,13 @@ notifications:
     rooms:
       - indaym:q8No60ybN9tfQyWop7cW0zWY#back-end-ci
 
+branches:
+  only:
+    - master
+    - develop
+    - /^feature\/*/
+    - /^hotfix/\/*/
+
 install:
   - npm install
 
