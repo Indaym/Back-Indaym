@@ -2,11 +2,13 @@ langage: node_js
 node_js:
   - "6"
 
-before_install:
-  - npm install yarn
+notifications:
+  slack:
+    rooms:
+      - indaym:q8No60ybN9tfQyWop7cW0zWY#back-end-ci
 
 install:
-  - yarn install
+  - npm install
 
 script:
-  - yarn run lint
+  - npm run lint
