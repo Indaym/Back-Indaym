@@ -2,21 +2,23 @@
  * Created by djavrell on 15/10/16.
  */
 
-const config = require('../../../config/config');
 const express = require('express');
-const messagesRouter = require('../messages/messages');
-const handler = require('./subForumHandler');
+const config = require('../../../config/config');
 
+const messagesRouter = require('../messages/messages');
+const handler = require('./handler');
 
 const subForumRouter = express.Router(config.routerConfig);
 subForumRouter.use('/:sub_forum_id/messages', messagesRouter);
 
+subForumRouter.param('sub_forum_id', );
+
 subForumRouter.route('/')
-  .get(handler.getHandler)
-  .post(handler.postHandler);
+  .get(handler.subForumHandler.getHandler)
+  .post(handler.subForumHandler.postHandler);
 
 subForumRouter.route('/:sub_forum_id')
-  .get(handler.getIdHandler);
+  .get(handler.subForumHandler.getIdHandler);
 
 
 module.exports = subForumRouter;

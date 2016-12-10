@@ -1,20 +1,16 @@
 const waterline = require('waterline');
 
 module.exports = waterline.Collection.extend({
-  identity: 'topics',
+  identity: 'forum',
   connection: 'postgresdb',
 
   attributes: {
     title: 'string',
-    subject: 'string',
+    description: 'string',
 
-    messages: {
-      collection: 'messages',
-      via: 'parent',
-    },
-
-    parent: {
-      model: 'forum',
+    subForums: {
+      collection: 'topics',
+      via: 'parent'
     },
   },
 });

@@ -1,18 +1,16 @@
 const waterline = require('waterline');
 
-const MessagesCollection = waterline.Collection.extend({
-  identity: 'Messages',
+module.exports = waterline.Collection.extend({
+  identity: 'messages',
   connection: 'postgresdb',
-  attribut: {
-    'user': 'string',
-    'title': 'string',
-    'message': 'string',
-    owner: {
-      via: 'Topics',
+
+  attributes: {
+    user: 'string',
+    title: 'string',
+    message: 'string',
+
+    parent: {
+      model: 'topics',
     },
   },
 });
-
-module.exports = {
-  MessagesCollection,
-};
