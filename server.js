@@ -1,5 +1,6 @@
 const express = require('express');
 const waterline = require('waterline');
+const cors = require('cors');
 
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
@@ -29,8 +30,11 @@ orm.loadCollection(collections.Messages);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());
+app.use(cors());
 
 app.use(middleware.logCall);
+
+app.use('/api', express.static('api'));
 
 /**
  * router loading
@@ -47,8 +51,8 @@ orm.initialize(DBconfig, (err, models) => {
   app.models = models.collections;
   app.connections = models.connections;
 
-  app.listen(3000, () => {
-    console.log("listen on port 3000");
+  app.listen(4000, () => {
+    console.log("listen on port 4000");
   });
 
 });
