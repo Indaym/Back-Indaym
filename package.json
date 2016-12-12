@@ -13,14 +13,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/Indaym/Back-Indaym.git"
+    "url": "git+ssh://git@github.com:Indaym/Back-Indaym.git"
   },
-  "author": "djavrell",
+  "author": {
+    "name": "Indaym",
+    "email": "indaym_2018@labeip.epitech.eu",
+    "url": "indaym.com"
+  },
+  "contributors": [
+    "djavrell",
+    "nicolasdelahaigue"
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/Indaym/Back-Indaym/issues"
+    "url": "https://github.com/Indaym/Back-Indaym/issues"
   },
-  "homepage": "https://gitlab.com/Indaym/Back-Indaym#README",
+  "homepage": "https://github.com/Indaym/Back-Indaym#README",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
