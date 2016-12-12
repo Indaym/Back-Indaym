@@ -16,7 +16,7 @@
     "url": "git+ssh://git@github.com:Indaym/Back-Indaym.git"
   },
   "author": {
-    "name": "Indaym"
+    "name": "Indaym",
     "email": "indaym_2018@labeip.epitech.eu"
   },
   "contributors": [
