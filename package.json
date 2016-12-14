@@ -19,16 +19,9 @@
     "type": "git",
     "url": "git+ssh://git@gitlab.com/Indaym/Back-Indaym.git"
   },
-
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-
   "bugs": {
     "url": "https://gitlab.com/Indaym/Back-Indaym/issues"
   },
-
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
