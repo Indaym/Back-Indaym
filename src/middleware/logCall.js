@@ -12,4 +12,4 @@ const logCall = (req, res, next) => {
 
 module.exports = {
   logCall,
-}
+};

@@ -2,13 +2,7 @@
  * Created by djavrell on 15/10/16.
  */
 
-const mongoose = require('mongoose');
-
-const message = require('../../schema/forum/message.schema');
-
-
 const getHandler = (req, res, next) => {
-  res.send('messages API\n');
   next();
 };
 

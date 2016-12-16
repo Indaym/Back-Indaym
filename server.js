@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 
-const routes = require('./src/routes/routes');
+const forum = require('./src/API/forum/forum');
 const collections = require('./src/models');
 
 const app = express();
@@ -35,14 +35,18 @@ app.use(middleware.logCall);
 /**
  * router loading
  */
-app.use('/forum', routes.forumRouter);
+app.use(forum.forum);
 
-app.get('/', (req, res) => {
-  res.send("hello world!");
-});
+
+/**
+ * ORM
+ */
 
 orm.initialize(DBconfig, (err, models) => {
-  if (err) console.log(err);
+  if (err) {
+    console.log(err);
+    return;
+  }
 
   app.models = models.collections;
   app.connections = models.connections;
