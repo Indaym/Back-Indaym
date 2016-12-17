@@ -5,8 +5,7 @@
 const express = require('express');
 const config = require('../../../config/config');
 
-const forum = express();
-const forumRouter = express.Router(config.routerConfig);
+const forumRouter = express.Router();
 
 const forumHandler = require('../../workers/forum/forumHandlers');
 const forumParamsHandler = require('./paramsHandlers');
@@ -28,14 +27,20 @@ forumRouter.param('id_user', commonParamsHandler.idUser);
 /**
  * routing
  */
-
 forumRouter.route('/')
   .get(forumHandler.getHandler)
   .post(forumHandler.postHandler);
 
-forumRouter.use(topics.topics);
-forum.use(forumRouter);
+forumRouter.use('/topics', topics.topicsRouter);
 
 module.exports = {
-  forum,
+  forumRouter,
 };
+
+/*
+  forum/
+  forum/topics/
+  forum/topics/:id_topics/
+  forum/topics/:id_topics/messages/
+  forum/topics/:id_topics/messages/:id_messages/
+ */

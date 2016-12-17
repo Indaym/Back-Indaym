@@ -19,9 +19,16 @@ const middleware = require('./src/middleware');
 /**
  * load each model in waterline
  */
-orm.loadCollection(collections.Forum);
-orm.loadCollection(collections.Topics);
-orm.loadCollection(collections.Messages);
+for (let k in collections) {
+  if (collections.hasOwnProperty(k)) {
+    orm.loadCollection(collections[k]);
+  }
+}
+
+// orm.loadCollection(collections.Forum);
+// orm.loadCollection(collections.Topics);
+// orm.loadCollection(collections.Messages);
+// orm.loadCollection(collections.User);
 
 /**
  * load of all middleware we need
@@ -35,7 +42,7 @@ app.use(middleware.logCall);
 /**
  * router loading
  */
-app.use(forum.forum);
+app.use('/forum', forum.forumRouter);
 
 
 /**

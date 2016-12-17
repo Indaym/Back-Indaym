@@ -5,14 +5,11 @@
 const config = require('../../../../config/config');
 
 const express = require('express');
-const topics = express();
-const topicsRouter = express.Router(config.routerConfig);
+const topicsRouter = express.Router();
 
 const topicsHandlers = require('../../../workers/forum/topicsHandlers');
 
-const messages = require('../messages/messages');
-
-topicsRouter.use(messages.messages);
+const messages = require('./messages/messages');
 
 topicsRouter.route('/')
   .get(topicsHandlers.getAllTopics)
@@ -23,8 +20,8 @@ topicsRouter.route('/:id_topics')
   .put(topicsHandlers.updateTopics)
   .delete(topicsHandlers.deleteTopics);
 
-topics.use(topicsRouter);
+topicsRouter.use('/messages', messages.messagesRouter);
 
 module.exports = {
-  topics,
+  topicsRouter,
 };

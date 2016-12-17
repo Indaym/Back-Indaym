@@ -10,7 +10,7 @@ module.exports = waterline.Collection.extend({
 
     subForums: {
       collection: 'topics',
-      via: 'parent'
+      via: 'forum'
     },
   },
 });
