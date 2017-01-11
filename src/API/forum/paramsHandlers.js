@@ -3,18 +3,40 @@
  */
 
 const idTopics = (req, res, next, value) => {
-  req.topics = req.app.models.Topics.find ({
-    sort: 'createAt ASC'
-  });
+  const topicsModel = req.app.models.Topics;
+
+  topicsModel.findOne()
+    .where({ id: value })
+    .sort('createdAt ASC')
+    .exec((err, topic) => {
+      if (err) {
+        next(err)
+      } else if(message) {
+        req.topics = topic;
+        next();
+      } else {
+        next(err('Failed too load a topics'));
+      }
+    });
   next();
 };
 
 const idMessages = (req, res, next, value) => {
-  req.messages = req.app.models.Messages.find ({
-    sort: 'createAt ASC'
-  });
-  next();
+  const messagesModel = req.app.models.Messages;
 
+  messagesModel.findOne()
+    .where({ id: value })
+    .sort('createdAt ASC')
+    .exec((err, message) => {
+      if (err) {
+        next(err)
+      } else if(message) {
+        req.messages = message;
+        next();
+      } else {
+        next(err('Failed too load a message'));
+      }
+    });
 };
 
 const idSubForum = (req, res, next, value) => {

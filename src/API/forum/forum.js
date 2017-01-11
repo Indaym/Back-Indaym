@@ -5,6 +5,8 @@
 const express = require('express');
 const config = require('../../../config/config');
 
+const JWT = require('../auth/passportConfig').passport;
+
 const forumRouter = express.Router();
 
 const forumHandler = require('../../workers/forum/forumHandlers');
@@ -27,9 +29,9 @@ forumRouter.param('id_user', commonParamsHandler.idUser);
 /**
  * routing
  */
-forumRouter.route('/')
-  .get(forumHandler.getHandler)
-  .post(forumHandler.postHandler);
+forumRouter.get('/', forumHandler.getHandler);
+
+forumRouter.post('/', JWT.authenticate('jwt', {session: false}), forumHandler.postHandler);
 
 forumRouter.use('/topics', topics.topicsRouter);
 

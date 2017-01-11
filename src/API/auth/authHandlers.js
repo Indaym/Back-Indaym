@@ -4,38 +4,38 @@
 
 const PostLoginHandler = (req, res, next) => {
   console.log(req.body);
-  res.send({data: 'login'});
+  res.send({data: 'post login'});
   next();
 };
 
 const GetLoginHandler = (req, res, next) => {
   console.log(req.body);
-  res.send({data: 'login'});
+  res.send({data: 'get login'});
   next();
 };
 
 const PostLogoutHandler = (req, res, next) => {
-  res.send({data: 'logout'});
+  res.send({data: 'post logout'});
   next();
 };
 
 const PostRegisterHandler = (req, res, next) => {
-  res.send({data: 'logout'});
+  res.send({data: 'post register'});
   next();
 };
 
 const GetMeHandler = (req, res, next) => {
-  res.send({data: 'logout'});
+  res.send({data: 'get me'});
   next();
 };
 
 const DeleteMeHandler = (req, res, next) => {
-  res.send({data: 'logout'});
+  res.send({data: 'delete me'});
   next();
 };
 
 const PutMeHandler = (req, res, next) => {
-  res.send({data: 'logout'});
+  res.send({data: 'put me'});
   next();
 };
 

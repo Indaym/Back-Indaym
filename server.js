@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 const morgan = require('morgan');
+const passport = require('passport');
 
 const forum = require('./src/API/forum/forum');
 const auth = require('./src/API/auth/auth');
@@ -33,8 +34,7 @@ for (let k in collections) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());
-
-// app.use(middleware.logCall);
+app.use(passport.initialize());
 app.use(morgan(middleware.logger()));
 
 /**
@@ -42,7 +42,6 @@ app.use(morgan(middleware.logger()));
  */
 app.use('/forum', forum.forumRouter);
 app.use('/auth', auth.authRouter);
-
 
 /**
  * ORM
