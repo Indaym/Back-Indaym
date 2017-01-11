@@ -23,6 +23,7 @@
                         "description": "OK",
                         "schema": {
                             "type": "array",
+                            "description": "List of news",
                             "items": {
                                 "$ref": "#/definitions/News"
                             }
@@ -45,7 +46,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/SNews"
+                            "$ref": "#/definitions/News"
                         }
                     }
                 ],
@@ -55,6 +56,7 @@
                         "schema": {
                             "properties": {
                                 "id": {
+                                    "description": "Id of the news created",
                                     "type": "integer"
                                 }
                             }
@@ -129,7 +131,7 @@
                     },
                     {
                         "name": "news",
-                        "description": "News to add",
+                        "description": "Content to update",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -143,6 +145,41 @@
                     },
                     "403": {
                         "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a news",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the news",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete"
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
@@ -176,19 +213,22 @@
                         "name": "start",
                         "description": "Get games from start",
                         "in": "query",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 0
                     },
                     {
                         "name": "interval",
                         "description": "Get N games",
                         "in": "query",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 20
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "description": "List of games",
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/Game"
@@ -220,6 +260,7 @@
                         "schema": {
                             "properties": {
                                 "id": {
+                                    "description": "Id of the game created",
                                     "type": "integer"
                                 }
                             }
@@ -239,32 +280,1362 @@
                     }
                 }
             }
-        }
-    },
-    "definitions": {
-        "SNews": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "description": "Message of the news",
-                    "type": "string"
-                },
-                "author": {
-                    "description": "Author of the news",
-                    "type": "string"
-                },
-                "date": {
-                    "description": "Date of publication",
-                    "type": "string",
-                    "format": "dateTime"
+        },
+        "/games/{id}": {
+            "get": {
+                "description": "Get one game by his id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Game"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "game",
+                        "description": "Content to update",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Game"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
                 }
             }
         },
+        "/games/{id}/scenes": {
+            "get": {
+                "description": "Get all scenes of a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of scenes",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Scene"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a scene in a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "scene",
+                        "description": "Base for new scene",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Scene"
+                        },
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "Id of the scene created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id}/scenes/{idScene}": {
+            "get": {
+                "description": "Get one scene of a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Scene"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a scene of a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "scene",
+                        "description": "Content to update",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Scene"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a scene of a game",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id}/scenes/{idScene}/objects": {
+            "get": {
+                "description": "Get objects of a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of objects",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Object"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create an object in a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "object",
+                        "description": "Object to create",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "description": "Object name",
+                                    "type": "string"
+                                },
+                                "refObject": {
+                                    "$ref": "#/definitions/RefObject"
+                                }
+                            }
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "Id of the object created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id}/scenes/{idScene}/objects/{idObject}": {
+            "get": {
+                "description": "Get one object of a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idObject",
+                        "description": "Id of the object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Object"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit an object of the scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idObject",
+                        "description": "Id of the object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "object",
+                        "description": "Content to update",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Object"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an object of a scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idObject",
+                        "description": "Id of the object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id}/scenes/{idScene}/scripts": {
+            "get": {
+                "description": "Get all scripts of a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of scripts",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Script"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a script in a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "description": "Name of the script to create",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "Id of the script created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id}/scenes/{idScene}/scripts/{idScript}": {
+            "get": {
+                "description": "Get one script of a Scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScript",
+                        "description": "Id of the script",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Script"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a script of the scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScript",
+                        "description": "Id of the script",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "script",
+                        "description": "Content to update",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Script"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a script of a scene",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the game",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScene",
+                        "description": "Id of the scene",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idScript",
+                        "description": "Id of the script",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Gets all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of users",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a user",
+                "parameters": [
+                    {
+                        "name": "content",
+                        "description": "Datas for subscribe",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PrivateUser"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "Id of the user created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{idUser}": {
+            "get": {
+                "description": "Gets one User informations",
+                "parameters": [
+                    {
+                        "name": "idUser",
+                        "description": "Id of the User",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Change informations of a user",
+                "parameters": [
+                    {
+                        "name": "idUser",
+                        "description": "Id of the User",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "infos",
+                        "description": "Update of private informations",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PrivateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a user",
+                "parameters": [
+                    {
+                        "name": "idUser",
+                        "description": "Id of the User",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "description": "Get current user informations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/PrivateUser"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Change informations of a current user",
+                "parameters": [
+                    {
+                        "name": "infos",
+                        "description": "Update of private informations",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PrivateUser"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete current user",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/librairie": {
+            "get": {
+                "description": "Gets all referenced object",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of referenced object",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RefObject"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add object and reference it",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "description": "Object to reference",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RefObject"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "Id of the reference created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/libraire/{idObject}": {
+            "get": {
+                "description": "Gets one referenced object",
+                "parameters": [
+                    {
+                        "name": "idObject",
+                        "description": "Id of the referenced object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RefObject"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update referenced object",
+                "parameters": [
+                    {
+                        "name": "idObject",
+                        "description": "Id of the reference object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "object",
+                        "description": "Content to update",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RefObject"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an referenced object",
+                "parameters": [
+                    {
+                        "name": "idObject",
+                        "description": "Id of the object",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
         "News": {
+            "description": "A news",
             "type": "object",
             "properties": {
                 "id": {
-                    "description": "Id of the news",
+                    "description": "Id of the news (Not needed for Post and Put)",
                     "type": "integer"
                 },
                 "message": {
@@ -283,8 +1654,13 @@
             }
         },
         "Game": {
+            "description": "A game, that we can play with",
             "type": "object",
             "properties": {
+                "id": {
+                    "description": "Id of the Game (Not needed for Post and Put)",
+                    "type": "integer"
+                },
                 "name": {
                     "description": "Name of the game",
                     "type": "string"
@@ -313,8 +1689,17 @@
             }
         },
         "Scene": {
+            "description": "A Scene",
             "type": "object",
             "properties": {
+                "id": {
+                    "description": "Id of the scene (Not needed for Post and Put)",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name of a scene",
+                    "type": "string"
+                },
                 "objects": {
                     "description": "Objects of the scene",
                     "type": "array",
@@ -335,13 +1720,40 @@
             "description": "An object",
             "type": "object",
             "properties": {
+                "id": {
+                    "description": "Id of the object (Not needed for Post and Put)",
+                    "type": "integer"
+                },
                 "name": {
                     "description": "Object name",
                     "type": "string"
                 },
-                "uuid": {
-                    "description": "Unique identifier",
+                "refObject": {
+                    "$ref": "#/definitions/RefObject"
+                },
+                "object": {
+                    "description": "Object characteristic",
+                    "type": "object"
+                }
+            }
+        },
+        "RefObject": {
+            "description": "An referenced object",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the object (Not needed for Post and Put)",
                     "type": "integer"
+                },
+                "name": {
+                    "description": "Object name",
+                    "type": "string"
+                },
+                "owner": {
+                    "$ref": "#/definitions/User"
+                },
+                "public": {
+                    "type": "boolean"
                 },
                 "object": {
                     "description": "Object characteristic",
@@ -353,13 +1765,13 @@
             "description": "A script",
             "type": "object",
             "properties": {
+                "id": {
+                    "description": "Id of the script (Not needed for Post and Put)",
+                    "type": "integer"
+                },
                 "name": {
                     "description": "Script name",
                     "type": "string"
-                },
-                "uuid": {
-                    "description": "Unique identifier",
-                    "type": "integer"
                 },
                 "script": {
                     "description": "Script characteristic",
@@ -368,26 +1780,57 @@
             }
         },
         "User": {
-            "description": "An User",
+            "description": "A User",
             "type": "object",
             "properties": {
+                "id": {
+                    "description": "Id of the user (Not needed for Post and Put)",
+                    "type": "integer"
+                },
                 "name": {
+                    "description": "Name of the user",
+                    "type": "string"
+                }
+            }
+        },
+        "PrivateUser": {
+            "description": "A User, private informations",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the user (Not needed for Post and Put)",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name of the user",
+                    "type": "string"
+                },
+                "mail": {
+                    "description": "Mail of the user",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password crypted in MD5",
                     "type": "string"
                 }
             }
         },
         "Error": {
             "type": "object",
+            "description": "Error",
             "properties": {
                 "code": {
+                    "description": "Http error code",
                     "type": "integer",
                     "format": "int32"
                 },
                 "message": {
+                    "description": "Error Message",
                     "type": "string"
                 },
                 "fields": {
-                    "type": "string"
+                    "description": "Additionnal informations",
+                    "type": "object"
                 }
             }
         }
