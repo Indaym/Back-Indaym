@@ -1,19 +1,395 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "version": "0.0.0",
-    "title": "Indaym API"
-  },
-  "paths": {
-    "/forum": {
-      "get": {
-        "description": "Gets all subForum",
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          }
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.0",
+        "title": "Indaym API"
+    },
+    "paths": {
+        "/forum": {
+            "get": {
+                "description": "Gets all subForum",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
+        "/news": {
+            "get": {
+                "description": "Gets all news",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/News"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a news",
+                "parameters": [
+                    {
+                        "name": "news",
+                        "description": "News to add",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SNews"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/news/{id}": {
+            "get": {
+                "description": "Get a news",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the news",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/News"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a news",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the news",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "news",
+                        "description": "News to add",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/News"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/games": {
+            "get": {
+                "description": "Get all games",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "description": "Search a game",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "filter",
+                        "description": "Filter games by characteristic",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "description": "Get games from start",
+                        "in": "query",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "interval",
+                        "description": "Get N games",
+                        "in": "query",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Game"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a game",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "description": "Name of the new game",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
-      }
+    },
+    "definitions": {
+        "SNews": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Message of the news",
+                    "type": "string"
+                },
+                "author": {
+                    "description": "Author of the news",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date of publication",
+                    "type": "string",
+                    "format": "dateTime"
+                }
+            }
+        },
+        "News": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the news",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "Message of the news",
+                    "type": "string"
+                },
+                "author": {
+                    "description": "Author of the news",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date of publication",
+                    "type": "string",
+                    "format": "dateTime"
+                }
+            }
+        },
+        "Game": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the game",
+                    "type": "string"
+                },
+                "desc": {
+                    "description": "Description of the game",
+                    "type": "string"
+                },
+                "owner": {
+                    "$ref": "#/definitions/User"
+                },
+                "tags": {
+                    "description": "Tags to describ the game",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scenes": {
+                    "description": "Scenes of the game",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Scene"
+                    }
+                }
+            }
+        },
+        "Scene": {
+            "type": "object",
+            "properties": {
+                "objects": {
+                    "description": "Objects of the scene",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Object"
+                    }
+                },
+                "scripts": {
+                    "description": "Scripts of the scene",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Script"
+                    }
+                }
+            }
+        },
+        "Object": {
+            "description": "An object",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Object name",
+                    "type": "string"
+                },
+                "uuid": {
+                    "description": "Unique identifier",
+                    "type": "integer"
+                },
+                "object": {
+                    "description": "Object characteristic",
+                    "type": "object"
+                }
+            }
+        },
+        "Script": {
+            "description": "A script",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Script name",
+                    "type": "string"
+                },
+                "uuid": {
+                    "description": "Unique identifier",
+                    "type": "integer"
+                },
+                "script": {
+                    "description": "Script characteristic",
+                    "type": "object"
+                }
+            }
+        },
+        "User": {
+            "description": "An User",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
     }
-  }
 }
