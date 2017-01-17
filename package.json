@@ -3,7 +3,6 @@
   "name": "back-indaym",
   "description": "server for Indaym project",
   "homepage": "https://gitlab.com/Indaym/Back-Indaym#README",
-  "author": "djavrell",
   "license": "ISC",
   "main": "server.js",
   "directories": {
@@ -18,10 +17,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/Indaym/Back-Indaym.git"
+    "url": "git+ssh://git@github.com:Indaym/Back-Indaym.git"
   },
+  "author": {
+    "name": "Indaym",
+    "email": "indaym_2018@labeip.epitech.eu",
+    "url": "indaym.com"
+  },
+  "contributors": [
+    "djavrell",
+    "nicolasdelahaigue"
+  ],
   "bugs": {
-    "url": "https://gitlab.com/Indaym/Back-Indaym/issues"
+    "url": "https://github.com/Indaym/Back-Indaym/issues"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
