@@ -1,24 +1,59 @@
-const app = require('express')();
-const orm = new require('waterline')();
+const express = require('express');
+const waterline = require('waterline');
+
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
-
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 
-// orm.loadCollection(Message);
+const forum = require('./src/API/forum/forum');
+const collections = require('./src/models');
 
+const app = express();
+const orm = waterline();
+
+/**
+ * middleware import
+ */
+const middleware = require('./src/middleware');
+
+/**
+ * load each model in waterline
+ */
+for (let k in collections) {
+  if (collections.hasOwnProperty(k)) {
+    orm.loadCollection(collections[k]);
+  }
+}
+
+// orm.loadCollection(collections.Forum);
+// orm.loadCollection(collections.Topics);
+// orm.loadCollection(collections.Messages);
+// orm.loadCollection(collections.User);
+
+/**
+ * load of all middleware we need
+ */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());
 
-app.get('/', (req, res) => {
-    console.log("get on /");
-    res.send("go to see things on /messages");
-});
+app.use(middleware.logCall);
 
+/**
+ * router loading
+ */
+app.use('/forum', forum.forumRouter);
+
+
+/**
+ * ORM
+ */
 
 orm.initialize(DBconfig, (err, models) => {
-  if (err) throw err;
+  if (err) {
+    console.log(err);
+    return;
+  }
 
   app.models = models.collections;
   app.connections = models.connections;
@@ -26,4 +61,5 @@ orm.initialize(DBconfig, (err, models) => {
   app.listen(3000, () => {
     console.log("listen on port 3000");
   });
+
 });
