@@ -11,13 +11,13 @@ const opt = {
   secretOrKey: passportSecret,
 };
 
-const strategy = (jwt_payload, done) => {
+const verify = (jwt_payload, done) => {
   console.log(jwt_payload);
   console.log(jwt_payload.iss);
   done(null, {});
 };
 
-passport.use(new jwt.Strategy(opt, strategy));
+passport.use(new jwt.Strategy(opt, verify));
 
 module.exports = {
   passport,

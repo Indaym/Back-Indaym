@@ -2,52 +2,36 @@
  * Created by djavrell on 10/01/17.
  */
 
-const PostLoginHandler = (req, res, next) => {
-  console.log(req.body);
-  res.send({data: 'post login'});
+const waterline = require('waterline');
+
+const register = (req, res, next) => {
+  if (req.body.username === undefined || req.body.password === undefined) {
+    return res.status(401).json({status: 'error', code: 'unauthorized'});
+  }
+
+  const user = req.body.username;
+  const pwd = req.body.password;
+
+
+  res.status(200).json({ok: "plop"});
   next();
 };
 
-const GetLoginHandler = (req, res, next) => {
-  console.log(req.body);
-  res.send({data: 'get login'});
+const login = (req, res, next) => {
   next();
 };
 
-const PostLogoutHandler = (req, res, next) => {
-  res.send({data: 'post logout'});
+const logout = (req, res, next) => {
   next();
 };
 
-const PostRegisterHandler = (req, res, next) => {
-  res.send({data: 'post register'});
+const authenticated = (req, res, next) => {
   next();
 };
-
-const GetMeHandler = (req, res, next) => {
-  res.send({data: 'get me'});
-  next();
-};
-
-const DeleteMeHandler = (req, res, next) => {
-  res.send({data: 'delete me'});
-  next();
-};
-
-const PutMeHandler = (req, res, next) => {
-  res.send({data: 'put me'});
-  next();
-};
-
-
-
 
 module.exports = {
-  PostLoginHandler,
-  GetLoginHandler,
-  PostLogoutHandler,
-  GetMeHandler,
-  DeleteMeHandler,
-  PutMeHandler,
-  PostRegisterHandler,
+  login,
+  logout,
+  authenticated,
+  register,
 };

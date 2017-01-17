@@ -8,22 +8,13 @@ const handlers = require('./authHandlers');
 
 const authRouter = express.Router();
 
+authRouter.post('/register', handlers.register);
 
-authRouter.route('/login')
-  .get(handlers.GetLoginHandler)
-  .post(handlers.PostLoginHandler);
+authRouter.post('/login', handlers.login);
 
-authRouter.route('/logout')
-  .post(handlers.PostLogoutHandler);
+authRouter.post('/logout', handlers.logout);
 
-authRouter.route('/me')
-  .get(handlers.GetMeHandler)
-  .delete(handlers.DeleteMeHandler)
-  .put(handlers.PutMeHandler);
-
-authRouter.route('/register')
-  .post(handlers.PostRegisterHandler);
-
+authRouter.get('/authenticated', handlers.authenticated);
 
 module.exports = {
   authRouter,
@@ -31,12 +22,13 @@ module.exports = {
 
 /*
 
-  auth/login        =>  POST    (provide a token)
-                        GET     (say if you are logged in or not)
-  auth/logout       =>  POST    (destroy the token)
-  auth/register     =>  POST    (create an account)
-  auth/me           =>  GET     (send information on the connection)
-                        DELETE  (delete the account)
-                        POST    (update information)
+  auth/login          =>  POST    (provide a token)
+    202/400
+  auth/logout         =>  POST    (destroy the token)
+    202/403
+  auth/register       =>  POST    (create an account)
+    201/403
+  auth/authenticated  =>  GET    (create an account)
+    20(0|2)/401
 
  */

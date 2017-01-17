@@ -1,3 +1,4 @@
+'strict mode'
 const express = require('express');
 const waterline = require('waterline');
 
