@@ -3,16 +3,20 @@
  */
 
 const waterline = require('waterline');
-const base = require('./BaseLibrairieObject');
 
 module.exports = waterline.Collection.extend({
-  identity: 'public_object',
+  identity: 'news',
   connection: 'postgresdb',
-  autoPk: false,
 
   attributes: {
-    owner: {
+    title: {
+      type: 'string',
+      size: 100
+    },
+    message: 'string',
+    publication_date: 'dateTime',
+    author: {
       model: 'user'
     }
-  }.extend(base)
+  }
 });

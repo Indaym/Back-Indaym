@@ -7,6 +7,8 @@ const base = require('./BaseLibrairieObject');
 
 module.exports = waterline.Collection.extend({
   identity: 'public_object',
+  connection: 'postgresdb',
   autoPk: false,
+
   attributes: {}.extend(base)
 });
