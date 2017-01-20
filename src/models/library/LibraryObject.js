@@ -27,8 +27,8 @@ module.exports = waterline.Collection.extend({
       required: true
     },
     object: {
-      type: 'json',
-      defaultsTo: defaultObject
+      type: 'text',
+      defaultsTo: JSON.stringify(defaultObject)
     },
     published: {
       type: 'boolean',

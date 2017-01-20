@@ -6,6 +6,7 @@ const methodOverRide = require('method-override');
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 
 const forum = require('./src/API/forum/forum');
+const library = require('./src/API/library');
 const collections = require('./src/models');
 
 const app = express();
@@ -43,7 +44,7 @@ app.use(middleware.logCall);
  * router loading
  */
 app.use('/forum', forum.forumRouter);
-
+app.use('/library', library.libraryRouter);
 
 /**
  * ORM

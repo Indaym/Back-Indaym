@@ -16,8 +16,8 @@ module.exports = waterline.Collection.extend({
       required: true
     },
     script: {
-      type: 'json',
-      defaultsTo: {}
+      type: 'text',
+      defaultsTo: JSON.stringify({})
     }
   }
 });

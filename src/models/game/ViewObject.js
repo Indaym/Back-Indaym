@@ -6,7 +6,7 @@ const waterline = require('waterline');
 const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'object',
+  identity: 'view_object',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -25,7 +25,7 @@ module.exports = waterline.Collection.extend({
       maxLength: 50,
       required: true
     },
-    object: 'json',
+    object: 'text',
     objectRef:{
       model: 'library_object'
     }
