@@ -139,10 +139,6 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bignumber.js@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.1.4.tgz#29b3bb693dbb238e88b72eac2fb89650888b2d59"
-
 binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
@@ -1191,13 +1187,6 @@ mute-stream@~0.0.4:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mysql@2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/mysql/-/mysql-2.10.2.tgz#9ee5e46f056b2ba3a7840a10eae3426f59384292"
-  dependencies:
-    bignumber.js "2.1.4"
-    readable-stream "~1.1.13"
-
 nan@^2.3.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
@@ -1555,7 +1544,7 @@ read@1.0.x:
   dependencies:
     mute-stream "~0.0.4"
 
-readable-stream@^1.1.12, readable-stream@~1.1.13, readable-stream@~1.1.9:
+readable-stream@^1.1.12, readable-stream@~1.1.9:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   dependencies:
@@ -1672,17 +1661,6 @@ sails-memory@^0.10.7:
     waterline-criteria "1.0.1"
     waterline-cursor "0.0.6"
     waterline-errors "0.10.1"
-
-sails-mysql@^0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/sails-mysql/-/sails-mysql-0.11.5.tgz#ab2a2cd7b8b48d32190cc961f8e984921b7fe60b"
-  dependencies:
-    async "1.5.2"
-    lodash "3.10.1"
-    mysql "2.10.2"
-    waterline-cursor "0.0.6"
-    waterline-errors "0.10.1"
-    waterline-sequel "0.5.7"
 
 semver-diff@^2.0.0:
   version "2.1.0"
@@ -2016,7 +1994,7 @@ waterline-errors@^0.10.1, waterline-errors@0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/waterline-errors/-/waterline-errors-0.10.1.tgz#ee63632aadde993271b7514b7ca98d9fd5b86a2e"
 
-waterline-postgresql@^0.14.8:
+waterline-postgresql:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/waterline-postgresql/-/waterline-postgresql-0.14.8.tgz#67f3788551b3d017a30eafee22f20afa94203ec7"
   dependencies:
@@ -2035,7 +2013,7 @@ waterline-schema@0.2.0:
   dependencies:
     lodash "3.10.1"
 
-waterline-sequel@^0.5.0, waterline-sequel@0.5.7:
+waterline-sequel@^0.5.0:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/waterline-sequel/-/waterline-sequel-0.5.7.tgz#1d7e4328babfad8a31bd3fb26a86d71800ad828d"
   dependencies:
