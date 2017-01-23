@@ -28,7 +28,6 @@ const getHandler = (req, res, next) => {
  * Get only one object from the library
  */
 const getOneHandler = (req, res, next) => {
-  console.log("rentre ici ?");
   req.app.models.library_object.findOne({
     uuid: req.params.idObject,
     or: [
