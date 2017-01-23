@@ -4,7 +4,9 @@
 
 const waterline = require('waterline');
 
-// Get a group of library's objects (public or not)
+/**
+ * Get a group of library's objects (public or not)
+ */
 const getHandler = (req, res, next) => {
   req.app.models.library_object.find({
     or: [
@@ -22,8 +24,11 @@ const getHandler = (req, res, next) => {
     });
 };
 
-// Get only one object from the library
+/**
+ * Get only one object from the library
+ */
 const getOneHandler = (req, res, next) => {
+  console.log("rentre ici ?");
   req.app.models.library_object.findOne({
     uuid: req.params.idObject,
     or: [
@@ -43,7 +48,9 @@ const getOneHandler = (req, res, next) => {
     });
 };
 
-// Add an object to the library
+/**
+ * Add an object to the library
+ */
 const postHandler = (req, res, next) => {
   req.body.published = (req.body.published === undefined || typeof req.body.published !== "boolean") ? false : req.body.published;
   if ((req.body.name === undefined || typeof req.body.name !== "string") || (req.body.object === undefined || typeof req.body.object !== "string"))
@@ -64,7 +71,9 @@ const postHandler = (req, res, next) => {
     });
 };
 
-// Update an object in the library
+/**
+ * Update an object in the library
+ */
 const putHandler = (req, res, next) => {
   let updateObj = {};
   if (req.body.published !== undefined && typeof published === "boolean")
@@ -89,7 +98,9 @@ const putHandler = (req, res, next) => {
     });
 };
 
-// Delete an object from the library
+/**
+ * Delete an object from the library
+ */
 const deleteHandler = (req, res, next) => {
   req.app.models.library_object.destroy({
     uuid: req.params.idObject,

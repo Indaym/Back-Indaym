@@ -5,17 +5,21 @@ const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
 const DBconfig = require('./config/waterlineConfig').DBconfig;
 
-const forum = require('./src/API/forum/forum');
-const library = require('./src/API/library');
 const collections = require('./src/models');
 
-const app = express();
-const orm = waterline();
+/**
+ * API imports
+ */
+const forum = require('./src/API/forum/forum');
+const library = require('./src/API/library');
 
 /**
  * middleware import
  */
 const middleware = require('./src/middleware');
+
+const app = express();
+const orm = waterline();
 
 /**
  * load each model in waterline
@@ -25,11 +29,6 @@ for (let k in collections) {
     orm.loadCollection(collections[k]);
   }
 }
-
-// orm.loadCollection(collections.Forum);
-// orm.loadCollection(collections.Topics);
-// orm.loadCollection(collections.Messages);
-// orm.loadCollection(collections.User);
 
 /**
  * load of all middleware we need
@@ -47,9 +46,15 @@ app.use('/forum', forum.forumRouter);
 app.use('/library', library.libraryRouter);
 
 /**
+ * Handle errors
+ */
+app.use(function(err, req, res, next) {
+  res.status(err.code).json(err);
+});
+
+/**
  * ORM
  */
-
 orm.initialize(DBconfig, (err, models) => {
   if (err) {
     console.log(err);

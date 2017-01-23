@@ -9,6 +9,7 @@
 
 const express = require('express');
 const libraryWorkers = require('../workers/libraryHandlers');
+const libraryCheckers = require('../checkers/libraryCheckers');
 
 const libraryRouter = express.Router();
 
@@ -18,6 +19,7 @@ libraryRouter.route('/')
   .post(libraryWorkers.postHandler);
 
 libraryRouter.route('/:idObject')
+  .all(libraryCheckers.urlIdObject)
   .get(libraryWorkers.getOneHandler)
   .put(libraryWorkers.putHandler)
   .delete(libraryWorkers.deleteHandler);
