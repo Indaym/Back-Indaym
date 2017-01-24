@@ -19,10 +19,9 @@ libraryRouter.route('/')
   .post(libraryWorkers.postHandler);
 
 libraryRouter.route('/:idObject')
-  .all(libraryCheckers.urlIdObject)
-  .get(libraryWorkers.getOneHandler)
-  .put(libraryWorkers.putHandler)
-  .delete(libraryWorkers.deleteHandler);
+  .get([libraryCheckers.urlIdObject, libraryWorkers.getOneHandler])
+  .put([libraryCheckers.urlIdObject, libraryWorkers.putHandler])
+  .delete([libraryCheckers.urlIdObject, libraryWorkers.deleteHandler]);
 
 module.exports = {
   libraryRouter

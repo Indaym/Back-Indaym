@@ -20,10 +20,9 @@ scenesRouter.route('/')
   .post(scenesWorkers.postHandler);
 
 scenesRouter.route('/:idScene')
-  .all(scenesCheckers.urlIdScene)
-  .get(scenesWorkers.getOneHandler)
-  .put(scenesWorkers.putHandler)
-  .delete(scenesWorkers.deleteHandler);
+  .get([scenesCheckers.urlIdScene, scenesWorkers.getOneHandler])
+  .put([scenesCheckers.urlIdScene, scenesWorkers.putHandler])
+  .delete([scenesCheckers.urlIdScene, scenesWorkers.deleteHandler]);
 
 scenesRouter.use('/:idScene/objects', objects.objectsRouter);
 scenesRouter.use('/:idScene/scripts', scripts.scriptsRouter);

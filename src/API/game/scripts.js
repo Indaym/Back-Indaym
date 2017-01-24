@@ -18,10 +18,9 @@ scriptsRouter.route('/')
   .post(scriptsWorkers.postHandler);
 
 scriptsRouter.route('/:idScript')
-  .all(scriptsCheckers.urlIdScript)
-  .get(scriptsWorkers.getOneHandler)
-  .put(scriptsWorkers.putHandler)
-  .delete(scriptsWorkers.deleteHandler);
+  .get([scriptsCheckers.urlIdScript, scriptsWorkers.getOneHandler])
+  .put([scriptsCheckers.urlIdScript, scriptsWorkers.putHandler])
+  .delete([scriptsCheckers.urlIdScript, scriptsWorkers.deleteHandler]);
 
 module.exports = {
   scriptsRouter

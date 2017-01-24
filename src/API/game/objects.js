@@ -19,10 +19,9 @@ objectsRouter.route('/')
   .post(objectsWorkers.postHandler);
 
 objectsRouter.route('/:idObject')
-  .all(objectsCheckers.urlIdObject)
-  .get(objectsWorkers.getOneHandler)
-  .put(objectsWorkers.putHandler)
-  .delete(objectsWorkers.deleteHandler);
+  .get([objectsCheckers.urlIdObject, objectsWorkers.getOneHandler])
+  .put([objectsCheckers.urlIdObject, objectsWorkers.putHandler])
+  .delete([objectsCheckers.urlIdObject, objectsWorkers.deleteHandler]);
 
 module.exports = {
   objectsRouter

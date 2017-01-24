@@ -19,10 +19,9 @@ gamesRouter.route('/')
   .post(gamesWorkers.postHandler);
 
 gamesRouter.route('/:idGame')
-  .all(gamesCheckers.urlIdGame)
-  .get(gamesWorkers.getOneHandler)
-  .put(gamesWorkers.putHandler)
-  .delete(gamesWorkers.deleteHandler);
+  .get([gamesCheckers.urlIdGame, gamesWorkers.getOneHandler])
+  .put([gamesCheckers.urlIdGame, gamesWorkers.putHandler])
+  .delete([gamesCheckers.urlIdGame, gamesWorkers.deleteHandler]);
 
 gamesRouter.use('/:idGame/scenes/', scenes.scenesRouter);
 
