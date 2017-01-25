@@ -23,7 +23,7 @@ gamesRouter.route('/:idGame')
   .put([ urlCheckers.idGame, gamesWorkers.putHandler ])
   .delete([ urlCheckers.idGame, gamesWorkers.deleteHandler ]);
 
-gamesRouter.use('/:idGame/scenes/', scenes.scenesRouter);
+scenes(gamesRouter, '/:idGame/scenes');
 
 module.exports = {
   gamesRouter
