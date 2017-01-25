@@ -2,26 +2,27 @@
  * Created by nicolas on 20/01/17.
  */
 
-/*
-* /library/
-* /library/:id
-*/
+/**
+ * /library/
+ * /library/:id
+ */
 
 const express = require('express');
 const libraryWorkers = require('../workers/libraryHandlers');
-const libraryCheckers = require('../checkers/libraryCheckers');
+const idChecker = require('../checkers/idChecker');
 
 const libraryRouter = express.Router();
-
 
 libraryRouter.route('/')
   .get(libraryWorkers.getHandler)
   .post(libraryWorkers.postHandler);
 
 libraryRouter.route('/:idObject')
-  .get([libraryCheckers.urlIdObject, libraryWorkers.getOneHandler])
-  .put([libraryCheckers.urlIdObject, libraryWorkers.putHandler])
-  .delete([libraryCheckers.urlIdObject, libraryWorkers.deleteHandler]);
+  .all(idChecker.setter('idObject', 'library_object'))
+  .get([idChecker.executor, libraryWorkers.getOneHandler])
+  .put([idChecker.executor, libraryWorkers.putHandler])
+  .delete([idChecker.executor, libraryWorkers.deleteHandler]);
+
 
 module.exports = {
   libraryRouter

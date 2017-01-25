@@ -2,14 +2,14 @@
  * Created by nicolas on 23/01/17.
  */
 
-/*
+/**
  * /games/:idGame/scenes/:idScene/scripts/
  * /games/:idGame/scenes/:idScene/scripts/:idScript
  */
 
 const express = require('express');
 const scriptsWorkers = require('../../workers/game/scriptsHandlers');
-const scriptsCheckers = require('../../checkers/game/scriptsCheckers');
+const idChecker = require('../../checkers/idChecker');
 
 const scriptsRouter = express.Router();
 
@@ -18,9 +18,10 @@ scriptsRouter.route('/')
   .post(scriptsWorkers.postHandler);
 
 scriptsRouter.route('/:idScript')
-  .get([scriptsCheckers.urlIdScript, scriptsWorkers.getOneHandler])
-  .put([scriptsCheckers.urlIdScript, scriptsWorkers.putHandler])
-  .delete([scriptsCheckers.urlIdScript, scriptsWorkers.deleteHandler]);
+  .all(idChecker.setter('idScript', 'script'))
+  .get([idChecker.executor, scriptsWorkers.getOneHandler])
+  .put([idChecker.executor, scriptsWorkers.putHandler])
+  .delete([idChecker.executor, scriptsWorkers.deleteHandler]);
 
 module.exports = {
   scriptsRouter

@@ -59,7 +59,7 @@ app.use(function(err, req, res, next) {
  */
 orm.initialize(DBconfig, (err, models) => {
   if (err) {
-    console.log(err);
+    console.error(err);
     return;
   }
 

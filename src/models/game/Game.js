@@ -3,12 +3,22 @@
  */
 
 const waterline = require('waterline');
+const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
   identity: 'game',
   connection: 'postgresdb',
+  autoPk: false,
 
   attributes: {
+    uuid: {
+      type: 'string',
+      primaryKey: true,
+      defaultsTo: () => uuid.v4(),
+      unique: true,
+      index: true,
+      uuidv4: true,
+    },
     name: {
       type: 'string',
       minLength: 1,
@@ -29,8 +39,8 @@ module.exports = waterline.Collection.extend({
       model: 'user'
     },
     scenesRef: {
-      colllection: 'scene',
-      via: 'game'
+      collection: 'scene',
+      via: 'gameRef'
     }
   },
 
