@@ -9,7 +9,7 @@
 
 const express = require('express');
 const gamesWorkers = require('../../workers/game/gamesHandlers');
-const idChecker = require('../../checkers/idChecker');
+const urlCheckers = require('../../checkers/urlCheckers');
 const scenes = require('./scenes');
 
 const gamesRouter = express.Router();
@@ -19,10 +19,9 @@ gamesRouter.route('/')
   .post(gamesWorkers.postHandler);
 
 gamesRouter.route('/:idGame')
-  .all(idChecker.setter('idGame', 'game'))
-  .get([idChecker.executor, gamesWorkers.getOneHandler])
-  .put([idChecker.executor, gamesWorkers.putHandler])
-  .delete([idChecker.executor, gamesWorkers.deleteHandler]);
+  .get([ urlCheckers.idGame, gamesWorkers.getOneHandler ])
+  .put([ urlCheckers.idGame, gamesWorkers.putHandler ])
+  .delete([ urlCheckers.idGame, gamesWorkers.deleteHandler ]);
 
 gamesRouter.use('/:idGame/scenes/', scenes.scenesRouter);
 

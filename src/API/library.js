@@ -9,7 +9,7 @@
 
 const express = require('express');
 const libraryWorkers = require('../workers/libraryHandlers');
-const idChecker = require('../checkers/idChecker');
+const urlCheckers = require('../checkers/urlCheckers');
 
 const libraryRouter = express.Router();
 
@@ -18,10 +18,9 @@ libraryRouter.route('/')
   .post(libraryWorkers.postHandler);
 
 libraryRouter.route('/:idObject')
-  .all(idChecker.setter('idObject', 'library_object'))
-  .get([idChecker.executor, libraryWorkers.getOneHandler])
-  .put([idChecker.executor, libraryWorkers.putHandler])
-  .delete([idChecker.executor, libraryWorkers.deleteHandler]);
+  .get([urlCheckers.libraryIdObject, libraryWorkers.getOneHandler])
+  .put([urlCheckers.libraryIdObject, libraryWorkers.putHandler])
+  .delete([urlCheckers.libraryIdObject, libraryWorkers.deleteHandler]);
 
 
 module.exports = {

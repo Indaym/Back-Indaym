@@ -9,21 +9,20 @@
 
 const express = require('express');
 const scenesWorkers = require('../../workers/game/scenesHandlers');
-const idChecker = require('../../checkers/idChecker');
+const urlCheckers = require('../../checkers/urlCheckers');
 const objects = require('./objects');
 const scripts = require('./scripts');
 
 const scenesRouter = express.Router();
 
 scenesRouter.route('/')
-  .get(scenesWorkers.getHandler)
-  .post(scenesWorkers.postHandler);
+  .get([ urlCheckers.idGame, scenesWorkers.getHandler ])
+  .post([ urlCheckers.idGame, scenesWorkers.postHandler ]);
 
 scenesRouter.route('/:idScene')
-  .all(idChecker.setter('idScene', 'scene'))
-  .get([idChecker.executor, scenesWorkers.getOneHandler])
-  .put([idChecker.executor, scenesWorkers.putHandler])
-  .delete([idChecker.executor, scenesWorkers.deleteHandler]);
+  .get([ ...urlCheckers.chainScene, scenesWorkers.getOneHandler ])
+  .put([ ...urlCheckers.chainScene, scenesWorkers.putHandler ])
+  .delete([ ...urlCheckers.chainScene, scenesWorkers.deleteHandler ]);
 
 scenesRouter.use('/:idScene/objects', objects.objectsRouter);
 scenesRouter.use('/:idScene/scripts', scripts.scriptsRouter);

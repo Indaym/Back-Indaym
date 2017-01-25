@@ -9,19 +9,18 @@
 
 const express = require('express');
 const objectsWorkers = require('../../workers/game/objectsHandlers');
-const idChecker = require('../../checkers/idChecker');
+const urlCheckers = require('../../checkers/urlCheckers');
 
 const objectsRouter = express.Router();
 
 objectsRouter.route('/')
-  .get(objectsWorkers.getHandler)
-  .post(objectsWorkers.postHandler);
+  .get([ ...urlCheckers.chainScene, objectsWorkers.getHandler ])
+  .post([ ...urlCheckers.chainScene, objectsWorkers.postHandler ]);
 
 objectsRouter.route('/:idObject')
-  .all(idChecker.setter('idObject', 'view_object'))
-  .get([idChecker.executor, objectsWorkers.getOneHandler])
-  .put([idChecker.executor, objectsWorkers.putHandler])
-  .delete([idChecker.executor, objectsWorkers.deleteHandler]);
+  .get([ ...urlCheckers.chainObject, objectsWorkers.getOneHandler ])
+  .put([ ...urlCheckers.chainObject, objectsWorkers.putHandler ])
+  .delete([ ...urlCheckers.chainObject, objectsWorkers.deleteHandler ]);
 
 module.exports = {
   objectsRouter
