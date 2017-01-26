@@ -31,5 +31,8 @@ module.exports = waterline.Collection.extend({
       collection: 'topics',
       via: 'user'
     },
+    games: {
+      collection: 'game'
+    }
   },
 });

@@ -10,12 +10,13 @@
 const express = require('express');
 const libraryWorkers = require('../workers/libraryHandlers');
 const urlCheckers = require('../checkers/urlCheckers');
+const libraryCheckers = require('../checkers/libraryCheckers');
 
 const libraryRouter = express.Router();
 
 libraryRouter.route('/')
   .get(libraryWorkers.getHandler)
-  .post(libraryWorkers.postHandler);
+  .post([libraryCheckers.postChecker, libraryWorkers.postHandler]);
 
 libraryRouter.route('/:idObject')
   .get([urlCheckers.libraryIdObject, libraryWorkers.getOneHandler])

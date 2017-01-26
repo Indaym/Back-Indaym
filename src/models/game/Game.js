@@ -29,7 +29,10 @@ module.exports = waterline.Collection.extend({
       type: 'boolean',
       defaultsTo: false
     },
-    price: 'integer',
+    price: {
+      type: 'integer',
+      defaultsTo: 0
+    },
     tags: {
       type: 'array',
       defaultsTo: [],

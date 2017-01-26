@@ -3,6 +3,7 @@
  */
 
 const waterline = require('waterline');
+const paramHandler = require('../middleware/paramHandler');
 
 /**
  * Get a group of library's objects (public or not)
@@ -51,16 +52,9 @@ const getOneHandler = (req, res, next) => {
  * Add an object to the library
  */
 const postHandler = (req, res, next) => {
-  req.body.published = (req.body.published === undefined || typeof req.body.published !== "boolean") ? false : req.body.published;
-  if ((req.body.name === undefined || typeof req.body.name !== "string") || (req.body.object === undefined || typeof req.body.object !== "string"))
-    res.status(500).send('Wrong values');
-  req.app.models.library_object.create({
-    name: req.body.name,
-    published: req.body.published,
-    object: req.body.object,
-    //owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88'
-    owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
-  })
+  let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'object']);
+  createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
+  req.app.models.library_object.create(createObj)
     .then((resu) => {
       res.status(201).json({uuid : resu.uuid});
     })
@@ -74,13 +68,8 @@ const postHandler = (req, res, next) => {
  * Update an object in the library
  */
 const putHandler = (req, res, next) => {
-  let updateObj = {};
-  if (req.body.published !== undefined && typeof published === "boolean")
-    updateObj.published =  req.body.published;
-  if (req.body.name !== undefined)
-    updateObj.name = req.body.name;
-  if (req.body.object !== undefined)
-    updateObj.object = req.body.object;
+  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'object']);
+
   req.app.models.library_object.update({
     uuid: req.params.idObject,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
