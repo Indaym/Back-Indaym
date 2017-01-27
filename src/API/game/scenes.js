@@ -15,13 +15,29 @@ const scripts = require('./scripts');
 
 module.exports = (router, baseUrl) => {
   router.route(baseUrl + '/')
-    .get([ urlCheckers.idGame, scenesWorkers.getHandler ])
-    .post([ urlCheckers.idGame, sceneCheckers.postChecker, scenesWorkers.postHandler ]);
+    .get([
+      urlCheckers.idGame,
+      scenesWorkers.getHandler
+    ])
+    .post([
+      urlCheckers.idGame,
+      sceneCheckers.postChecker,
+      scenesWorkers.postHandler
+    ]);
 
   router.route(baseUrl + '/:idScene')
-    .get([ ...urlCheckers.chainScene, scenesWorkers.getOneHandler ])
-    .put([ ...urlCheckers.chainScene, scenesWorkers.putHandler ])
-    .delete([ ...urlCheckers.chainScene, scenesWorkers.deleteHandler ]);
+    .get([
+      ...urlCheckers.chainScene,
+      scenesWorkers.getOneHandler
+    ])
+    .put([
+      ...urlCheckers.chainScene,
+      scenesWorkers.putHandler
+    ])
+    .delete([
+      ...urlCheckers.chainScene,
+      scenesWorkers.deleteHandler
+    ]);
 
   objects(router, baseUrl + '/:idScene/objects');
   scripts(router, baseUrl + '/:idScene/scripts');

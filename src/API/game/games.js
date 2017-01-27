@@ -17,12 +17,24 @@ const gamesRouter = express.Router();
 
 gamesRouter.route('/')
   .get(gamesWorkers.getHandler)
-  .post([gameCheckers.postChecker, gamesWorkers.postHandler]);
+  .post([
+    gameCheckers.postChecker,
+    gamesWorkers.postHandler
+  ]);
 
 gamesRouter.route('/:idGame')
-  .get([ urlCheckers.idGame, gamesWorkers.getOneHandler ])
-  .put([ urlCheckers.idGame, gamesWorkers.putHandler ])
-  .delete([ urlCheckers.idGame, gamesWorkers.deleteHandler ]);
+  .get([
+    urlCheckers.idGame,
+    gamesWorkers.getOneHandler
+  ])
+  .put([
+    urlCheckers.idGame,
+    gamesWorkers.putHandler
+  ])
+  .delete([
+    urlCheckers.idGame,
+    gamesWorkers.deleteHandler
+  ]);
 
 scenes(gamesRouter, '/:idGame/scenes');
 

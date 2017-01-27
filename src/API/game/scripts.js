@@ -9,14 +9,31 @@
 
 const scriptsWorkers = require('../../workers/game/scriptsHandlers');
 const urlCheckers = require('../../checkers/urlCheckers');
+const scriptCheckers = require('../../checkers/scriptCheckers');
 
 module.exports = (router, baseUrl) => {
   router.route(baseUrl + '/')
-    .get([ ...urlCheckers.chainScene, scriptsWorkers.getHandler ])
-    .post([ ...urlCheckers.chainScene, scriptsWorkers.postHandler ]);
+    .get([
+      ...urlCheckers.chainScene,
+      scriptsWorkers.getHandler
+    ])
+    .post([
+      ...urlCheckers.chainScene,
+      scriptCheckers.postChecker,
+      scriptsWorkers.postHandler
+    ]);
 
   router.route(baseUrl + '/:idScript')
-    .get([ ...urlCheckers.chainScript, scriptsWorkers.getOneHandler ])
-    .put([ ...urlCheckers.chainScript, scriptsWorkers.putHandler ])
-    .delete([ ...urlCheckers.chainScript, scriptsWorkers.deleteHandler ]);
+    .get([
+      ...urlCheckers.chainScript,
+      scriptsWorkers.getOneHandler
+    ])
+    .put([
+      ...urlCheckers.chainScript,
+      scriptsWorkers.putHandler
+    ])
+    .delete([
+      ...urlCheckers.chainScript,
+      scriptsWorkers.deleteHandler
+    ]);
 };
