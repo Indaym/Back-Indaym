@@ -10,13 +10,18 @@ const errorHandler = require('../../middleware/errorHandler');
  * Get a group of games
  */
 const getHandler = (req, res, next) => {
-  req.app.models.game.find({
+  var requestObj = {
     or: [
       //{ owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88' },
       { published: true },
       { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
     ]
-  })
+  };
+  if (req.query.search !== undefined)
+    requestObj['name'] = { contains: req.query.search };
+  requestObj['limit'] = (req.query.interval === undefined) ? 10 : req.query.interval;
+  requestObj['skip'] = (req.query.page === undefined) ? 0 : requestObj['limit'] * req.query.page;
+  req.app.models.game.find(requestObj)
     .then((results) => {
       res.status(200).send(results);
     })
