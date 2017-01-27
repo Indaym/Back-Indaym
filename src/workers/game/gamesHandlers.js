@@ -39,7 +39,10 @@ const getOneHandler = (req, res, next) => {
     ]
   })
     .then((results) => {
-      res.status(200).send(results);
+      if (results === undefined)
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Game not found"));
+      else
+        res.status(200).send(results);
     })
     .catch((err) => {
       console.log(err);

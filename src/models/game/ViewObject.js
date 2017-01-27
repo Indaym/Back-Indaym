@@ -28,6 +28,10 @@ module.exports = waterline.Collection.extend({
     object: 'text',
     objectRef:{
       model: 'library_object'
+    },
+    sceneRef: {
+      model: 'scene'
     }
+
   }
 });

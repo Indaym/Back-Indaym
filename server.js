@@ -23,8 +23,6 @@ const middleware = require('./src/middleware');
 const app = express();
 const orm = waterline();
 
-app.use(cors());
-
 /**
  * load each model in waterline
  */
@@ -37,6 +35,7 @@ for (let k in collections) {
 /**
  * load of all middleware we need
  */
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());

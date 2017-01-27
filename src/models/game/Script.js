@@ -28,6 +28,9 @@ module.exports = waterline.Collection.extend({
     script: {
       type: 'text',
       defaultsTo: JSON.stringify({})
+    },
+    sceneRef: {
+      model: 'scene'
     }
   }
 });

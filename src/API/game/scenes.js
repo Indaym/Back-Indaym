@@ -9,13 +9,14 @@
 
 const scenesWorkers = require('../../workers/game/scenesHandlers');
 const urlCheckers = require('../../checkers/urlCheckers');
+const sceneCheckers = require('../../checkers/sceneCheckers');
 const objects = require('./objects');
 const scripts = require('./scripts');
 
 module.exports = (router, baseUrl) => {
   router.route(baseUrl + '/')
     .get([ urlCheckers.idGame, scenesWorkers.getHandler ])
-    .post([ urlCheckers.idGame, scenesWorkers.postHandler ]);
+    .post([ urlCheckers.idGame, sceneCheckers.postChecker, scenesWorkers.postHandler ]);
 
   router.route(baseUrl + '/:idScene')
     .get([ ...urlCheckers.chainScene, scenesWorkers.getOneHandler ])

@@ -4,6 +4,7 @@
 
 const waterline = require('waterline');
 const paramHandler = require('../middleware/paramHandler');
+const errorHandler = require('../middleware/errorHandler');
 
 /**
  * Get a group of library's objects (public or not)
@@ -21,7 +22,7 @@ const getHandler = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send('Unexpected Error');
+      errorHandler.errorExecutor(next);
     });
 };
 
@@ -38,13 +39,13 @@ const getOneHandler = (req, res, next) => {
   })
     .then((results) => {
       if (results === undefined)
-        res.status(404).send('Library object not found');
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Library object not found"));
       else
         res.status(200).send(results);
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send('Unexpected Error');
+      errorHandler.errorExecutor(next);
     });
 };
 
@@ -60,7 +61,7 @@ const postHandler = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).send('Unexpected Error')
+      errorHandler.errorExecutor(next);
     });
 };
 
@@ -76,13 +77,13 @@ const putHandler = (req, res, next) => {
   }, updateObj)
     .then((resu) => {
       if (resu.length == 0)
-        res.status(403).send('Can\'t update this object');
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this object"));
       else
         res.status(200).end();
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).send('Unexpected Error')
+      errorHandler.errorExecutor(next);
     });
 };
 
@@ -96,12 +97,12 @@ const deleteHandler = (req, res, next) => {
   })
     .then((resu) => {
       if (resu.length == 0)
-        res.status(403).send('Can\'t delete this object');
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this object"));
       else
         res.status(200).end();
     })
     .catch((err) => {
-      res.status(500).send(err.message);
+      errorHandler.errorExecutor(next);
     });
 };
 

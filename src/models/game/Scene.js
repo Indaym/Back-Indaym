@@ -27,6 +27,14 @@ module.exports = waterline.Collection.extend({
     },
     gameRef: {
       model: 'game'
-    }
+    },
+    objects: {
+      collection: 'view_object',
+      via: 'sceneRef'
+    },
+    scripts: {
+      collection: 'script',
+      via: 'sceneRef'
+    },
   }
 });
