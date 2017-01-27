@@ -62,8 +62,8 @@ const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price']);
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.game.create(createObj)
-    .then((resu) => {
-      res.status(201).json({uuid : resu.uuid});
+    .then((results) => {
+      res.status(201).json({uuid : results.uuid});
     })
     .catch((err) => {
       console.log(err.message);
@@ -80,8 +80,8 @@ const putHandler = (req, res, next) => {
     uuid: req.params.idGame,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
   }, updateObj)
-    .then((resu) => {
-      if (resu.length == 0)
+    .then((results) => {
+      if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this game"));
       else
         res.status(200).end();
@@ -100,8 +100,8 @@ const deleteHandler = (req, res, next) => {
     uuid: req.params.idGame,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
   })
-    .then((resu) => {
-      if (resu.length == 0)
+    .then((results) => {
+      if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this game"));
       else
         res.status(200).end();

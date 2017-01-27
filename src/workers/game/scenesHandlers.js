@@ -48,8 +48,8 @@ const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['name']);
   createObj.gameRef = req.params.idGame;
   req.app.models.scene.create(createObj)
-    .then((resu) => {
-      res.status(201).json({uuid : resu.uuid});
+    .then((results) => {
+      res.status(201).json({uuid : results.uuid});
     })
     .catch((err) => {
       console.log(err);
@@ -65,14 +65,14 @@ const putHandler = (req, res, next) => {
   req.app.models.scene.update({
     uuid: req.params.idScene
   }, updateObj)
-    .then((resu) => {
-      if (resu.length == 0)
+    .then((results) => {
+      if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this Scene"));
       else
         res.status(200).end();
     })
     .catch((err) => {
-      console.log(err.message);
+      console.log(err);
       errorHandler.errorExecutor(next);
     });
 };
@@ -84,13 +84,14 @@ const deleteHandler = (req, res, next) => {
   req.app.models.scene.destroy({
     uuid: req.params.idScene
   })
-    .then((resu) => {
-      if (resu.length == 0)
+    .then((results) => {
+      if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this Scene"));
       else
         res.status(200).end();
     })
     .catch((err) => {
+      console.log(err);
       errorHandler.errorExecutor(next);
     });
 };
