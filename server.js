@@ -4,6 +4,7 @@ const waterline = require('waterline');
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
 const DBconfig = require('./config/waterlineConfig').DBconfig;
+const cors = require('cors');
 
 const collections = require('./src/models');
 
@@ -21,6 +22,8 @@ const middleware = require('./src/middleware');
 
 const app = express();
 const orm = waterline();
+
+app.use(cors());
 
 /**
  * load each model in waterline
