@@ -1,8 +1,7 @@
 const waterline = require('waterline');
-const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'forum',
+  identity: 'message',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -16,10 +15,23 @@ module.exports = waterline.Collection.extend({
       uuidv4: true,
     },
     title: 'string',
-    description: 'string',
-    topics: {
-      collection: 'topic',
-      via: 'forum'
+    message: 'string',
+    up: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+    down: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+    answerTo: {
+      model: 'message'
+    },
+    topic: {
+      model: 'topic',
+    },
+    owner: {
+      model: 'user',
     }
   }
 });

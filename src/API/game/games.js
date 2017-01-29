@@ -10,7 +10,7 @@
 const express = require('express');
 const gamesWorkers = require('../../workers/game/gamesHandlers');
 const urlCheckers = require('../../checkers/urlCheckers');
-const gameCheckers = require('../../checkers/gameCheckers');
+const gameCheckers = require('../../checkers/game/gameCheckers');
 const scenes = require('./scenes');
 
 const gamesRouter = express.Router();
