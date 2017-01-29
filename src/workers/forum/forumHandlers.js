@@ -1,18 +1,34 @@
-const app = require ("waterline");
+/**
+ * Created by nicolas on 29/01/17.
+ */
+
+const waterline = require ("waterline");
 
 const getHandler = (req, res, next) => {
-  const topics = app.models.Topics.find();
+  res.send('forum');
+};
 
-  res.send(topics);
-  next();
+const getOneHandler = (req, res, next) => {
+  res.send('forum');
 };
 
 const postHandler = (req, res, next) => {
-  app.models.Topics.create();
-  next();
+  res.send('forum');
 };
+
+const putHandler = (req, res, next) => {
+  res.send('forum');
+};
+
+const deleteHandler = (req, res, next) => {
+  res.send('forum');
+};
+
 
 module.exports = {
   getHandler,
-  postHandler
+  getOneHandler,
+  postHandler,
+  putHandler,
+  deleteHandler,
 };

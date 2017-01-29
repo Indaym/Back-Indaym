@@ -1,31 +1,34 @@
 /**
- * Created by djavrell on 16/12/16.
+ * Created by nicolas on 29/01/17.
  */
 
-const getAllTopics = (req, res, next) => {
-  next();
+const waterline = require ("waterline");
+
+const getHandler = (req, res, next) => {
+  res.send('topics');
 };
 
-const newTopics = (req, res, next) => {
-  next();
+const getOneHandler = (req, res, next) => {
+  res.send('topics');
 };
 
-const getTopics = (req, res, next) => {
-  next();
+const postHandler = (req, res, next) => {
+  res.send('topics');
 };
 
-const updateTopics = (req, res, next) => {
-  next();
+const putHandler = (req, res, next) => {
+  res.send('topics');
 };
 
-const deleteTopics = (req, res, next) => {
-  next();
+const deleteHandler = (req, res, next) => {
+  res.send('topics');
 };
+
 
 module.exports = {
-  getAllTopics,
-  newTopics,
-  getTopics,
-  updateTopics,
-  deleteTopics,
+  getHandler,
+  getOneHandler,
+  postHandler,
+  putHandler,
+  deleteHandler,
 };

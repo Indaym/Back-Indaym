@@ -1,22 +1,34 @@
 /**
- * Created by djavrell on 15/10/16.
+ * Created by nicolas on 29/01/17.
  */
 
+const waterline = require ("waterline");
+
 const getHandler = (req, res, next) => {
-  next();
+  res.send('messages');
 };
 
-const getIdHandler = (req, res, next) => {
-  res.send('sub_forum_id: ' + req.params.sub_forum_id + ' > message_id: ' + req.params.message_id + '\n');
-  next();
+const getOneHandler = (req, res, next) => {
+  res.send('messages');
 };
 
 const postHandler = (req, res, next) => {
-  next();
+  res.send('messages');
 };
+
+const putHandler = (req, res, next) => {
+  res.send('messages');
+};
+
+const deleteHandler = (req, res, next) => {
+  res.send('messages');
+};
+
 
 module.exports = {
   getHandler,
-  getIdHandler,
-  postHandler
+  getOneHandler,
+  postHandler,
+  putHandler,
+  deleteHandler,
 };
