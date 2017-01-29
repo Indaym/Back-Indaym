@@ -1,12 +1,12 @@
 /**
- * Created by djavrell on 17/12/16.
+ * Created by nicolas on 19/01/17.
  */
 
 const waterline = require('waterline');
 const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'user',
+  identity: 'view_object',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -19,20 +19,19 @@ module.exports = waterline.Collection.extend({
       index: true,
       uuidv4: true,
     },
-
-    name: 'string',
-
-    messages: {
-      collection: 'messages',
-      via: 'user'
+    name: {
+      type: 'string',
+      minLength: 1,
+      maxLength: 50,
+      required: true
     },
-
-    topics: {
-      collection: 'topics',
-      via: 'user'
+    object: 'text',
+    objectRef:{
+      model: 'library_object'
     },
-    games: {
-      collection: 'game'
+    sceneRef: {
+      model: 'scene'
     }
-  },
+
+  }
 });
