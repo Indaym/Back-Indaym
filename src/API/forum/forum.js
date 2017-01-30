@@ -4,18 +4,17 @@
 
 const express = require('express');
 const forumWorkers = require('../../workers/forum/forumHandlers');
+const forumCheckers = require('../../checkers/forum/forumCheckers');
+const paramsHandlers = require('../../checkers/forum/paramsHandlers');
 const topics = require('./topics');
 
 const forumRouter = express.Router();
 
-forumRouter.param('idForum', (req, res, next, value) => {
-  console.log('idForum');
-  next();
-});
+forumRouter.param('idForum', paramsHandlers.idForum);
 
 forumRouter.route('/')
   .get(forumWorkers.getHandler)
-  .post(forumWorkers.postHandler);
+  .post([forumCheckers.postChecker, forumWorkers.postHandler]);
 
 forumRouter.route('/:idForum')
   .get(forumWorkers.getOneHandler)

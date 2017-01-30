@@ -4,14 +4,11 @@
 
 const express = require('express');
 const messagesWorkers = require('../../workers/forum/messagesHandlers');
-const messages = require('./messages');
+const paramsHandlers = require('../../checkers/forum/paramsHandlers');
 
 const messagesRouter = express.Router();
 
-messagesRouter.param('idMessage', (req, res, next, value) => {
-  console.log('idMessage');
-  next();
-});
+messagesRouter.param('idMessage', paramsHandlers.idMessage);
 
 messagesRouter.route('/')
   .get(messagesWorkers.getHandler)

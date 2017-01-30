@@ -1,4 +1,5 @@
 const waterline = require('waterline');
+const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
   identity: 'message',
