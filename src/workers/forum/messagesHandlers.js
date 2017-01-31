@@ -38,6 +38,7 @@ const getOneHandler = (req, res, next) => {
 
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'message', 'answerTo']);
+  createObj.topic = req.savedParams.idTopic;
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.message.create(createObj)
     .then((results) => {
@@ -50,8 +51,9 @@ const postHandler = (req, res, next) => {
 };
 
 const putHandler = (req, res, next) => {
-  let updateObj = paramHandler.paramExtract(req.body, ['title', 'description']);
+  let updateObj = paramHandler.paramExtract(req.body, ['title', 'description', 'up', 'down']);
   req.app.models.message.update({
+    topic: req.savedParams.idTopic,
     uuid: req.savedParams.idMessage
   },updateObj)
     .then((results) => {

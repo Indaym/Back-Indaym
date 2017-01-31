@@ -35,7 +35,6 @@ const getOneHandler = (req, res, next) => {
 
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'description']);
-  createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.forum.create(createObj)
     .then((results) => {
       res.status(201).json({uuid : results.uuid});
