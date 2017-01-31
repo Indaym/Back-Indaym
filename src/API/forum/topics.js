@@ -4,6 +4,7 @@
 
 const express = require('express');
 const topicsWorkers = require('../../workers/forum/topicsHandlers');
+const topicsCheckers = require('../../checkers/forum/topicsCheckers');
 const paramsHandlers = require('../../checkers/forum/paramsHandlers');
 const messages = require('./messages');
 
@@ -13,7 +14,7 @@ topicsRouter.param('idTopic', paramsHandlers.idTopic);
 
 topicsRouter.route('/')
   .get(topicsWorkers.getHandler)
-  .post(topicsWorkers.postHandler);
+  .post([topicsCheckers.postChecker, topicsWorkers.postHandler]);
 
 topicsRouter.route('/:idTopic')
   .get(topicsWorkers.getOneHandler)
