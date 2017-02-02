@@ -11,7 +11,7 @@ try {
 
 const pwd = process.argv[2] || 'unM0tDeP4sse';
 const secret = 'abcdef';
-const salt = 'Indaym';
+const defaultSalt = 'Indaym';
 
 const hash = (str) => {
   return crypto
@@ -20,6 +20,12 @@ const hash = (str) => {
     .digest('hex')
 };
 
-const digest = hash(hash(pwd) + salt);
+const digest = (value = pwd, salt = defaultSalt) => {
+  return hash(hash(value) + salt);
+};
 
-console.log(digest);
+console.log(digest(pwd));
+
+module.exports = {
+  digest
+};
