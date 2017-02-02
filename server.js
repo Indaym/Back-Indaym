@@ -11,7 +11,6 @@ const collections = require('./src/models');
 /**
  * API imports
  */
-//const forum = require('./src/API/Exforum/forum');
 const forum = require('./src/API/forum/forum');
 const library = require('./src/API/library');
 const games = require('./src/API/game/games');

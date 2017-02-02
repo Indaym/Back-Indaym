@@ -6,6 +6,9 @@ const waterline = require ("waterline");
 const paramHandler = require('../../middleware/paramHandler');
 const errorHandler = require('../../middleware/errorHandler');
 
+/**
+ * Get a group of forums
+ */
 const getHandler = (req, res, next) => {
   req.app.models.forum.find()
     .then((results) => {
@@ -17,6 +20,9 @@ const getHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Get only one forum
+ */
 const getOneHandler = (req, res, next) => {
   req.app.models.forum.findOne({
     uuid: req.params.idForum
@@ -33,6 +39,9 @@ const getOneHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Create a forum
+ */
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'description']);
   req.app.models.forum.create(createObj)
@@ -45,6 +54,9 @@ const postHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Update an existing forum
+ */
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['title', 'description']);
   req.app.models.forum.update({
@@ -62,6 +74,9 @@ const putHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Delete an existing forum
+ */
 const deleteHandler = (req, res, next) => {
   req.app.models.forum.destroy({
     uuid: req.params.idForum
