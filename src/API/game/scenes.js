@@ -9,7 +9,7 @@
 
 const scenesWorkers = require('../../workers/game/scenesHandlers');
 const urlCheckers = require('../../checkers/urlCheckers');
-const sceneCheckers = require('../../checkers/sceneCheckers');
+const sceneCheckers = require('../../checkers/game/sceneCheckers');
 const objects = require('./objects');
 const scripts = require('./scripts');
 

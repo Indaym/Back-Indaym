@@ -1,18 +1,87 @@
-const app = require ("waterline");
+/**
+ * Created by nicolas on 29/01/17.
+ */
+
+const waterline = require ("waterline");
+const paramHandler = require('../../middleware/paramHandler');
+const errorHandler = require('../../middleware/errorHandler');
 
 const getHandler = (req, res, next) => {
-  const topics = app.models.Topics.find();
+  req.app.models.forum.find()
+    .then((results) => {
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      console.log(err);
+      errorHandler.errorExecutor(next);
+    });
+};
 
-  res.send(topics);
-  next();
+const getOneHandler = (req, res, next) => {
+  req.app.models.forum.findOne({
+    uuid: req.params.idForum
+  })
+    .then((results) => {
+      if (results === undefined)
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Forum not found"));
+      else
+        res.status(200).send(results);
+    })
+    .catch((err) => {
+      console.log(err);
+      errorHandler.errorExecutor(next);
+    });
 };
 
 const postHandler = (req, res, next) => {
-  app.models.Topics.create();
-  next();
+  let createObj = paramHandler.paramExtract(req.body, ['title', 'description']);
+  req.app.models.forum.create(createObj)
+    .then((results) => {
+      res.status(201).json({uuid : results.uuid});
+    })
+    .catch((err) => {
+      console.log(err);
+      errorHandler.errorExecutor(next);
+    });
 };
+
+const putHandler = (req, res, next) => {
+  let updateObj = paramHandler.paramExtract(req.body, ['title', 'description']);
+  req.app.models.forum.update({
+    uuid: req.params.idForum
+  },updateObj)
+    .then((results) => {
+      if (results.length == 0)
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this forum"));
+      else
+        res.status(200).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      errorHandler.errorExecutor(next);
+    });
+};
+
+const deleteHandler = (req, res, next) => {
+  req.app.models.forum.destroy({
+    uuid: req.params.idForum
+  })
+    .then((results) => {
+      if (results.length == 0)
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this forum"));
+      else
+        res.status(200).end();
+    })
+    .catch((err) => {
+      errorHandler.errorExecutor(next);
+    });
+};
+
 
 module.exports = {
   getHandler,
-  postHandler
+  getOneHandler,
+  postHandler,
+  putHandler,
+  deleteHandler,
 };

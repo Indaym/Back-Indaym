@@ -9,7 +9,7 @@
 
 const objectsWorkers = require('../../workers/game/objectsHandlers');
 const urlCheckers = require('../../checkers/urlCheckers');
-const objectCheckers = require('../../checkers/objectCheckers');
+const objectCheckers = require('../../checkers/game/objectCheckers');
 
 module.exports = (router, baseUrl) => {
   router.route(baseUrl + '/')
