@@ -2,7 +2,7 @@
  * Created by nicolas on 29/01/17.
  */
 
-const waterline = require ("waterline");
+const waterline = require('waterline');
 const paramHandler = require('../../middleware/paramHandler');
 const errorHandler = require('../../middleware/errorHandler');
 
