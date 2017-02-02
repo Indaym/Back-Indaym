@@ -1,4 +1,6 @@
-'strict mode'
+/**
+ * Import
+ */
 const express = require('express');
 const waterline = require('waterline');
 
@@ -12,6 +14,12 @@ const cors = require('cors');
 const collections = require('./src/models');
 
 /**
+ *
+ */
+const app = express();
+const orm = waterline();
+
+/**
  * API imports
  */
 const forum = require('./src/API/forum/forum');
@@ -23,9 +31,6 @@ const auth = require('./src/API/auth/auth');
  * middleware import
  */
 const middleware = require('./src/middleware');
-
-const app = express();
-const orm = waterline();
 
 /**
  * load each model in waterline

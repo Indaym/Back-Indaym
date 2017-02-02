@@ -9,11 +9,7 @@ const errorHandler = require('../../../src/middleware/errorHandler');
 
 const register = (req, res) => {
   if (req.body.username === undefined || req.body.password === undefined) {
-    return res.status(403)
-      .json({
-        status: 'error',
-        code: 'forbidden'
-      });
+    return res.status(403).json({ status: 'error', code: 'forbidden' });
   }
 
   const userCollection = req.app.models.user;
@@ -30,7 +26,8 @@ const register = (req, res) => {
           password: req.body.password
         };
 
-        userCollection.create(newUser)
+        userCollection
+          .create(newUser)
           .then((user) => {
             return res.status(202).json({ status: 'created', code: `user ${user.username} created` });
           })

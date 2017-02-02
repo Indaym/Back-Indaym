@@ -23,6 +23,8 @@ module.exports = waterline.Collection.extend({
     username: 'string',
     password: 'string',
 
+    isConnected: 'boolean',
+
     messages: {
       collection: 'messages',
       via: 'user'
