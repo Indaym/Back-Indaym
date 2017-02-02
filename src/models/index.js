@@ -1,5 +1,5 @@
-const Messages      = require('./forum/Messages');
-const Topics        = require('./forum/Topics');
+const Messages      = require('./forum/Message');
+const Topics        = require('./forum/Topic');
 const Forum         = require('./forum/Forum');
 const User          = require('./User');
 const News          = require('./News');

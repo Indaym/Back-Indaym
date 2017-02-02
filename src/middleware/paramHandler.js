@@ -7,7 +7,7 @@ const paramError = (baseObject, desc) => {
     if (baseObject[des] === undefined || typeof baseObject[des] !== desc[des].type) {
       if (desc[des].defaultValue === undefined)
         return des;
-      baseObject[des] = desc.default;
+      baseObject[des] = desc[des].defaultValue;
     }
   }
 };

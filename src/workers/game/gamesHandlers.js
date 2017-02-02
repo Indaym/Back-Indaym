@@ -10,7 +10,7 @@ const errorHandler = require('../../middleware/errorHandler');
  * Get a group of games
  */
 const getHandler = (req, res, next) => {
-  var requestObj = {
+  let requestObj = {
     or: [
       //{ owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88' },
       { published: true },

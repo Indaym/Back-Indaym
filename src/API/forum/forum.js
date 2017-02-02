@@ -1,46 +1,34 @@
 /**
- * Created by djavrell on 13/10/16.
+ * Created by nicolas on 29/01/17.
  */
 
 const express = require('express');
+const forumWorkers = require('../../workers/forum/forumHandlers');
+const forumCheckers = require('../../checkers/forum/forumCheckers');
+const paramsHandlers = require('../../checkers/forum/paramsHandlers');
 const config = require('../../../config/config');
+const topics = require('./topics');
 
-const forumRouter = express.Router();
+const forumRouter = express.Router(config.routerConfig);
 
-const forumHandler = require('../../workers/forum/forumHandlers');
-const forumParamsHandler = require('./paramsHandlers');
-const commonParamsHandler = require('../common/paramsHandlers');
+forumRouter.param('idForum', paramsHandlers.idForum);
 
-const topics = require('./topics/topics');
-
-/**
- * add the automatics query on differents id
- */
-for (let p in forumParamsHandler) {
-  if (forumParamsHandler.hasOwnProperty(p)) {
-    forumRouter.param(p, forumParamsHandler[p]);
-  }
-}
-
-forumRouter.param('id_user', commonParamsHandler.idUser);
-
-/**
- * routing
- */
 forumRouter.route('/')
-  .get(forumHandler.getHandler)
-  .post(forumHandler.postHandler);
+  .get(forumWorkers.getHandler)
+  .post([forumCheckers.postChecker, forumWorkers.postHandler]);
 
-forumRouter.use('/topics', topics.topicsRouter);
+forumRouter.route('/:idForum')
+  .get(forumWorkers.getOneHandler)
+  .put(forumWorkers.putHandler)
+  .delete(forumWorkers.deleteHandler);
+
+forumRouter.use('/:idForum/topics/', topics.topicsRouter);
 
 module.exports = {
   forumRouter,
 };
 
-/*
-  forum/
-  forum/topics/
-  forum/topics/:id_topics/
-  forum/topics/:id_topics/messages/
-  forum/topics/:id_topics/messages/:id_messages/
+/**
+ * forum/
+ * forum/:idForum/
  */

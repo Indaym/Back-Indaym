@@ -1,12 +1,8 @@
-/**
- * Created by djavrell on 17/12/16.
- */
-
 const waterline = require('waterline');
 const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'user',
+  identity: 'message',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -19,20 +15,24 @@ module.exports = waterline.Collection.extend({
       index: true,
       uuidv4: true,
     },
-
-    name: 'string',
-
-    messages: {
-      collection: 'message',
-      via: 'owner'
+    title: 'string',
+    message: 'string',
+    up: {
+      type: 'integer',
+      defaultsTo: 0
     },
-
-    topics: {
-      collection: 'topic',
-      via: 'owner'
+    down: {
+      type: 'integer',
+      defaultsTo: 0
     },
-    games: {
-      collection: 'game'
+    answerTo: {
+      model: 'message'
+    },
+    topic: {
+      model: 'topic',
+    },
+    owner: {
+      model: 'user',
     }
-  },
+  }
 });
