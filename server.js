@@ -3,8 +3,8 @@ const waterline = require('waterline');
 
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
-const DBconfig = require('./config/waterlineConfig').DBconfig;
 const cors = require('cors');
+const DBconfig = require('./config/waterlineConfig').DBconfig;
 
 const collections = require('./src/models');
 
@@ -20,6 +20,7 @@ const games = require('./src/API/game/games');
  * middleware import
  */
 const middleware = require('./src/middleware');
+const lastGuardian = require('./src/helpers/lastGuardian');
 
 const app = express();
 const orm = waterline();
@@ -40,7 +41,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverRide());
-
 app.use(middleware.logCall);
 
 /**
@@ -53,9 +53,7 @@ app.use('/games', games.gamesRouter);
 /**
  * Handle errors
  */
-app.use(function(err, req, res, next) {
-  res.status(err.code).json(err);
-});
+app.use(lastGuardian.youShallNotPass);
 
 /**
  * ORM

@@ -28,7 +28,7 @@ const answerTo = (req, res, next) => {
   } else {
     req.app.models.message.findOne({
       uuid: answer,
-      topic: req.savedParams.idTopic
+      topic: req.params.idTopic
     })
       .then((results) => {
         if (results === undefined)

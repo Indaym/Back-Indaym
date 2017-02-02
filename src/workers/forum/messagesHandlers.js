@@ -8,7 +8,7 @@ const errorHandler = require('../../middleware/errorHandler');
 
 const getHandler = (req, res, next) => {
   req.app.models.message.find({
-    topic: req.savedParams.idTopic
+    topic: req.params.idTopic
   })
     .then((results) => {
       res.status(200).send(results);
@@ -21,8 +21,8 @@ const getHandler = (req, res, next) => {
 
 const getOneHandler = (req, res, next) => {
   req.app.models.message.findOne({
-    topic: req.savedParams.idTopic,
-    uuid: req.savedParams.idMessage
+    topic: req.params.idTopic,
+    uuid: req.params.idMessage
   })
     .then((results) => {
       if (results === undefined)
@@ -38,7 +38,7 @@ const getOneHandler = (req, res, next) => {
 
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'message', 'answerTo']);
-  createObj.topic = req.savedParams.idTopic;
+  createObj.topic = req.params.idTopic;
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.message.create(createObj)
     .then((results) => {
@@ -53,8 +53,8 @@ const postHandler = (req, res, next) => {
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['title', 'description', 'up', 'down']);
   req.app.models.message.update({
-    topic: req.savedParams.idTopic,
-    uuid: req.savedParams.idMessage
+    topic: req.params.idTopic,
+    uuid: req.params.idMessage
   },updateObj)
     .then((results) => {
       if (results.length == 0)
@@ -70,7 +70,7 @@ const putHandler = (req, res, next) => {
 
 const deleteHandler = (req, res, next) => {
   req.app.models.message.destroy({
-    uuid: req.savedParams.idMessage
+    uuid: req.params.idMessage
   })
     .then((results) => {
       if (results.length == 0)

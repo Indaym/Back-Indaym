@@ -6,9 +6,10 @@ const express = require('express');
 const forumWorkers = require('../../workers/forum/forumHandlers');
 const forumCheckers = require('../../checkers/forum/forumCheckers');
 const paramsHandlers = require('../../checkers/forum/paramsHandlers');
+const config = require('../../../config/config');
 const topics = require('./topics');
 
-const forumRouter = express.Router();
+const forumRouter = express.Router(config.routerConfig);
 
 forumRouter.param('idForum', paramsHandlers.idForum);
 

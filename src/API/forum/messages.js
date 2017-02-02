@@ -6,8 +6,9 @@ const express = require('express');
 const messagesWorkers = require('../../workers/forum/messagesHandlers');
 const messagesCheckers = require('../../checkers/forum/messagesCheckers');
 const paramsHandlers = require('../../checkers/forum/paramsHandlers');
+const config = require('../../../config/config');
 
-const messagesRouter = express.Router();
+const messagesRouter = express.Router(config.routerConfig);
 
 messagesRouter.param('idMessage', paramsHandlers.idMessage);
 

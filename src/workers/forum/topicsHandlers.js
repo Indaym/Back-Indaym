@@ -8,7 +8,7 @@ const errorHandler = require('../../middleware/errorHandler');
 
 const getHandler = (req, res, next) => {
   req.app.models.topic.find({
-    forum: req.savedParams.idForum
+    forum: req.params.idForum
   })
     .then((results) => {
       res.status(200).send(results);
@@ -21,8 +21,8 @@ const getHandler = (req, res, next) => {
 
 const getOneHandler = (req, res, next) => {
   req.app.models.topic.findOne({
-    forum: req.savedParams.idForum,
-    uuid: req.savedParams.idTopic
+    forum: req.params.idForum,
+    uuid: req.params.idTopic
   })
     .then((results) => {
       if (results === undefined)
@@ -38,7 +38,7 @@ const getOneHandler = (req, res, next) => {
 
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'subject']);
-  createObj.forum = req.savedParams.idForum;
+  createObj.forum = req.params.idForum;
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.topic.create(createObj)
     .then((results) => {
@@ -53,8 +53,8 @@ const postHandler = (req, res, next) => {
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['title', 'subject']);
   req.app.models.topic.update({
-    forum: req.savedParams.idForum,
-    uuid: req.savedParams.idTopic
+    forum: req.params.idForum,
+    uuid: req.params.idTopic
   },updateObj)
     .then((results) => {
       if (results.length == 0)
@@ -70,8 +70,8 @@ const putHandler = (req, res, next) => {
 
 const deleteHandler = (req, res, next) => {
   req.app.models.topic.destroy({
-    forum: req.savedParams.idForum,
-    uuid: req.savedParams.idTopic
+    forum: req.params.idForum,
+    uuid: req.params.idTopic
   })
     .then((results) => {
       if (results.length == 0)

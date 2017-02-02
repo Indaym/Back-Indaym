@@ -19,7 +19,7 @@ const getHandler = (req, res, next) => {
 
 const getOneHandler = (req, res, next) => {
   req.app.models.forum.findOne({
-    uuid: req.savedParams.idForum
+    uuid: req.params.idForum
   })
     .then((results) => {
       if (results === undefined)
@@ -48,7 +48,7 @@ const postHandler = (req, res, next) => {
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['title', 'description']);
   req.app.models.forum.update({
-    uuid: req.savedParams.idForum
+    uuid: req.params.idForum
   },updateObj)
     .then((results) => {
       if (results.length == 0)
@@ -64,7 +64,7 @@ const putHandler = (req, res, next) => {
 
 const deleteHandler = (req, res, next) => {
   req.app.models.forum.destroy({
-    uuid: req.savedParams.idForum
+    uuid: req.params.idForum
   })
     .then((results) => {
       if (results.length == 0)
