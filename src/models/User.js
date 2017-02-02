@@ -20,7 +20,8 @@ module.exports = waterline.Collection.extend({
       uuidv4: true,
     },
 
-    name: 'string',
+    username: 'string',
+    password: 'string',
 
     messages: {
       collection: 'messages',
