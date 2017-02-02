@@ -2,10 +2,13 @@
  * Created by nicolas on 29/01/17.
  */
 
-const waterline = require ("waterline");
+const waterline = require('waterline');
 const paramHandler = require('../../middleware/paramHandler');
 const errorHandler = require('../../middleware/errorHandler');
 
+/**
+ * Get a group of messages
+ */
 const getHandler = (req, res, next) => {
   req.app.models.message.find({
     topic: req.params.idTopic
@@ -19,6 +22,9 @@ const getHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Get only one message
+ */
 const getOneHandler = (req, res, next) => {
   req.app.models.message.findOne({
     topic: req.params.idTopic,
@@ -36,6 +42,9 @@ const getOneHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Create a message
+ */
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['title', 'message', 'answerTo']);
   createObj.topic = req.params.idTopic;
@@ -50,6 +59,9 @@ const postHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Update an existing message
+ */
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['title', 'description', 'up', 'down']);
   req.app.models.message.update({
@@ -68,6 +80,9 @@ const putHandler = (req, res, next) => {
     });
 };
 
+/**
+ * Delete an existing message
+ */
 const deleteHandler = (req, res, next) => {
   req.app.models.message.destroy({
     uuid: req.params.idMessage

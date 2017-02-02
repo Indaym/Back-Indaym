@@ -2,18 +2,21 @@
  * Created by nicolas on 23/01/17.
  */
 
-/*
+/**
  * /games/
  * /games/:idGame
  */
 
 const express = require('express');
 const gamesWorkers = require('../../workers/game/gamesHandlers');
-const urlCheckers = require('../../checkers/urlCheckers');
+const paramsHandlers = require('../../checkers/game/paramsHandlers');
 const gameCheckers = require('../../checkers/game/gameCheckers');
+const config = require('../../../config/config');
 const scenes = require('./scenes');
 
-const gamesRouter = express.Router();
+const gamesRouter = express.Router(config.routerConfig);
+
+gamesRouter.param('idGame', paramsHandlers.idGame);
 
 gamesRouter.route('/')
   .get(gamesWorkers.getHandler)
@@ -23,20 +26,11 @@ gamesRouter.route('/')
   ]);
 
 gamesRouter.route('/:idGame')
-  .get([
-    urlCheckers.idGame,
-    gamesWorkers.getOneHandler
-  ])
-  .put([
-    urlCheckers.idGame,
-    gamesWorkers.putHandler
-  ])
-  .delete([
-    urlCheckers.idGame,
-    gamesWorkers.deleteHandler
-  ]);
+  .get(gamesWorkers.getOneHandler)
+  .put(gamesWorkers.putHandler)
+  .delete(gamesWorkers.deleteHandler);
 
-scenes(gamesRouter, '/:idGame/scenes');
+gamesRouter.use('/:idGame/scenes', scenes.scenesRouter);
 
 module.exports = {
   gamesRouter
