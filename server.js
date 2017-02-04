@@ -1,12 +1,73 @@
-var express = require('express');
+const express = require('express');
+const waterline = require('waterline');
 
-var app = express();
+const bodyParser = require('body-parser');
+const methodOverRide = require('method-override');
+const cors = require('cors');
+const DBconfig = require('./config/waterlineConfig').DBconfig;
 
-app.get('/', (req, res) => {
-    console.log("get on /");
-    res.send("hello world!");
-});
+const collections = require('./src/models');
 
-app.listen(3000, () => {
+/**
+ * API imports
+ */
+const forum = require('./src/API/forum/forum');
+const library = require('./src/API/library');
+const games = require('./src/API/game/games');
+
+/**
+ * middleware import
+ */
+const middleware = require('./src/middleware');
+const lastGuardian = require('./src/helpers/lastGuardian');
+
+const app = express();
+const orm = waterline();
+
+/**
+ * load each model in waterline
+ */
+for (let k in collections) {
+  if (collections.hasOwnProperty(k)) {
+    orm.loadCollection(collections[k]);
+  }
+}
+
+/**
+ * load of all middleware we need
+ */
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverRide());
+app.use(middleware.logCall);
+
+/**
+ * router loading
+ */
+app.use('/forum', forum.forumRouter);
+app.use('/library', library.libraryRouter);
+app.use('/games', games.gamesRouter);
+
+/**
+ * Handle errors
+ */
+app.use(lastGuardian.youShallNotPass);
+
+/**
+ * ORM
+ */
+orm.initialize(DBconfig, (err, models) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  app.models = models.collections;
+  app.connections = models.connections;
+
+  app.listen(3000, () => {
     console.log("listen on port 3000");
+  });
+
 });
