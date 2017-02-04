@@ -8,10 +8,11 @@ try {
 } catch (err) {
   console.log('crypto support is disabled!');
 }
+const config = require('../config/config');
 
 const pwd = process.argv[2] || 'unM0tDeP4sse';
 const secret = 'abcdef';
-const defaultSalt = 'Indaym';
+const defaultSalt = config.salt.password;
 
 const hash = (str) => {
   return crypto

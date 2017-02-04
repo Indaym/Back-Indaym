@@ -2,5 +2,12 @@ module.exports = {
   routerConfig: {
     mergeParams: true,
   },
-  passportSecret: 'Indaym',
+  secret: {
+    passport: 'Indaym',
+    token: 'secret',
+    login: 'login',
+  },
+  salt: {
+    password: 'salt'
+  }
 };
