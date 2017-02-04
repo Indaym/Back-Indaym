@@ -5,29 +5,27 @@
 const waterline = require('waterline');
 
 const errorHandler = require('../../../src/middleware/errorHandler');
+const fieldsIsValid = require('../../helpers/authHelper').dataIsValid;
+const newUser = require('../../helpers/authHelper').newUser;
 
 
 const register = (req, res) => {
-  if (req.body.username === undefined || req.body.password === undefined) {
+  const data = req.body.data;
+  const userCollection = req.app.models.user;
+
+  if (fieldsIsValid(data)) {
     return res.status(403).json({ status: 'error', code: 'forbidden' });
   }
 
-  const userCollection = req.app.models.user;
-
   userCollection.findOne()
     .where({
-      username: req.body.username
+      username: data.username
     })
     .then((user) => {
       if (user === undefined) {
 
-        const newUser = {
-          username: req.body.username,
-          password: req.body.password
-        };
-
         userCollection
-          .create(newUser)
+          .create(newUser(data))
           .then((user) => {
             return res.status(202).json({ status: 'created', code: `user ${user.username} created` });
           })
