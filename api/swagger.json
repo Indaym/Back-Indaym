@@ -7,10 +7,649 @@
     "paths": {
         "/forum": {
             "get": {
-                "description": "Gets all subForum",
+                "description": "Get all forum",
                 "responses": {
                     "200": {
-                        "description": "Successful response"
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "description": "List of news",
+                            "items": {
+                                "$ref": "#/definitions/Forum"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a forum",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "description": "Name of the new forum",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "description",
+                        "description": "Description of the new forum",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "uuid": {
+                                    "description": "Id of the forum created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forum/{id}": {
+            "get": {
+                "description": "Get one forum by his id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Forum"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a forum",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "forum",
+                        "description": "Content to update",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Forum"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a Forum",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the Forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forum/{id}/topics": {
+            "get": {
+                "description": "Get all topics",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the topics",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of topics",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Topic"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a Topic",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the topics",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "title",
+                        "description": "Name of the new Topic",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "subject",
+                        "description": "Subject of the new Topic",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "uuid": {
+                                    "description": "Id of the topic created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forum/{id}/topics/{idTopic}": {
+            "get": {
+                "description": "Get one Topic by his id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the Forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Topic"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a Topic",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "topic",
+                        "description": "Content to update",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Topic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a Topic",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the Forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forum/{id}/topics/{idTopic}/messages": {
+            "get": {
+                "description": "Get all messages",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the topics",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "description": "List of messages",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Message"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a Message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the topics",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "title",
+                        "description": "Title of the message",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "message",
+                        "description": "Content of the message",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "properties": {
+                                "uuid": {
+                                    "description": "Id of the message created",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forum/{id}/topics/{idTopic}/messages/{idMessage}": {
+            "get": {
+                "description": "Get one Message by his id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the Forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idMessage",
+                        "description": "Id of the Message",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit a Message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idMessage",
+                        "description": "Id of the Message",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "topic",
+                        "description": "Content to update",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a Message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id of the Forum",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idTopic",
+                        "description": "Id of the Topic",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "idMessage",
+                        "description": "Id of the Message",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Forbidden, Wrong permission",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 }
             }
@@ -1630,6 +2269,100 @@
         }
     },
     "definitions": {
+        "Forum": {
+            "description": "A Forum",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the Forum (Not needed for Post and Put)",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "Title of the Forum",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of the Forum",
+                    "type": "string"
+                },
+                "topics": {
+                    "description": "Topics of a forum",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Topic"
+                    }
+                }
+            }
+        },
+        "Topic": {
+            "description": "A Topic",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the Topic (Not needed for Post and Put)",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "Title of the topic",
+                    "type": "string"
+                },
+                "subject": {
+                    "description": "Subject of the Topic",
+                    "type": "string"
+                },
+                "messages": {
+                    "description": "Messages of a topic",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Message"
+                    }
+                },
+                "forum": {
+                    "description": "Reference to the forum",
+                    "type": "integer"
+                },
+                "owner": {
+                    "$ref": "#/definitions/User"
+                }
+            }
+        },
+        "Message": {
+            "description": "A Message",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id of the Message (Not needed for Post and Put)",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "Title of the Message",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Content of the Message",
+                    "type": "string"
+                },
+                "up": {
+                    "description": "Up",
+                    "type": "integer"
+                },
+                "down": {
+                    "description": "Down",
+                    "type": "integer"
+                },
+                "answerTo": {
+                    "description": "Reference to a Message",
+                    "type": "integer"
+                },
+                "topic": {
+                    "description": "Reference to a Topic",
+                    "type": "integer"
+                },
+                "owner": {
+                    "$ref": "#/definitions/User"
+                }
+            }
+        },
         "News": {
             "description": "A news",
             "type": "object",
