@@ -6,19 +6,19 @@ const digest = require('./hash_generator').digest;
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-const defaultSecret = config.secret.token;
-const username = process.argv[2] || 'user1';
-const password = process.argv[3] || 'password1';
-const emailDefault = process.argv[5] || 'plop.plip@toto.net';
+const defaultSecret = config.secret.login;
+const username = process.argv[3] || 'user1';
+const password = process.argv[4] || 'password1';
+const emailDefault = process.argv[5] || 'email.email@email.com';
 
 let hash;
-if (process.argv[4] === '0') {
+if (process.argv[2] === '0') {
   hash = digest(password);
 } else {
   hash = password;
 }
 
-const end = '1h';
+const end = '8h';
 
 const newToken = (user = username, pwdHash = hash, email = emailDefault, secret = defaultSecret, endLimit = end) => {
   const data = {
@@ -40,8 +40,7 @@ const displayToken = (token) => {
 
 const token = newToken();
 
-console.log(`jwt token => \n\t${token}`);
-// console.log(`token content => \n${displayToken(token)}`);
+console.log(`jwt token => \n${token}`);
 
 module.exports = {
   newToken,
