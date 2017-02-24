@@ -36,6 +36,10 @@ module.exports = waterline.Collection.extend({
       type: 'boolean',
       defaultsTo: () => false,
     },
+    token: {
+      type: 'string',
+      defaultsTo: () => '',
+    },
 
     messages: {
       collection: 'messages',

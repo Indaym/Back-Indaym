@@ -9,9 +9,9 @@ const option = {
   expiresIn: '1h'
 };
 
-const generateOpt = () => {
+const generateOpt = (end = '1h') => {
   return {
-    expiresIn: '1h'
+    expiresIn: end,
   };
 };
 
@@ -37,9 +37,9 @@ const validateToken = (token) => {
   }
 };
 
-const decodeLoginToken = (token) => {
+const decodeToken = (token, secret) => {
   try {
-    const verify = jwt.verify(token, secret.token);
+    const verify = jwt.verify(token, secret);
 
     return jwt.decode(token);
   } catch (err) {
@@ -48,9 +48,15 @@ const decodeLoginToken = (token) => {
   }
 };
 
+const decodeAuthToken = (token) => decodeToken(token, secret.token);
+
+const decodeLoginToken = (token) => decodeToken(token, secret.login);
+
 module.exports = {
   generateToken,
   validateToken,
   decodeLoginToken,
-  dataFromUser
+  decodeAuthToken,
+  dataFromUser,
+  generateOpt,
 };

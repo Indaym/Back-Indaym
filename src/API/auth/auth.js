@@ -5,6 +5,7 @@
 const express = require('express');
 const config = require('../../../config/config');
 const handlers = require('./authHandlers');
+const JWT = require('../auth/passportConfig').passport;
 
 const authRouter = express.Router();
 

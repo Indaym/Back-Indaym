@@ -4,7 +4,7 @@
 
 const passport = require('passport');
 const jwt = require('passport-jwt');
-const passportSecret = require('../../../config/config').secret.passport;
+const passportSecret = require('../../../config/config').secret.token;
 
 const opt = {
   jwtFromRequest: jwt.ExtractJwt.fromUrlQueryParameter('token'),
