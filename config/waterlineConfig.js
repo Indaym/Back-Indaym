@@ -13,10 +13,10 @@ module.exports.DBconfig = {
     postgresdb: {
       adapter: 'postgres',
       connection: {
-        database: 'bbejcnfaagdonga',
-        host: 'bbejcnfaagdonga-postgresql.services.clever-cloud.com',
-        user: 'upjypdj0fiigyabp8wj1',
-        password: 'GML9g4bSrk6W52qjfi5J',
+        database: 'bnc4cnogpb2rxwd',
+        host: 'bnc4cnogpb2rxwd-postgresql.services.clever-cloud.com',
+        user: 'uy0rfk0tyaulc9garili',
+        password: 'IdTezRfmU1Onx6NhynUf',
         port: 5432,
         ssl: false,
       },
