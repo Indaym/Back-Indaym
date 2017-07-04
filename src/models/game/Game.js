@@ -38,6 +38,10 @@ module.exports = waterline.Collection.extend({
       defaultsTo: [],
       containOnlyString: true
     },
+    comments: {
+      type: 'string',
+      defaultsTo: '[]',
+    },
     owner: {
       model: 'user'
     },

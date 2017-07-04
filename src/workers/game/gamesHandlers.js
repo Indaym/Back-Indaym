@@ -75,7 +75,7 @@ const postHandler = (req, res, next) => {
  * Update an existing game
  */
 const putHandler = (req, res, next) => {
-  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price']);
+  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'comments']);
   req.app.models.game.update({
     uuid: req.params.idGame,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
