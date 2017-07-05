@@ -40,7 +40,11 @@ module.exports = waterline.Collection.extend({
     },
     comments: {
       type: 'string',
-      defaultsTo: '[]',
+      defaultsTo: '',
+    },
+    rate: {
+      type: 'integer',
+      defaultsTo: 0
     },
     owner: {
       model: 'user'
