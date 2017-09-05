@@ -43,10 +43,25 @@ const decodeToken = (token, secret) => {
 
     return jwt.decode(token);
   } catch (err) {
+
     console.error(err);
     return undefined;
   }
 };
+
+const hasExpired = (token, secret) => {
+  try {
+    const verify = jwt.verify(token, secret);
+
+    return jwt.decode(token);
+  } catch (err) {
+    if (err.name == 'TokenExpiredError')
+      return err.message;
+    return undefined;
+  }
+};
+
+const tokenHasExpired = (token) => hasExpired(token, secret.token);
 
 const decodeAuthToken = (token) => decodeToken(token, secret.token);
 
@@ -59,4 +74,5 @@ module.exports = {
   decodeAuthToken,
   dataFromUser,
   generateOpt,
+  tokenHasExpired,
 };

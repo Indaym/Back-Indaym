@@ -95,7 +95,24 @@ const logout = (req, res) => {
     .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
 };
 
-const authenticated = (req, res) => {};
+const authenticated = (req, res) => {
+  const data = req.body.data;
+  const userCollection = req.app.models.user;
+
+  if (data.jwt === undefined)
+    return res.status(403).json({ status: 'error', code: 'forbidden' });
+
+  const payload = tokenWorker.decodeAuthToken(data.jwt);
+
+  if (payload === undefined)
+    return res.status(403).json({ status: 'error', code: 'no data'});
+
+  const stats = tokenWorker.tokenHasExpired(data.jwt);
+  if (stats !== undefined)
+    return res.status(403).json({ status: 'error', code: stats});
+  
+  return res.status(200).json({ status: 'ok' });
+};
 
 module.exports = {
   login,
