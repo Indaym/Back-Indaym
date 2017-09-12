@@ -1,23 +1,25 @@
 /**
  * Import
  */
+// main import
 const express = require('express');
 const waterline = require('waterline');
+const passport = require('passport');
 
+// express middlewares
 const bodyParser = require('body-parser');
 const methodOverRide = require('method-override');
-const DBconfig = require('./config/waterlineConfig').DBconfig;
 const morgan = require('morgan');
-const passport = require('passport');
 const cors = require('cors');
 
-const collections = require('./src/models');
+// Auth
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-/**
- *
- */
-const app = express();
-const orm = waterline();
+// configuration files
+const DBconfig = require('./config/waterlineConfig').DBconfig;
+const config = require('./config/config');
+const collections = require('./src/models');
 
 /**
  * API imports
@@ -28,12 +30,18 @@ const games = require('./src/API/game/games');
 const auth = require('./src/API/auth/auth');
 
 /**
- * middleware import
+ * project middleware import
  */
 const middleware = require('./src/middleware');
 
 /**
- * load each model in waterline
+ * Init
+ */
+const app = express();
+const orm = waterline();
+
+/**
+ * DB models loading
  */
 for (let k in collections) {
   if (collections.hasOwnProperty(k)) {
@@ -42,14 +50,27 @@ for (let k in collections) {
 }
 
 /**
+ * Auth options
+ */
+const opt = {
+  jwtFromRequest: ExtractJwt.fromAuthHeader(),
+  secretOrKey: config.secret.login,
+}
+
+// keep it as exemple for the moment
+// app.get('/auth', passport.authenticate('jwt', { session: false }), function(req, res) {
+//   return res.status(200).json({ status: 'ok'});
+// });
+
+/**
  * load of all middleware we need
  */
+app.use(morgan(middleware.logger()));
+app.use(methodOverRide());  // must be stay here
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(methodOverRide());
 app.use(passport.initialize());
-app.use(morgan(middleware.logger()));
 
 /**
  * router loading
@@ -78,8 +99,30 @@ orm.initialize(DBconfig, (err, models) => {
   app.models = models.collections;
   app.connections = models.connections;
 
+  // passport strategy
+  passport.use(new JwtStrategy(opt, async (jwt_payload, done) => {
+    //TODO: NUKE IT WHEN AUTH IS FINISHED
+    console.log(jwt_payload);
+
+    try {
+      const user = await models.collections.user.findOne()
+        .where({
+          username: jwt_payload.iss,
+          password: jwt_payload.pwd,
+          email: jwt_payload.email
+        });
+      if (user === undefined) {
+        done(null, false);
+      }
+      done(null, user);
+
+    } catch (err) {
+      console.error(`nok => ${err}`);
+      done(err, false);      
+    }
+  }));
+
   app.listen(3000, () => {
     console.log("listen on port 3000");
   });
-
 });
