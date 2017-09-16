@@ -12,7 +12,6 @@ module.exports.DBconfig = {
   connections: {
     postgresdb: {
       adapter: 'postgres',
-      /*
       connection: {
         database: 'bnc4cnogpb2rxwd',
         host: 'bnc4cnogpb2rxwd-postgresql.services.clever-cloud.com',
@@ -20,7 +19,8 @@ module.exports.DBconfig = {
         password: 'IdTezRfmU1Onx6NhynUf',
         port: 5432,
         ssl: false,
-      },*/
+      },
+      /*
       connection: {
         database: 'main',
         host: 'localhost',
@@ -28,7 +28,7 @@ module.exports.DBconfig = {
         password: 'indaym',
         port: '4001',
         ssl: false,
-      },
+      },*/
       pool: {
         min: 2,
         max: 20,
