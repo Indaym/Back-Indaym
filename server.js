@@ -25,8 +25,6 @@ const lastGuardian = require('./src/helpers/lastGuardian');
 const app = express();
 const orm = waterline();
 
-const multer = require('multer');
-
 /**
  * load each model in waterline
  */
