@@ -28,7 +28,7 @@ module.exports = waterline.Collection.extend({
     },
     format: {
       type: 'string',
-      default: 'image/jpeg'
+      defaultsTo: 'image/jpeg'
     },
     image: {
       type: 'binary',

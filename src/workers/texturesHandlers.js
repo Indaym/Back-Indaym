@@ -27,7 +27,8 @@ const getHandler = (req, res, next) => {
     .then((results) => {
       res.status(200).send(results);
     })
-    .catch((err) => {
+    .catch((error) => {
+      console.log(error);      
       errorHandler.errorExecutor(next);
     });
 };
@@ -48,7 +49,8 @@ const getOneHandler = (req, res, next) => {
       else
         res.status(200).send(results);
     })
-    .catch((err) => {
+    .catch((error) => {
+      console.log(error);
       errorHandler.errorExecutor(next);
     });
 };
@@ -57,7 +59,7 @@ const getOneHandler = (req, res, next) => {
  * Add a texture
  */
 const postHandler = (req, res, next) => {
-  upload(req,res,function(err){
+  upload(req, res, function(err){
     if(err){
       res.status(500).send(err);
       return;
@@ -74,6 +76,7 @@ const postHandler = (req, res, next) => {
         res.status(201).json({uuid : resu.uuid});
       })
       .catch((error) => {
+        console.log(error);
         errorHandler.errorExecutor(next);
       });
   });
@@ -94,7 +97,8 @@ const deleteHandler = (req, res, next) => {
       else
         res.status(200).end();
     })
-    .catch((err) => {
+    .catch((error) => {
+      console.log(error);      
       errorHandler.errorExecutor(next);
     });
 };
