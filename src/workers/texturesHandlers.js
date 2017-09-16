@@ -18,12 +18,6 @@ const upload = multer({
  * Get a group of textures (public or not)
  */
 const getHandler = (req, res, next) => {
-  /*
-  fs.readdir('./imgs/', (err, files) => {
-    res.status(200).send(files);
-  });
-  */
-
   req.app.models.textures.find({
     select: ['uuid', 'name'],
     or: [

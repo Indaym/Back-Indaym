@@ -32,7 +32,7 @@ module.exports = waterline.Collection.extend({
     },
     image: {
       type: 'binary',
-      required: true      
+      required: true
     },
     owner: {
       model: 'user'
