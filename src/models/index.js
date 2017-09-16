@@ -8,6 +8,7 @@ const Game          = require('./game/Game');
 const Scene         = require('./game/Scene');
 const ViewObject    = require('./game/ViewObject');
 const Script        = require('./game/Script');
+const Textures      = require('./Textures');
 
 
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
   Scene,
   ViewObject,
   Script,
+  Textures,
 };
