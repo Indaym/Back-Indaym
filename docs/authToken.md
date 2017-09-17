@@ -16,3 +16,24 @@ token jwt:
 
 ### password
   sha1(sha1(password) + salt)
+
+
+### register
+  body => 
+    data {
+      username: string,
+      passowrd: string,
+      email: string
+    }
+
+### login
+  body => {
+    data {
+      jwt: <jwt_token>
+    }
+  }
+
+
+#### generating script for a token and a hash password
+to get the hash of the password exec: node hash_generator.js <password>
+to get the JWT exec: node jwt_request.js 1 <username> <hash> <email>

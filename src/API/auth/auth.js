@@ -5,7 +5,7 @@
 const express = require('express');
 const config = require('../../../config/config');
 const handlers = require('./authHandlers');
-const JWT = require('../auth/passportConfig').passport;
+const passport = require('passport');
 
 const authRouter = express.Router();
 
@@ -15,7 +15,7 @@ authRouter.post('/login', handlers.login);
 
 authRouter.post('/logout', handlers.logout);
 
-authRouter.get('/authenticated', handlers.authenticated);
+authRouter.get('/authenticated', passport.authenticate('jwt', { session: false }), handlers.authenticated);
 
 module.exports = {
   authRouter,

@@ -54,7 +54,7 @@ for (let k in collections) {
  */
 const opt = {
   jwtFromRequest: ExtractJwt.fromAuthHeader(),
-  secretOrKey: config.secret.login,
+  secretOrKey: config.secret.token,
 }
 
 // keep it as exemple for the moment
@@ -67,9 +67,9 @@ const opt = {
  */
 app.use(morgan(middleware.logger()));
 app.use(methodOverRide());  // must be stay here
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 app.use(passport.initialize());
 
 /**
@@ -114,10 +114,11 @@ orm.initialize(DBconfig, (err, models) => {
       if (user === undefined) {
         done(null, false);
       }
+      console.log(user);
       done(null, user);
 
     } catch (err) {
-      console.error(`nok => ${err}`);
+      console.error(`${err}`);
       done(err, false);      
     }
   }));
