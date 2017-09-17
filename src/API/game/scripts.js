@@ -7,33 +7,28 @@
  * /games/:idGame/scenes/:idScene/scripts/:idScript
  */
 
+const express = require('express');
 const scriptsWorkers = require('../../workers/game/scriptsHandlers');
-const urlCheckers = require('../../checkers/urlCheckers');
-const scriptCheckers = require('../../checkers/scriptCheckers');
+const paramsHandlers = require('../../checkers/game/paramsHandlers');
+const scriptCheckers = require('../../checkers/game/scriptCheckers');
+const config = require('../../../config/config');
 
-module.exports = (router, baseUrl) => {
-  router.route(baseUrl + '/')
-    .get([
-      ...urlCheckers.chainScene,
-      scriptsWorkers.getHandler
-    ])
-    .post([
-      ...urlCheckers.chainScene,
-      scriptCheckers.postChecker,
-      scriptsWorkers.postHandler
-    ]);
+const scriptsRouter = express.Router(config.routerConfig);
 
-  router.route(baseUrl + '/:idScript')
-    .get([
-      ...urlCheckers.chainScript,
-      scriptsWorkers.getOneHandler
-    ])
-    .put([
-      ...urlCheckers.chainScript,
-      scriptsWorkers.putHandler
-    ])
-    .delete([
-      ...urlCheckers.chainScript,
-      scriptsWorkers.deleteHandler
-    ]);
+scriptsRouter.param('idScript', paramsHandlers.idScript);
+
+scriptsRouter.route('/')
+  .get(scriptsWorkers.getHandler)
+  .post([
+    scriptCheckers.postChecker,
+    scriptsWorkers.postHandler
+  ]);
+
+scriptsRouter.route('/:idScript')
+  .get(scriptsWorkers.getOneHandler)
+  .put(scriptsWorkers.putHandler)
+  .delete(scriptsWorkers.deleteHandler);
+
+module.exports = {
+  scriptsRouter
 };

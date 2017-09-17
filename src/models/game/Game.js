@@ -25,6 +25,10 @@ module.exports = waterline.Collection.extend({
       maxLength: 50,
       required: true
     },
+    description: {
+      type: 'text',
+      defaultsTo: ''
+    },
     published: {
       type: 'boolean',
       defaultsTo: false
@@ -37,6 +41,14 @@ module.exports = waterline.Collection.extend({
       type: 'array',
       defaultsTo: [],
       containOnlyString: true
+    },
+    comments: {
+      type: 'string',
+      defaultsTo: '',
+    },
+    rate: {
+      type: 'integer',
+      defaultsTo: 0
     },
     owner: {
       model: 'user'

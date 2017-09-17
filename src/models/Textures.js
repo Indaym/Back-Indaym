@@ -1,8 +1,12 @@
+/**
+ * Created by nicolas on 19/01/17.
+ */
+
 const waterline = require('waterline');
 const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'forum',
+  identity: 'textures',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -15,11 +19,22 @@ module.exports = waterline.Collection.extend({
       index: true,
       uuidv4: true,
     },
-    title: 'string',
-    description: 'string',
-    topics: {
-      collection: 'topic',
-      via: 'forum'
+    name: {
+      type: 'string',
+      minLength: 1,
+      unique: true,
+      required: true
+    },
+    format: {
+      type: 'string',
+      defaultsTo: 'image/jpeg'
+    },
+    image: {
+      type: 'binary',
+      required: true
+    },
+    owner: {
+      model: 'user'
     }
   }
 });

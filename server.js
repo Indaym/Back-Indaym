@@ -28,11 +28,13 @@ const forum = require('./src/API/forum/forum');
 const library = require('./src/API/library');
 const games = require('./src/API/game/games');
 const auth = require('./src/API/auth/auth');
+const textures = require('./src/API/textures');
 
 /**
  * project middleware import
  */
 const middleware = require('./src/middleware');
+const lastGuardian = require('./src/helpers/lastGuardian');
 
 /**
  * Init
@@ -71,6 +73,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(passport.initialize());
+app.use(middleware.logCall);
 
 /**
  * router loading
@@ -79,13 +82,12 @@ app.use('/forum', forum.forumRouter);
 app.use('/auth', auth.authRouter);
 app.use('/library', library.libraryRouter);
 app.use('/games', games.gamesRouter);
+app.use('/textures', textures.texturesRouter);
 
 /**
  * Handle errors
  */
-app.use(function(err, req, res, next) {
-  res.status(err.code).json(err);
-});
+app.use(lastGuardian.youShallNotPass);
 
 /**
  * ORM

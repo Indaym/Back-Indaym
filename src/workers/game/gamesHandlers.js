@@ -10,7 +10,7 @@ const errorHandler = require('../../middleware/errorHandler');
  * Get a group of games
  */
 const getHandler = (req, res, next) => {
-  var requestObj = {
+  let requestObj = {
     or: [
       //{ owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88' },
       { published: true },
@@ -59,7 +59,7 @@ const getOneHandler = (req, res, next) => {
  * Create a game
  */
 const postHandler = (req, res, next) => {
-  let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price']);
+  let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'description']);
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.game.create(createObj)
     .then((results) => {
@@ -75,7 +75,7 @@ const postHandler = (req, res, next) => {
  * Update an existing game
  */
 const putHandler = (req, res, next) => {
-  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price']);
+  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'comments', 'rate', 'description']);
   req.app.models.game.update({
     uuid: req.params.idGame,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'

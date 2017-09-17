@@ -2,8 +2,8 @@
  * Created by nicolas on 26/01/17.
  */
 
-const errorHandler = require('../middleware/errorHandler');
-const paramHandler = require('../middleware/paramHandler');
+const errorHandler = require('../../middleware/errorHandler');
+const paramHandler = require('../../middleware/paramHandler');
 
 const postChecker = (req, res, next) => {
   const error = paramHandler.paramError(req.body, {
@@ -14,13 +14,8 @@ const postChecker = (req, res, next) => {
     name : {
       type: 'string'
     },
-    tags: {
-      defaultValue: [],
-      type: 'object'
-    },
-    price: {
-      defaultValue: 0,
-      type: 'number'
+    object : {
+      type: 'string'
     }
   });
   if (error !== undefined)

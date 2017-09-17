@@ -1,12 +1,16 @@
 /**
- * Created by nicolas on 27/01/17.
+ * Created by nicolas on 30/01/17.
  */
 
-const paramHandler = require('../middleware/paramHandler');
+const errorHandler = require('../../middleware/errorHandler');
+const paramHandler = require('../../middleware/paramHandler');
 
 const postChecker = (req, res, next) => {
   const error = paramHandler.paramError(req.body, {
-    name : {
+    title : {
+      type: 'string'
+    },
+    description: {
       type: 'string'
     }
   });

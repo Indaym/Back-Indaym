@@ -42,12 +42,12 @@ module.exports = waterline.Collection.extend({
     },
 
     messages: {
-      collection: 'messages',
-      via: 'user'
+      collection: 'message',
+      via: 'owner'
     },
     topics: {
-      collection: 'topics',
-      via: 'user'
+      collection: 'topic',
+      via: 'owner'
     },
     games: {
       collection: 'game'
