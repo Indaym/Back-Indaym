@@ -36,3 +36,15 @@ module.exports.DBconfig = {
     },
   },
 };
+
+/**
+      connection: {
+        database: 'bnc4cnogpb2rxwd',
+        host: 'bnc4cnogpb2rxwd-postgresql.services.clever-cloud.com',
+        user: 'uy0rfk0tyaulc9garili',
+        password: 'IdTezRfmU1Onx6NhynUf',
+        port: 5432,
+        ssl: false,
+      },
+
+ */
