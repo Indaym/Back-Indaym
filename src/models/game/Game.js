@@ -25,6 +25,10 @@ module.exports = waterline.Collection.extend({
       maxLength: 50,
       required: true
     },
+    description: {
+      type: 'text',
+      defaultsTo: ''
+    },
     published: {
       type: 'boolean',
       defaultsTo: false
