@@ -20,6 +20,15 @@ module.exports.DBconfig = {
         port: 5432,
         ssl: false,
       },
+      /*
+      connection: {
+        database: 'main',
+        host: 'localhost',
+        user: 'indaym',
+        password: 'indaym',
+        port: '4001',
+        ssl: false,
+      },*/
       pool: {
         min: 2,
         max: 20,

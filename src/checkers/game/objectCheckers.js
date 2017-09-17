@@ -45,7 +45,31 @@ const libraryChecker = (req, res, next) => {
   }
 };
 
+const textureChecker = (req, res, next) => {
+  if (req.body.textureRef === undefined)
+    next();
+  else {
+    req.app.models.textures.findOne({
+      uuid: req.body.textureRef,
+      or: [
+        { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      ]
+    })
+      .then((results) => {
+        if (results === undefined)
+          errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "id of texture not found"));
+        else
+          next();
+      })
+      .catch((err) => {
+        console.log(err);
+        errorHandler.errorExecutor(next);
+      });
+  }
+};
+
 module.exports = {
   postChecker,
-  libraryChecker
+  libraryChecker,
+  textureChecker
 };

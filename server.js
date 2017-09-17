@@ -14,6 +14,7 @@ const collections = require('./src/models');
 const forum = require('./src/API/forum/forum');
 const library = require('./src/API/library');
 const games = require('./src/API/game/games');
+const textures = require('./src/API/textures');
 
 /**
  * middleware import
@@ -48,6 +49,7 @@ app.use(middleware.logCall);
 app.use('/forum', forum.forumRouter);
 app.use('/library', library.libraryRouter);
 app.use('/games', games.gamesRouter);
+app.use('/textures', textures.texturesRouter);
 
 /**
  * Handle errors

@@ -97,7 +97,7 @@ const deleteHandler = (req, res, next) => {
   })
     .then((resu) => {
       if (resu.length == 0)
-        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this object"));
+        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this object"));
       else
         res.status(200).end();
     })

@@ -45,7 +45,7 @@ const getOneHandler = (req, res, next) => {
  * Create a object
  */
 const postHandler = (req, res, next) => {
-  let createObj = paramHandler.paramExtract(req.body, ['name', 'object', 'objectRef']);
+  let createObj = paramHandler.paramExtract(req.body, ['name', 'object', 'objectRef', 'textureRef']);
   createObj.sceneRef = req.params.idScene;
   req.app.models.view_object.create(createObj)
     .then((results) => {
@@ -61,7 +61,7 @@ const postHandler = (req, res, next) => {
  * Update an existing object
  */
 const putHandler = (req, res, next) => {
-  let updateObj = paramHandler.paramExtract(req.body, ['name', 'object', 'objectRef']);
+  let updateObj = paramHandler.paramExtract(req.body, ['name', 'object', 'objectRef', 'textureRef']);
   req.app.models.view_object.update({
     uuid: req.params.idObject
   }, updateObj)

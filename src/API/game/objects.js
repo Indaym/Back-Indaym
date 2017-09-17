@@ -22,6 +22,7 @@ objectsRouter.route('/')
   .post([
     objectCheckers.postChecker,
     objectCheckers.libraryChecker,
+    objectCheckers.textureChecker,
     objectsWorkers.postHandler
   ]);
 
@@ -29,6 +30,7 @@ objectsRouter.route('/:idObject')
   .get(objectsWorkers.getOneHandler)
   .put([
     objectCheckers.libraryChecker,
+    objectCheckers.textureChecker,
     objectsWorkers.putHandler
   ])
   .delete(objectsWorkers.deleteHandler);

@@ -59,7 +59,7 @@ const getOneHandler = (req, res, next) => {
  * Create a game
  */
 const postHandler = (req, res, next) => {
-  let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price']);
+  let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'description']);
   createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
   req.app.models.game.create(createObj)
     .then((results) => {
@@ -75,7 +75,7 @@ const postHandler = (req, res, next) => {
  * Update an existing game
  */
 const putHandler = (req, res, next) => {
-  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'comments', 'rate']);
+  let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'comments', 'rate', 'description']);
   req.app.models.game.update({
     uuid: req.params.idGame,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'

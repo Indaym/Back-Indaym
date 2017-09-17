@@ -6,7 +6,7 @@ const waterline = require('waterline');
 const uuid = require('node-uuid');
 
 module.exports = waterline.Collection.extend({
-  identity: 'view_object',
+  identity: 'textures',
   connection: 'postgresdb',
   autoPk: false,
 
@@ -22,19 +22,19 @@ module.exports = waterline.Collection.extend({
     name: {
       type: 'string',
       minLength: 1,
-      maxLength: 50,
+      unique: true,
       required: true
     },
-    object: 'text',
-    textureRef: {
-      model: 'textures'
+    format: {
+      type: 'string',
+      defaultsTo: 'image/jpeg'
     },
-    objectRef:{
-      model: 'library_object'
+    image: {
+      type: 'binary',
+      required: true
     },
-    sceneRef: {
-      model: 'scene'
+    owner: {
+      model: 'user'
     }
-
   }
 });
