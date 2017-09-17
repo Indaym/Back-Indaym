@@ -1,27 +1,53 @@
 {
-  "name": "back-indaym",
   "version": "1.0.0",
+  "name": "back-indaym",
   "description": "server for Indaym project",
+  "homepage": "https://gitlab.com/Indaym/Back-Indaym#README",
+  "license": "ISC",
   "main": "server.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-      "start": "node server.js",
-      "debug": "DEBUG=express:* node server.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node_modules/.bin/nodemon server.js",
+    "ddev": "DEBUG=express:* node_modules/.bin/nodemon server.js",
+    "debug": "DEBUG=express:* node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/Indaym/Back-Indaym.git"
+    "url": "git+ssh://git@github.com:Indaym/Back-Indaym.git"
   },
-  "author": "djavrell",
-  "license": "ISC",
+  "author": {
+    "name": "Indaym",
+    "email": "indaym_2018@labeip.epitech.eu",
+    "url": "indaym.com"
+  },
+  "contributors": [
+    "djavrell",
+    "nicolasdelahaigue"
+  ],
   "bugs": {
-    "url": "https://gitlab.com/Indaym/Back-Indaym/issues"
+    "url": "https://github.com/Indaym/Back-Indaym/issues"
   },
-  "homepage": "https://gitlab.com/Indaym/Back-Indaym#README",
   "dependencies": {
-    "express": "^4.14.0"
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.2.1",
+    "method-override": "^2.3.7",
+    "morgan": "^1.7.0",
+    "multer": "^1.3.0",
+    "node-uuid": "^1.4.7",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "sails-mysql": "^0.11.5",
+    "waterline": "^0.11.6",
+    "waterline-postgresql": "^0.14.8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "sails-memory": "^0.10.7"
   }
 }
