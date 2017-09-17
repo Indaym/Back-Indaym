@@ -26,6 +26,9 @@ module.exports = waterline.Collection.extend({
       required: true
     },
     object: 'text',
+    textureRef: {
+      model: 'textures'
+    },
     objectRef:{
       model: 'library_object'
     },
