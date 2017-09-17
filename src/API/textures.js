@@ -21,6 +21,8 @@ texturesRouter.route('/')
   .get(textureWorkers.getHandler)
   .post([
     textureCheckers.postChecker,
+    textureWorkers.postFileDownload,
+    textureCheckers.uniqueChecker,
     textureWorkers.postHandler
   ])
   .options((req, res, next) => {

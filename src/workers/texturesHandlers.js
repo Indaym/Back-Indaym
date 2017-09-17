@@ -24,13 +24,13 @@ const getHandler = (req, res, next) => {
       { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
     ]
   })
-    .then((results) => {
-      res.status(200).send(results);
-    })
-    .catch((error) => {
-      console.log(error);      
-      errorHandler.errorExecutor(next);
-    });
+  .then((results) => {
+    res.status(200).send(results);
+  })
+  .catch((error) => {
+    console.log(error);      
+    errorHandler.errorExecutor(next);
+  });
 };
 
 /**
@@ -43,28 +43,35 @@ const getOneHandler = (req, res, next) => {
       { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
     ]
   })
-    .then((results) => {
-      if (results === undefined)
-        errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Texture not found"));
-      else
-        res.status(200).send(results);
-    })
-    .catch((error) => {
-      console.log(error);
-      errorHandler.errorExecutor(next);
-    });
+  .then((results) => {
+    if (results === undefined)
+      errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Texture not found"));
+    else
+      res.status(200).send(results);
+  })
+  .catch((error) => {
+    console.log(error);
+    errorHandler.errorExecutor(next);
+  });
 };
 
 /**
- * Add a texture
+ * File Download Handler
  */
-const postHandler = (req, res, next) => {
+const postFileDownload = (req, res, next) => {
   upload(req, res, function(err){
     if(err){
       res.status(500).send(err);
       return;
     }
+    next();
+  });
+}
 
+/**
+ * Add a texture
+ */
+const postHandler = (req, res, next) => {
     let createTexture = {
       name: req.file.originalname,
       image: req.file.buffer,
@@ -72,15 +79,13 @@ const postHandler = (req, res, next) => {
       owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
     };
     req.app.models.textures.create(createTexture)
-      .then((resu) => {
-        res.status(201).json({uuid : resu.uuid});
-      })
-      .catch((error) => {
-        console.log(error);
-        errorHandler.errorExecutor(next);
-      });
-  });
-
+    .then((resu) => {
+      res.status(201).json({uuid : resu.uuid});
+    })
+    .catch((error) => {
+      console.log(error);
+      errorHandler.errorExecutor(next);
+    });
 };
 
 /**
@@ -91,21 +96,22 @@ const deleteHandler = (req, res, next) => {
     uuid: req.params.idTexture,
     owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
   })
-    .then((resu) => {
-      if (resu.length == 0)
-        errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this texture"));
-      else
-        res.status(200).end();
-    })
-    .catch((error) => {
-      console.log(error);      
-      errorHandler.errorExecutor(next);
-    });
+  .then((resu) => {
+    if (resu.length == 0)
+      errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this texture"));
+    else
+      res.status(200).end();
+  })
+  .catch((error) => {
+    console.log(error);      
+    errorHandler.errorExecutor(next);
+  });
 };
 
 module.exports = {
   getHandler,
   getOneHandler,
   postHandler,
+  postFileDownload,
   deleteHandler
 };
