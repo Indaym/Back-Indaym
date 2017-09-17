@@ -22,7 +22,6 @@ module.exports = waterline.Collection.extend({
     name: {
       type: 'string',
       minLength: 1,
-      maxLength: 50,
       unique: true,
       required: true
     },
