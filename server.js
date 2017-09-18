@@ -102,27 +102,27 @@ orm.initialize(DBconfig, (err, models) => {
   app.connections = models.connections;
 
   // passport strategy
-  passport.use(new JwtStrategy(opt, async (jwt_payload, done) => {
+  passport.use(new JwtStrategy(opt, (jwt_payload, done) => {
     //TODO: NUKE IT WHEN AUTH IS FINISHED
     console.log(jwt_payload);
 
-    try {
-      const user = await models.collections.user.findOne()
-        .where({
-          username: jwt_payload.iss,
-          password: jwt_payload.pwd,
-          email: jwt_payload.email
-        });
-      if (user === undefined) {
-        done(null, false);
-      }
-      console.log(user);
-      done(null, user);
-
-    } catch (err) {
-      console.error(`${err}`);
-      done(err, false);      
-    }
+    models.collections.user.findOne()
+      .where({
+        username: jwt_payload.iss,
+        password: jwt_payload.pwd,
+        email: jwt_payload.email
+      })
+      .then((user) => {
+        if (user === undefined) {
+          done(null, false);
+        }
+        console.log(user);
+        done(null, user);
+      })
+      .catch((err) => {
+        console.error(`${err}`);
+        done(err, false);
+      })
   }));
 
   app.listen(3000, () => {
