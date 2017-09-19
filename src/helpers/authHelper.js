@@ -1,6 +1,7 @@
 /**
  * Created by djavrell on 04/02/2017.
  */
+const digest = require('../../scripts/hash_generator').digest;
 
 const dataIsValid = (data) => {
   return data.username === undefined || data.password === undefined || data.email === undefined;
@@ -22,7 +23,7 @@ const logFunc = (err, func) => {
 const extractInfo = ({iss, pwd, email, }) => {
   return {
     username: iss,
-    password: pwd,
+    password: digest(pwd),
     email: email,
   };
 }

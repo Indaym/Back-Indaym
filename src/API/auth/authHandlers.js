@@ -39,10 +39,11 @@ const register = (req, res) => {
 };
 
 const login = (req, res) => {
+  console.log(req.body);
   const data = req.body.data;
   const userCollection = req.app.models.user;
 
-  if (data.jwt === undefined)
+  if (data === undefined || data.jwt === undefined)
     return res.status(403).json({ status: 'error', code: 'forbidden' });
 
   const payload = tokenWorker.decodeLoginToken(data.jwt);
