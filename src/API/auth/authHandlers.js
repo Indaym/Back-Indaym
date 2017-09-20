@@ -39,19 +39,22 @@ const register = (req, res) => {
 };
 
 const login = (req, res) => {
-  console.log(req.body);
-  const data = req.body.data;
+  // const data = req.body.data;
+  const data = req.body;
   const userCollection = req.app.models.user;
 
-  if (data === undefined || data.jwt === undefined)
+  // if (data === undefined || data.jwt === undefined)
+  if (fieldsIsValid(data))
     return res.status(403).json({ status: 'error', code: 'forbidden' });
 
-  const payload = tokenWorker.decodeLoginToken(data.jwt);
-  if (payload === undefined)
-    return res.status(403).json({ status: 'error', code: 'no data'});
+  // const payload = tokenWorker.decodeLoginToken(data.jwt);
+  // if (payload === undefined)
+  //   return res.status(403).json({ status: 'error', code: 'no data'});
 
+  const query = extract({iss: data.username, pwd: data.password, email: data.email });
+  console.log(query);
   userCollection.findOne()
-    .where(extract(payload))
+    .where(query)
     .then((user) => {
 
       if (user === undefined)
