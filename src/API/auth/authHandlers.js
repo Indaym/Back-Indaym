@@ -26,8 +26,8 @@ const register = (req, res) => {
         
         userCollection
           .create(newUser(data))
-          .then((user) => {
-            return res.status(202).json({ status: 'created', code: `user ${user.username} created` });
+          .then((newUser) => {
+            return res.status(202).json({ status: 'created', code: `user ${newUser.username} created` });
           })
           .catch((err) => logFunc(err, res.status(400).json({ status: 'error', code: 'bad request' })));
 

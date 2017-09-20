@@ -10,7 +10,7 @@ const dataIsValid = (data) => {
 const newUser = (data) => {
   return {
     username: data.username,
-    password: data.password,
+    password: digest(data.password),
     email: data.email,
   };
 };
