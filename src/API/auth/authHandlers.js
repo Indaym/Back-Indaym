@@ -58,7 +58,7 @@ const login = (req, res) => {
     .then((user) => {
 
       if (user === undefined)
-        return res.status(403).json({ status: 'error', code: 'user don\'t existe' });
+        return res.status(403).json({ status: 'error', code: 'Username, email or password is wrong' });
 
       const token = tokenWorker.generateToken(tokenWorker.dataFromUser(user), tokenWorker.generateOpt());
 
