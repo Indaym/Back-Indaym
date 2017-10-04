@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "node server.js",
+    "start:dev": "node server.js --config development",
     "dev": "node_modules/.bin/nodemon server.js",
     "ddev": "DEBUG=express:* node_modules/.bin/nodemon server.js",
     "debug": "DEBUG=express:* node server.js",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "commander": "^2.11.0",
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.2.1",

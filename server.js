@@ -1,7 +1,24 @@
 /**
  * Import
  */
-// main import
+
+ // checking arguments
+ const commander = require('commander');
+ const databaseConfig = require('./config/waterlineConfig');
+ 
+ commander
+  .option('-c, --config <env>', 'Choose DB config', (val) => {
+    if (!val || !databaseConfig[val]) {
+      process.emitWarning(`Unkown environment "${val}" set to default "production"`, {
+        code: 'ENVIRONMENT CONFIG',
+      });
+      val = 'production';      
+    }
+    return val;
+  })
+  .parse(process.argv);
+
+ // main import
 const express = require('express');
 const waterline = require('waterline');
 const passport = require('passport');
@@ -17,9 +34,9 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // configuration files
-const DBconfig = require('./config/waterlineConfig').DBconfig;
 const config = require('./config/config');
 const collections = require('./src/models');
+const DBconfig = databaseConfig[commander.config || 'production'];
 
 /**
  * API imports
