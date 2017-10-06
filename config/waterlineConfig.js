@@ -12,6 +12,25 @@ const defaultConfig = {
   connections: {
     postgresdb: {
       adapter: 'postgres',
+<<<<<<< HEAD
+=======
+      /*connection: {
+        database: 'bnc4cnogpb2rxwd',
+        host: 'bnc4cnogpb2rxwd-postgresql.services.clever-cloud.com',
+        user: 'uy0rfk0tyaulc9garili',
+        password: 'IdTezRfmU1Onx6NhynUf',
+        port: 5432,
+        ssl: false,
+      },*/
+      connection: {
+        database: 'main',
+        host: 'localhost',
+        user: 'indaym',
+        password: 'indaym',
+        port: '4001',
+        ssl: false,
+      },
+>>>>>>> e2c2b454ba22c2a51551a4b41ec27cd4c4dd34aa
       pool: {
         min: 2,
         max: 20,
