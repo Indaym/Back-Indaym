@@ -28,9 +28,18 @@ const extractInfo = ({iss, pwd, email, }) => {
   };
 }
 
+const extractInfoBrute = ({iss, pwd, email, }) => {
+  return {
+    username: iss,
+    password: pwd,
+    email: email,
+  };
+}
+
 module.exports = {
   dataIsValid,
   newUser,
   extractInfo,
+  extractInfoBrute,
   logFunc,
 };
