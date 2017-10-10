@@ -47,7 +47,6 @@ const login = (req, res) => {
     return res.status(403).json({ status: 'error', code: 'forbidden' });
 
   const query = extract({iss: data.username, pwd: data.password, email: data.email });
-  console.log(query);
   userCollection.findOne()
     .where(query)
     .then((user) => {
@@ -69,30 +68,28 @@ const login = (req, res) => {
     .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
 };
 
-const logout = (req, res) => {
-  const data = req.body.data;
+const logout = async (req, res) => {
   const userCollection = req.app.models.user;
 
-  if (data.jwt === undefined)
+  const token = req.get('Authorization').split(' ').slice(1)[0];
+  if (token === undefined)
     return res.status(403).json({ status: 'error', code: 'forbidden' });
 
-  const payload = tokenWorker.decodeAuthToken(data.jwt);
-
+  const payload = tokenWorker.decodeAuthToken(token);
   if (payload === undefined)
     return res.status(403).json({ status: 'error', code: 'no data'});
 
-  userCollection.findOne()
-    .where(extractBrute(payload))
-    .then((user) => {
-      userCollection.update({ uuid: user.uuid }, { isConnected: false, token: null })
-        .then((results) => {
-          if (results.length === 0)
-            return res.status(403).json({ status: 'error', code: 'Error while logout procedure'});
-          return res.status(200).json({ status: 'ok' });
-        })
-        .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
-    })
-    .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
+  try {
+    const user = await userCollection.findOne().where(extractBrute(payload));
+    const result = await userCollection.update({ uuid: user.uuid }, { isConnected: false, token: null });
+    if (result.length === 0) {
+      return res.status(403).json({ status: 'error', code: 'Error while logout procedure'});    
+    }
+    return res.status(200).json({ status: 'ok' });  
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ status: 'error', code: 'server error' });
+  }
 };
 
 const authenticated = (req, res) => {

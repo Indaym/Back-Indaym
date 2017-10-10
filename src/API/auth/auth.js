@@ -13,7 +13,7 @@ authRouter.post('/register', handlers.register);
 
 authRouter.post('/login', handlers.login);
 
-authRouter.post('/logout', handlers.logout);
+authRouter.post('/logout', passport.authenticate('jwt', { session: false }), handlers.logout);
 
 authRouter.get('/authenticated', passport.authenticate('jwt', { session: false }), handlers.authenticated);
 

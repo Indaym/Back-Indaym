@@ -32,8 +32,7 @@ const validateToken = (token) => {
     const decoded = jwt.verify(token, secret.token);
     return true;
   } catch (err) {
-    console.error(err);
-    return false;
+    return err;
   }
 };
 

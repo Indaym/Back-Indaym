@@ -36,6 +36,7 @@ const cors = require('cors');
 // Auth
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwt = require('jsonwebtoken');
 
 // configuration files
 const config = require('./config/config');
@@ -124,8 +125,6 @@ orm.initialize(DBconfig, (err, models) => {
 
   // passport strategy
   passport.use(new JwtStrategy(opt, (jwt_payload, done) => {
-    //TODO: NUKE IT WHEN AUTH IS FINISHED
-    console.log(jwt_payload);
 
     models.collections.user.findOne()
       .where({
@@ -137,11 +136,10 @@ orm.initialize(DBconfig, (err, models) => {
         if (user === undefined) {
           done(null, false);
         }
-        console.log(user);
         done(null, user);
       })
       .catch((err) => {
-        console.error(`${err}`);
+        console.error(err);
         done(err, false);
       })
   }));
