@@ -13,22 +13,25 @@ const paramsHandlers = require('../../checkers/game/paramsHandlers');
 const gameCheckers = require('../../checkers/game/gameCheckers');
 const config = require('../../../config/config');
 const scenes = require('./scenes');
+const passport = require('passport');
 
 const gamesRouter = express.Router(config.routerConfig);
 
 gamesRouter.param('idGame', paramsHandlers.idGame);
 
 gamesRouter.route('/')
-  .get(gamesWorkers.getHandler)
-  .post([
-    gameCheckers.postChecker,
-    gamesWorkers.postHandler
-  ]);
+  .get(passport.authenticate('jwt', { session: false }), gamesWorkers.getHandler)
+  .post(passport.authenticate('jwt', { session: false }),
+    [
+      gameCheckers.postChecker,
+      gamesWorkers.postHandler
+    ],
+  );
 
 gamesRouter.route('/:idGame')
-  .get(gamesWorkers.getOneHandler)
-  .put(gamesWorkers.putHandler)
-  .delete(gamesWorkers.deleteHandler);
+  .get(passport.authenticate('jwt', { session: false }), gamesWorkers.getOneHandler)
+  .put(passport.authenticate('jwt', { session: false }), gamesWorkers.putHandler)
+  .delete(passport.authenticate('jwt', { session: false }), gamesWorkers.deleteHandler);
 
 gamesRouter.use('/:idGame/scenes', scenes.scenesRouter);
 
