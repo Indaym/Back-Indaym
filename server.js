@@ -125,7 +125,6 @@ orm.initialize(DBconfig, (err, models) => {
 
   // passport strategy
   passport.use(new JwtStrategy(opt, (jwt_payload, done) => {
-    console.log('coucou');
     models.collections.user.findOne()
       .where({
         username: jwt_payload.iss,

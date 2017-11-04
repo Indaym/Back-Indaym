@@ -4,8 +4,10 @@
 
 const root = require('./root').root;
 const newRouter = require('./router').newRouter;
+const createRes = require('./response').createRes;
 
 module.exports = {
   root,
   newRouter,
+  createRes,
 };

@@ -4,7 +4,29 @@
 const digest = require('../../scripts/hash_generator').digest;
 
 const dataIsValid = (data) => {
-  return data.username === undefined || data.password === undefined || data.email === undefined;
+  error = false;
+  unok = true;
+  pnok = true;
+  enok = true;
+  
+  switch (true) {
+    case data.username === undefined:
+      error = true;
+      unok = false;
+      break;
+      case data.password === undefined:
+      error = true;
+      pnok = true;
+      break;
+    case data.email === undefined:
+      error = true;
+      enok = true;
+      break;
+  }
+  return {
+    error,
+    message: `username: ${unok}, password: ${pnok}, email: ${enok}`,
+  };
 };
 
 const newUser = (data) => {
@@ -36,9 +58,18 @@ const extractInfoBrute = ({iss, pwd, email, }) => {
   };
 }
 
+const extract = (needDigest, {iss, pwd, email, }) => {
+  return {
+    username: iss,
+    password: needDigest ? digest(pwd) : pwd,
+    email: email,
+  };
+}
+
 module.exports = {
   dataIsValid,
   newUser,
+  extract,
   extractInfo,
   extractInfoBrute,
   logFunc,
