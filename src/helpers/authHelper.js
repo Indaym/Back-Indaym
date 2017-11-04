@@ -2,6 +2,7 @@
  * Created by djavrell on 04/02/2017.
  */
 const digest = require('../../scripts/hash_generator').digest;
+const tokenWorker = require('../workers/auth/token');
 
 const dataIsValid = (data) => {
   error = false;
@@ -29,17 +30,17 @@ const dataIsValid = (data) => {
   };
 };
 
+const newToken = (payload, opt) => {
+  const options = opt ? tokenWorker.generateOpt(opt) : tokenWorker.generateOpt();
+  return tokenWorker.generateToken(payload, options);
+}
+
 const newUser = (data) => {
   return {
     username: data.username,
     password: digest(data.password),
     email: data.email,
   };
-};
-
-const logFunc = (err, func) => {
-  console.log(err);
-  return func;
 };
 
 const extractInfo = ({iss, pwd, email, }) => {
@@ -69,8 +70,8 @@ const extract = (needDigest, {iss, pwd, email, }) => {
 module.exports = {
   dataIsValid,
   newUser,
+  newToken,
   extract,
   extractInfo,
   extractInfoBrute,
-  logFunc,
 };

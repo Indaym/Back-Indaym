@@ -1,4 +1,4 @@
-const logFunc = require('../helpers/authHelper').logFunc;
+const logFunc = require('../helpers').logFunc;
 const createRes = require('../helpers').createRes;
 
 const getHeader = (headerName, func) => (req, res, next) => {

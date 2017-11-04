@@ -5,12 +5,15 @@
 const waterline = require('waterline');
 
 const errorHandler = require('../../../src/middleware/errorHandler');
-const fieldsIsValid = require('../../helpers/authHelper').dataIsValid;
-const logFunc = require('../../helpers/authHelper').logFunc;
-const newUser = require('../../helpers/authHelper').newUser;
-const extract = require('../../helpers/authHelper').extractInfo;
-const createRes = require('../../helpers').createRes;
-const extractBrute = require('../../helpers/authHelper').extractInfoBrute;
+const {
+  newUser,
+  newToken
+} = require('../../helpers/authHelper');
+
+const {
+  logFunc,
+  createRes
+} = require('../../helpers');
 const tokenWorker = require('../../workers/auth/token');
 
 const register = async (req, res) => {
@@ -29,13 +32,14 @@ const login = async (req, res) => {
   const user = req.user;
 
   try {
-    const token = tokenWorker.generateToken(tokenWorker.dataFromUser(user), tokenWorker.generateOpt());
+    const token = newToken(tokenWorker.dataFromUser(user));
+    const refreshToken = newToken(user, ((60 * 60) + (5 * 60)) );
 
-    const result = await userCollection.update( { uuid: user.uuid }, { isConnected: true, token: token } );
+    const result = await userCollection.update( { uuid: user.uuid }, { isConnected: true } );
     if (result.length === 0)
       return createRes(403, { status: 'error', code: 'Error while login procedure'});      
 
-    return createRes(res, 200, {status: 'ok', token: token});
+    return createRes(res, 200, {status: 'ok', token, refreshToken});
   } catch (err) {
     logFunc(err, createRes(res, 500));
   }
@@ -45,7 +49,7 @@ const logout = async (req, res) => {
   const userCollection = req.app.models.user;
 
   try {
-    const result = await userCollection.update({ uuid: req.user.uuid }, { isConnected: false, token: null });
+    const result = await userCollection.update({ uuid: req.user.uuid }, { isConnected: false });
     if (result.length === 0) {
       return createRes(res, 403, { status: 'error', code: 'Error while logout procedure'});    
     }

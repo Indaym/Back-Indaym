@@ -4,29 +4,44 @@
 
 const express = require('express');
 const config = require('../../../config/config');
-const handlers = require('./authHandlers');
 const passport = require('passport');
 
-const middelware = require('../../middleware');
-const trace = middelware.trace;
+const {
+  register,
+  login,
+  logout,
+  authenticated,
+  refresh,  
+} = require('./authHandlers');
+
+const {
+  fieldValidation,
+  getUser,
+  getUserLogin,
+  getUserLogout,
+  getUserRegister,
+  token,
+  header,
+  trace,
+} = require('../../middleware');
 
 const authRouter = express.Router();
 
 authRouter.post(
   '/register',
   [
-    middelware.fieldValidation.validationField,
-    middelware.getUser.getUserRegister,
-    handlers.register,
+    fieldValidation.validationField,
+    getUser.getUserRegister,
+    register,
   ],
 );
 
 authRouter.post(
   '/login',
   [
-    middelware.fieldValidation.validationField,
-    middelware.getUser.getUserLogin,
-    handlers.login,
+    fieldValidation.validationField,
+    getUser.getUserLogin,
+    login,
   ],
 );
 
@@ -34,10 +49,10 @@ authRouter.post(
   '/logout',
   [
     passport.authenticate('jwt', { session: false }),
-    middelware.header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
-    middelware.token.extractToken,
-    middelware.getUser.getUserLogout,
-    handlers.logout,
+    header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+    token.extractToken,
+    getUser.getUserLogout,
+    logout,
   ],
 );
 
@@ -45,16 +60,16 @@ authRouter.get(
   '/authenticated',
   [
     passport.authenticate('jwt', { session: false }),
-    middelware.fieldValidation.validationField,
-    handlers.authenticated,    
+    fieldValidation.validationField,
+    authenticated,    
   ],
 );
 
 authRouter.get(
   '/refresh',
   [
-    middelware.header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
-    handlers.refresh,
+    header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+    refresh,
   ],
 );
 

@@ -1,4 +1,4 @@
-const logFunc = require('../helpers/authHelper').logFunc;
+const logFunc = require('../helpers').logFunc;
 const fieldsIsValid = require('../helpers/authHelper').dataIsValid;
 const createRes = require('../helpers').createRes;
 const extract = require('../helpers/authHelper').extract;
