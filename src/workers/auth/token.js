@@ -32,7 +32,7 @@ const validateToken = (token) => {
     const decoded = jwt.verify(token, secret.token);
     return true;
   } catch (err) {
-    return err;
+    throw new Error(err);
   }
 };
 
@@ -42,7 +42,6 @@ const decodeToken = (token, secret) => {
 
     return jwt.decode(token);
   } catch (err) {
-
     console.error(err);
     return undefined;
   }
@@ -66,11 +65,14 @@ const decodeAuthToken = (token) => decodeToken(token, secret.token);
 
 const decodeLoginToken = (token) => decodeToken(token, secret.login);
 
+const decodeRefreshToken = (token) => decodeToken(token, secret.token);
+
 module.exports = {
   generateToken,
   validateToken,
   decodeLoginToken,
   decodeAuthToken,
+  decodeRefreshToken,
   dataFromUser,
   generateOpt,
   tokenHasExpired,

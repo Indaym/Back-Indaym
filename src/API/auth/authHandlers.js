@@ -16,6 +16,13 @@ const {
 } = require('../../helpers');
 const tokenWorker = require('../../workers/auth/token');
 
+const getTokens = (user) => {
+  return {
+    token: newToken(user),
+    refreshToken: newToken(user, ((60 * 60) + (5 * 60))),
+  }
+}
+
 const register = async (req, res) => {
   const userCollection = req.app.models.user;
 
@@ -32,14 +39,11 @@ const login = async (req, res) => {
   const user = req.user;
 
   try {
-    const token = newToken(tokenWorker.dataFromUser(user));
-    const refreshToken = newToken(user, ((60 * 60) + (5 * 60)) );
-
     const result = await userCollection.update( { uuid: user.uuid }, { isConnected: true } );
     if (result.length === 0)
       return createRes(403, { status: 'error', code: 'Error while login procedure'});      
 
-    return createRes(res, 200, {status: 'ok', token, refreshToken});
+    return createRes(res, 200, {status: 'ok', ...getTokens(tokenWorker.dataFromUser(user))});
   } catch (err) {
     logFunc(err, createRes(res, 500));
   }
@@ -64,9 +68,7 @@ const authenticated = (req, res) => {
 };
 
 const refresh = (req, res) => {
-  const refreshToken = req.get('refreshToken');
-  if (!refreshToken)
-    return createRes(res, 400, { status: 'error', code: 'missing refresh token' });
+  return createRes(res, 200, {status: 'ok', ...getTokens(tokenWorker.dataFromUser(req.user))});
 };
 
 module.exports = {

@@ -16,7 +16,7 @@ const getUserRegister = async (req, res, next) => {
     .catch(err => next());
 }
 
-const getUserLogin = async (req, res, next) => {
+const getUserFromBody = async (req, res, next) => {
   const data = req.body.data;
   const field = {
     iss: data.username,
@@ -29,7 +29,7 @@ const getUserLogin = async (req, res, next) => {
   return getUser(query, msg, req, res, next);
 }
 
-const getUserLogout = (req, res, next) => {
+const getUserFromToken = (req, res, next) => {
   const data = req.payload;
   const field = {
     iss: data.iss,
@@ -56,6 +56,6 @@ const getUser = (query, errorMessage, req, res, next) => {
 
 module.exports = {
   getUserRegister,
-  getUserLogin,
-  getUserLogout,
+  getUserFromBody,
+  getUserFromToken,
 }

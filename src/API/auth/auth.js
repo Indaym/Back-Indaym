@@ -40,7 +40,7 @@ authRouter.post(
   '/login',
   [
     fieldValidation.validationField,
-    getUser.getUserLogin,
+    getUser.getUserFromBody,
     login,
   ],
 );
@@ -50,8 +50,8 @@ authRouter.post(
   [
     passport.authenticate('jwt', { session: false }),
     header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
-    token.extractToken,
-    getUser.getUserLogout,
+    token.extractToken(),
+    getUser.getUserFromToken,
     logout,
   ],
 );
@@ -65,10 +65,14 @@ authRouter.get(
   ],
 );
 
+const refreshTokenHeaderName = 'refreshToken';
 authRouter.get(
   '/refresh',
   [
-    header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+    header.getHeader(refreshTokenHeaderName),
+    token.extractToken(refreshTokenHeaderName),
+    token.tokenIsValide(refreshTokenHeaderName),
+    getUser.getUserFromToken,
     refresh,
   ],
 );
