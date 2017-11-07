@@ -12,9 +12,8 @@ const errorHandler = require('../../middleware/errorHandler');
 const getHandler = (req, res, next) => {
   let requestObj = {
     or: [
-      //{ owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88' },
       { published: true },
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
     ]
   };
   if (req.query.search !== undefined)
