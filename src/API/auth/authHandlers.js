@@ -5,103 +5,70 @@
 const waterline = require('waterline');
 
 const errorHandler = require('../../../src/middleware/errorHandler');
-const fieldsIsValid = require('../../helpers/authHelper').dataIsValid;
-const logFunc = require('../../helpers/authHelper').logFunc;
-const newUser = require('../../helpers/authHelper').newUser;
-const extract = require('../../helpers/authHelper').extractInfo;
+const {
+  newUser,
+  newToken
+} = require('../../helpers/authHelper');
+
+const {
+  logFunc,
+  createRes
+} = require('../../helpers');
 const tokenWorker = require('../../workers/auth/token');
 
-const register = (req, res) => {
-  const data = req.body.data;
-  const userCollection = req.app.models.user;
-
-  if (fieldsIsValid(data)) {
-    return res.status(403).json({ status: 'error', code: 'forbidden' });    
+const getTokens = (user) => {
+  return {
+    token: newToken(user),
+    refreshToken: newToken(user, ((60 * 60) + (5 * 60))),
   }
+}
 
-  userCollection.findOne()
-    .where({ username: data.username })
-    .then((user) => {
-      if (user === undefined) {
-        
-        userCollection
-          .create(newUser(data))
-          .then((newUser) => {
-            return res.status(202).json({ status: 'created', code: `user ${newUser.username} created` });
-          })
-          .catch((err) => logFunc(err, res.status(400).json({ status: 'error', code: 'bad request' })));
-
-      } else {
-        return res.status(403).json({ status: 'error', code: `user ${user.username} already exist` });
-      }
-    })
-    .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })))
-};
-
-const login = (req, res) => {
-  // const data = req.body.data;
-  const data = req.body;
+const register = async (req, res) => {
   const userCollection = req.app.models.user;
 
-  // if (data === undefined || data.jwt === undefined)
-  if (fieldsIsValid(data))
-    return res.status(403).json({ status: 'error', code: 'forbidden' });
-
-  // const payload = tokenWorker.decodeLoginToken(data.jwt);
-  // if (payload === undefined)
-  //   return res.status(403).json({ status: 'error', code: 'no data'});
-
-  const query = extract({iss: data.username, pwd: data.password, email: data.email });
-  console.log(query);
-  userCollection.findOne()
-    .where(query)
-    .then((user) => {
-
-      if (user === undefined)
-        return res.status(403).json({ status: 'error', code: 'Username, email or password is wrong' });
-
-      const token = tokenWorker.generateToken(tokenWorker.dataFromUser(user), tokenWorker.generateOpt());
-
-      userCollection.update( { uuid: user.uuid }, { isConnected: true, token: token } )
-        .then((results) => {
-          if (results.length === 0)
-            return res.status(403).json({ status: 'error', code: 'Error while login procedure'});
-          return res.status(200).json({status: 'ok', token: token});
-        })
-        .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
-
-    })
-    .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
+  try {
+    const createdUser = await userCollection.create(newUser(req.body.data));
+    return createRes(res, 202, { status: 'created', code: `user ${createdUser.username} created` });
+  } catch (err) {
+    return logFunc(err, createRes(res, 400, { status: 'error', code: 'bad request' }));
+  }
 };
 
-const logout = (req, res) => {
-  const data = req.body.data;
+const login = async (req, res) => {
+  const userCollection = req.app.models.user;
+  const user = req.user;
+
+  try {
+    const result = await userCollection.update( { uuid: user.uuid }, { isConnected: true } );
+    if (result.length === 0)
+      return createRes(403, { status: 'error', code: 'Error while login procedure'});      
+
+    return createRes(res, 200, {status: 'ok', ...getTokens(tokenWorker.dataFromUser(user))});
+  } catch (err) {
+    logFunc(err, createRes(res, 500));
+  }
+};
+
+const logout = async (req, res) => {
   const userCollection = req.app.models.user;
 
-  if (data.jwt === undefined)
-    return res.status(403).json({ status: 'error', code: 'forbidden' });
-
-  const payload = tokenWorker.decodeAuthToken(data.jwt);
-
-  if (payload === undefined)
-    return res.status(403).json({ status: 'error', code: 'no data'});
-
-  userCollection.findOne()
-    .where(extract(payload))
-    .then((user) => {
-      userCollection.update({ uuid: user.uuid }, { isConnected: false, token: '' })
-        .then((results) => {
-          if (results.length === 0)
-            return res.status(403).json({ status: 'error', code: 'Error while logout procedure'});
-          return res.status(200).json({ status: 'ok' });
-        })
-        .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
-    })
-    .catch((err) => logFunc(err, res.status(500).json({ status: 'error', code: 'server error' })));
+  try {
+    const result = await userCollection.update({ uuid: req.user.uuid }, { isConnected: false });
+    if (result.length === 0) {
+      return createRes(res, 403, { status: 'error', code: 'Error while logout procedure'});    
+    }
+    return createRes(res, 200);  
+  } catch (err) {
+    return logFunc(err, createRes(res, 500));
+  }
 };
 
 const authenticated = (req, res) => {
-  return res.status(200).json({ authenticated: 'yes' });
+  return createRes(res, 200, { authenticated: 'yes' });
+};
+
+const refresh = (req, res) => {
+  return createRes(res, 200, {status: 'ok', ...getTokens(tokenWorker.dataFromUser(req.user))});
 };
 
 module.exports = {
@@ -109,4 +76,5 @@ module.exports = {
   logout,
   authenticated,
   register,
+  refresh,
 };

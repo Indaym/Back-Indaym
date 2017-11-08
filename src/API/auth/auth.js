@@ -4,18 +4,78 @@
 
 const express = require('express');
 const config = require('../../../config/config');
-const handlers = require('./authHandlers');
 const passport = require('passport');
+
+const {
+  register,
+  login,
+  logout,
+  authenticated,
+  refresh,  
+} = require('./authHandlers');
+
+const {
+  fieldValidation,
+  getUser,
+  getUserLogin,
+  getUserLogout,
+  getUserRegister,
+  token,
+  header,
+  trace,
+} = require('../../middleware');
 
 const authRouter = express.Router();
 
-authRouter.post('/register', handlers.register);
+authRouter.post(
+  '/register',
+  [
+    fieldValidation.validationField,
+    getUser.getUserRegister,
+    register,
+  ],
+);
 
-authRouter.post('/login', handlers.login);
+authRouter.post(
+  '/login',
+  [
+    fieldValidation.validationField,
+    getUser.getUserFromBody,
+    login,
+  ],
+);
 
-authRouter.post('/logout', handlers.logout);
+authRouter.post(
+  '/logout',
+  [
+    passport.authenticate('jwt', { session: false }),
+    header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+    token.extractToken(),
+    getUser.getUserFromToken,
+    logout,
+  ],
+);
 
-authRouter.get('/authenticated', passport.authenticate('jwt', { session: false }), handlers.authenticated);
+authRouter.get(
+  '/authenticated',
+  [
+    passport.authenticate('jwt', { session: false }),
+    fieldValidation.validationField,
+    authenticated,    
+  ],
+);
+
+const refreshTokenHeaderName = 'refreshToken';
+authRouter.get(
+  '/refresh',
+  [
+    header.getHeader(refreshTokenHeaderName),
+    token.extractToken(refreshTokenHeaderName),
+    token.tokenIsValide(refreshTokenHeaderName),
+    getUser.getUserFromToken,
+    refresh,
+  ],
+);
 
 module.exports = {
   authRouter,

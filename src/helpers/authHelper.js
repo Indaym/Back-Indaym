@@ -2,10 +2,38 @@
  * Created by djavrell on 04/02/2017.
  */
 const digest = require('../../scripts/hash_generator').digest;
+const tokenWorker = require('../workers/auth/token');
 
 const dataIsValid = (data) => {
-  return data.username === undefined || data.password === undefined || data.email === undefined;
+  error = false;
+  unok = true;
+  pnok = true;
+  enok = true;
+  
+  switch (true) {
+    case data.username === undefined:
+      error = true;
+      unok = false;
+      break;
+      case data.password === undefined:
+      error = true;
+      pnok = true;
+      break;
+    case data.email === undefined:
+      error = true;
+      enok = true;
+      break;
+  }
+  return {
+    error,
+    message: `username: ${unok}, password: ${pnok}, email: ${enok}`,
+  };
 };
+
+const newToken = (payload, opt) => {
+  const options = opt ? tokenWorker.generateOpt(opt) : tokenWorker.generateOpt();
+  return tokenWorker.generateToken(payload, options);
+}
 
 const newUser = (data) => {
   return {
@@ -13,11 +41,6 @@ const newUser = (data) => {
     password: digest(data.password),
     email: data.email,
   };
-};
-
-const logFunc = (err, func) => {
-  console.log(err);
-  return func;
 };
 
 const extractInfo = ({iss, pwd, email, }) => {
@@ -28,9 +51,27 @@ const extractInfo = ({iss, pwd, email, }) => {
   };
 }
 
+const extractInfoBrute = ({iss, pwd, email, }) => {
+  return {
+    username: iss,
+    password: pwd,
+    email: email,
+  };
+}
+
+const extract = (needDigest, {iss, pwd, email, }) => {
+  return {
+    username: iss,
+    password: needDigest ? digest(pwd) : pwd,
+    email: email,
+  };
+}
+
 module.exports = {
   dataIsValid,
   newUser,
+  newToken,
+  extract,
   extractInfo,
-  logFunc,
+  extractInfoBrute,
 };

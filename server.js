@@ -2,23 +2,27 @@
  * Import
  */
 
- // checking arguments
- const commander = require('commander');
- const databaseConfig = require('./config/waterlineConfig');
- 
- commander
-  .option('-c, --config <env>', 'Choose DB config', (val) => {
-    if (!val || !databaseConfig[val]) {
-      process.emitWarning(`Unkown environment "${val}" set to default "production"`, {
-        code: 'ENVIRONMENT CONFIG',
-      });
-      val = 'production';      
-    }
-    return val;
-  })
+// checking arguments
+const commander = require('commander');
+const databaseConfig = require('./config/waterlineConfig');
+
+function cb(val) {
+  if (!val || !databaseConfig[val]) {
+    process.emitWarning(`Unkown environment "${val}" set to default "production"`, {
+      code: 'ENVIRONMENT CONFIG',
+    });
+    val = 'production';      
+  }
+  console.log(databaseConfig[val].connections);
+  return val;
+}
+
+commander
+  .version('0.1.0')
+  .option('-c, --config <env>', 'Choose DB config', cb)
   .parse(process.argv);
 
- // main import
+// main import
 const express = require('express');
 const waterline = require('waterline');
 const passport = require('passport');
@@ -32,6 +36,7 @@ const cors = require('cors');
 // Auth
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwt = require('jsonwebtoken');
 
 // configuration files
 const config = require('./config/config');
@@ -120,9 +125,6 @@ orm.initialize(DBconfig, (err, models) => {
 
   // passport strategy
   passport.use(new JwtStrategy(opt, (jwt_payload, done) => {
-    //TODO: NUKE IT WHEN AUTH IS FINISHED
-    console.log(jwt_payload);
-
     models.collections.user.findOne()
       .where({
         username: jwt_payload.iss,
@@ -133,11 +135,10 @@ orm.initialize(DBconfig, (err, models) => {
         if (user === undefined) {
           done(null, false);
         }
-        console.log(user);
         done(null, user);
       })
       .catch((err) => {
-        console.error(`${err}`);
+        console.error(err);
         done(err, false);
       })
   }));
