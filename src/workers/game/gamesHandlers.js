@@ -13,7 +13,7 @@ const getHandler = (req, res, next) => {
   let requestObj = {
     or: [
       { published: true },
-      { owner: req.user.uuid },
+      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
     ]
   };
   if (req.query.search !== undefined)
