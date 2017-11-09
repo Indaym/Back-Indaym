@@ -19,8 +19,8 @@ const texturesRouter = express.Router(config.routerConfig);
 texturesRouter.param('idTexture', paramsHandlers.idTexture);
 
 texturesRouter.route('/')
-  .get(passport.authenticate('jwt', { session: false }), textureWorkers.getHandler)
-  .post(passport.authenticate('jwt', { session: false }), 
+  .get(textureWorkers.getHandler)
+  .post(
     [
       textureCheckers.postChecker,
       textureWorkers.postFileDownload,
@@ -32,8 +32,8 @@ texturesRouter.route('/')
   });
 
 texturesRouter.route('/:idTexture')
-  .get(passport.authenticate('jwt', { session: false }), textureWorkers.getOneHandler)
-  .delete(passport.authenticate('jwt', { session: false }), textureWorkers.deleteHandler);
+  .get(textureWorkers.getOneHandler)
+  .delete(textureWorkers.deleteHandler);
 
 module.exports = {
   texturesRouter

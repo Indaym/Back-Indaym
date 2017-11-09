@@ -21,8 +21,8 @@ const scenesRouter = express.Router(config.routerConfig);
 scenesRouter.param('idScene', paramsHandlers.idScene);
 
 scenesRouter.route('/')
-  .get(passport.authenticate('jwt', { session: false }), scenesWorkers.getHandler)
-  .post(passport.authenticate('jwt', { session: false }),
+  .get(scenesWorkers.getHandler)
+  .post(
     [
       sceneCheckers.postChecker,
       scenesWorkers.postHandler
@@ -30,9 +30,9 @@ scenesRouter.route('/')
   );
 
 scenesRouter.route('/:idScene')
-  .get(passport.authenticate('jwt', { session: false }), scenesWorkers.getOneHandler)
-  .put(passport.authenticate('jwt', { session: false }), scenesWorkers.putHandler)
-  .delete(passport.authenticate('jwt', { session: false }), scenesWorkers.deleteHandler);
+  .get(scenesWorkers.getOneHandler)
+  .put(scenesWorkers.putHandler)
+  .delete(scenesWorkers.deleteHandler);
 
 scenesRouter.use('/:idScene/objects', objects.objectsRouter);
 scenesRouter.use('/:idScene/scripts', scripts.scriptsRouter);

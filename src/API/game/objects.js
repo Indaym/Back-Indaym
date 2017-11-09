@@ -19,8 +19,8 @@ const objectsRouter = express.Router(config.routerConfig);
 objectsRouter.param('idObject', paramsHandlers.idObject);
 
 objectsRouter.route('/')
-  .get(passport.authenticate('jwt', { session: false }), objectsWorkers.getHandler)
-  .post(passport.authenticate('jwt', { session: false }),
+  .get( objectsWorkers.getHandler)
+  .post(
     [
       objectCheckers.postChecker,
       objectCheckers.libraryChecker,
@@ -30,14 +30,14 @@ objectsRouter.route('/')
   );
 
 objectsRouter.route('/:idObject')
-  .get(passport.authenticate('jwt', { session: false }), objectsWorkers.getOneHandler)
-  .put(passport.authenticate('jwt', { session: false }),
+  .get(objectsWorkers.getOneHandler)
+  .put(
     [
       objectCheckers.libraryChecker,
       objectCheckers.textureChecker,
       objectsWorkers.putHandler
     ]
-  ).delete(passport.authenticate('jwt', { session: false }), objectsWorkers.deleteHandler);
+  ).delete(objectsWorkers.deleteHandler);
 
 module.exports = {
   objectsRouter
