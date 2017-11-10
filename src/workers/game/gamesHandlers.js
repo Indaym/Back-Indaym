@@ -83,7 +83,7 @@ const putHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this game"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       console.log(err.message);
@@ -103,7 +103,7 @@ const deleteHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this game"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       errorHandler.errorExecutor(next);

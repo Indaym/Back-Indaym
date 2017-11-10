@@ -69,7 +69,7 @@ const putHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this Object"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       console.log(err);
@@ -88,7 +88,7 @@ const deleteHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this Object"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       console.log(err);

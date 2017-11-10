@@ -100,7 +100,7 @@ const deleteHandler = (req, res, next) => {
     if (resu.length == 0)
       errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this texture"));
     else
-      res.status(200).end();
+      res.status(200).json({ status: 'ok' });
   })
   .catch((error) => {
     console.log(error);      
