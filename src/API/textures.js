@@ -28,7 +28,7 @@ texturesRouter.route('/')
       textureWorkers.postHandler
     ],
   ).options((req, res, next) => {
-    res.status(200).end();
+    res.status(200).json({ status: 'ok' });
   });
 
 texturesRouter.route('/:idTexture')
