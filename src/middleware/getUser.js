@@ -19,12 +19,11 @@ const getUserRegister = async (req, res, next) => {
 const getUserFromBody = async (req, res, next) => {
   const data = req.body.data;
   const field = {
-    iss: data.username,
     pwd: data.password,
     email: data.email,
   }
-  const query = extract(true, field);
-  const msg = 'username, password or email are wrong';
+  const query = extract({ username: false }, field);
+  const msg = 'password or email are wrong';
 
   return getUser(query, msg, req, res, next);
 }
@@ -36,7 +35,7 @@ const getUserFromToken = (req, res, next) => {
     pwd: data.pwd,
     email: data.email,
   }
-  const query = extract(false, field);
+  const query = extract({ digest: false }, field);
   const msg = 'username, password or email are wrong';
   
   return getUser(query, msg, req, res, next);
@@ -51,7 +50,7 @@ const getUser = (query, errorMessage, req, res, next) => {
       req.user = user;
       next();
     })
-    .catch(err => createRes(res, 403, { status: 'error', code: errorMessage }));
+    .catch(err => createRes(res, 403, { status: 'error', message: errorMessage }));
 }
 
 module.exports = {

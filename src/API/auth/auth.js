@@ -30,7 +30,7 @@ const authRouter = express.Router();
 authRouter.post(
   '/register',
   [
-    fieldValidation.validationField,
+    fieldValidation.validationField(['username', 'email', 'password']),
     getUser.getUserRegister,
     register,
   ],
@@ -39,7 +39,7 @@ authRouter.post(
 authRouter.post(
   '/login',
   [
-    fieldValidation.validationField,
+    fieldValidation.validationField(['email', 'password']),
     getUser.getUserFromBody,
     login,
   ],
@@ -60,7 +60,6 @@ authRouter.get(
   '/authenticated',
   [
     passport.authenticate('jwt', { session: false }),
-    fieldValidation.validationField,
     authenticated,    
   ],
 );
