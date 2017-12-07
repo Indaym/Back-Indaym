@@ -43,7 +43,14 @@ const login = async (req, res) => {
     if (result.length === 0)
       return createRes(403, { status: 'error', code: 'Error while login procedure'});      
 
-    return createRes(res, 200, {status: 'ok', ...getTokens(tokenWorker.dataFromUser(user))});
+    return createRes(res, 200, {
+      status: 'ok',
+      ...getTokens(tokenWorker.dataFromUser(user)),
+      user: {
+        username: user.username,
+        email: user.email,
+      }
+    });
   } catch (err) {
     logFunc(err, createRes(res, 500));
   }

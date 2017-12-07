@@ -4,30 +4,29 @@
 const digest = require('../../scripts/hash_generator').digest;
 const tokenWorker = require('../workers/auth/token');
 
-const dataIsValid = (data) => {
-  error = false;
-  unok = true;
-  pnok = true;
-  enok = true;
-  
-  switch (true) {
-    case data.username === undefined:
-      error = true;
-      unok = false;
-      break;
-      case data.password === undefined:
-      error = true;
-      pnok = true;
-      break;
-    case data.email === undefined:
-      error = true;
-      enok = true;
-      break;
+const dataIsValid = (data, opt) => {
+  const errors = {
+    error: false,
+    message: [],
   }
-  return {
-    error,
-    message: `username: ${unok}, password: ${pnok}, email: ${enok}`,
-  };
+
+  // errors = opt.reduce((erros, item) => {
+  //   console.log(item);
+  //   if (!data[item]) {
+  //     errors.error = true;
+  //     errors.message.push(`${item} is missing`);
+  //   }
+  //   return errors;
+  // }, errors);
+
+  opt.map((item) => {
+    if (!data[item]) {
+      errors.error = true;
+      errors.message.push(`${item} is missing`);
+    }
+  });
+
+  return errors;
 };
 
 const newToken = (payload, opt) => {
@@ -59,12 +58,15 @@ const extractInfoBrute = ({iss, pwd, email, }) => {
   };
 }
 
-const extract = (needDigest, {iss, pwd, email, }) => {
-  return {
-    username: iss,
-    password: needDigest ? digest(pwd) : pwd,
+const extract = (opt, {iss, pwd, email, }) => {
+  const base = { digest: true, username: true };
+  opt = {...base, ...opt};
+  const obj = {
+    password: opt.digest ? digest(pwd) : pwd,
     email: email,
   };
+  if (opt.username) obj.username = iss;
+  return obj;
 }
 
 module.exports = {
