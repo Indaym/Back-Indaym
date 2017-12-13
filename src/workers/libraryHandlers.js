@@ -13,7 +13,7 @@ const getHandler = (req, res, next) => {
   req.app.models.library_object.find({
     or: [
       //{ owner: '627ef9c7-9cec-4e4e-8b0c-74e770595f88' },
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
       { published: true }
     ]
   })
@@ -33,7 +33,7 @@ const getOneHandler = (req, res, next) => {
   req.app.models.library_object.findOne({
     uuid: req.params.idObject,
     or: [
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
       { published: true }
     ]
   })
@@ -54,7 +54,7 @@ const getOneHandler = (req, res, next) => {
  */
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['published', 'name', 'object']);
-  createObj.owner = '4d24a2d2-0ab5-4348-a779-672eb557a6be';
+  createObj.owner = req.user.uuid;
   req.app.models.library_object.create(createObj)
     .then((resu) => {
       res.status(201).json({uuid : resu.uuid});
@@ -73,7 +73,7 @@ const putHandler = (req, res, next) => {
 
   req.app.models.library_object.update({
     uuid: req.params.idObject,
-    owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+    owner: req.user.uuid
   }, updateObj)
     .then((resu) => {
       if (resu.length == 0)
@@ -93,7 +93,7 @@ const putHandler = (req, res, next) => {
 const deleteHandler = (req, res, next) => {
   req.app.models.library_object.destroy({
     uuid: req.params.idObject,
-    owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+    owner: req.user.uuid
   })
     .then((resu) => {
       if (resu.length == 0)

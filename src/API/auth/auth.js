@@ -30,7 +30,7 @@ const authRouter = express.Router();
 authRouter.post(
   '/register',
   [
-    fieldValidation.validationField(['username', 'email', 'password']),
+    fieldValidation.bodyValidation(['username', 'email', 'password']),
     getUser.getUserRegister,
     register,
   ],
@@ -39,7 +39,7 @@ authRouter.post(
 authRouter.post(
   '/login',
   [
-    fieldValidation.validationField(['email', 'password']),
+    fieldValidation.bodyValidation(['email', 'password']),
     getUser.getUserFromBody,
     login,
   ],
@@ -79,16 +79,3 @@ authRouter.get(
 module.exports = {
   authRouter,
 };
-
-/*
-
-  auth/login          =>  POST    (provide a token)
-    202/400
-  auth/logout         =>  POST    (destroy the token)
-    202/403
-  auth/register       =>  POST    (create an account)
-    201/403
-  auth/authenticated  =>  GET    (create an account)
-    20(0|2)/401
-
- */

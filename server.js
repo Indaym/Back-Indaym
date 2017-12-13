@@ -98,13 +98,25 @@ app.use(passport.initialize());
 app.use(middleware.logCall);
 
 /**
+ * middleware
+ */
+
+ const middlewares = [
+  passport.authenticate('jwt', { session: false }),
+  middleware.header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+  middleware.token.extractToken(),
+  middleware.token.tokenIsValide('Authorization'),
+  middleware.getUser.getUserFromToken,
+ ]
+
+ /**
  * router loading
  */
 app.use('/forum', forum.forumRouter);
 app.use('/auth', auth.authRouter);
-app.use('/library', library.libraryRouter);
-app.use('/games', games.gamesRouter);
-app.use('/textures', textures.texturesRouter);
+app.use('/library', ...middlewares, library.libraryRouter);
+app.use('/games', ...middlewares, games.gamesRouter);
+app.use('/textures', ...middlewares, textures.texturesRouter);
 
 /**
  * Handle errors
