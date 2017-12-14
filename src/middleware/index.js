@@ -5,6 +5,7 @@ const paramHandler = require('./paramHandler');
 const header = require('./header');
 const logCall = require('./logCall').logCall;
 const token = require('./token');
+const queryParams = require('./queryParam');
 
 const trace = (message) => (req, res, next) => {
   console.log(message ? message : 'traceing');
@@ -30,4 +31,5 @@ module.exports = {
   paramHandler,
   header,
   token,
+  queryParams,
 };

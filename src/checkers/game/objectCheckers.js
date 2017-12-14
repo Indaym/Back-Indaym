@@ -28,7 +28,7 @@ const libraryChecker = (req, res, next) => {
     req.app.models.library_object.findOne({
       uuid: req.body.objectRef,
       or: [
-        { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+        { owner: req.user.uuid },
         { published: true }
       ]
     })
@@ -52,7 +52,7 @@ const textureChecker = (req, res, next) => {
     req.app.models.textures.findOne({
       uuid: req.body.textureRef,
       or: [
-        { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+        { owner: req.user.uuid },
       ]
     })
       .then((results) => {

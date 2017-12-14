@@ -3,21 +3,18 @@
  */
 const digest = require('../../scripts/hash_generator').digest;
 const tokenWorker = require('../workers/auth/token');
+const {
+  token,
+  getUser,
+  header,
+  trace,
+} = require('../middleware');
 
 const dataIsValid = (data, opt) => {
   const errors = {
     error: false,
     message: [],
   }
-
-  // errors = opt.reduce((erros, item) => {
-  //   console.log(item);
-  //   if (!data[item]) {
-  //     errors.error = true;
-  //     errors.message.push(`${item} is missing`);
-  //   }
-  //   return errors;
-  // }, errors);
 
   opt.map((item) => {
     if (!data[item]) {
@@ -69,6 +66,13 @@ const extract = (opt, {iss, pwd, email, }) => {
   return obj;
 }
 
+const getTokenFromReq = () => [
+  header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+  token.extractToken(),
+  token.tokenIsValide('Authorization'),
+  getUser.getUserFromToken,
+]
+
 module.exports = {
   dataIsValid,
   newUser,
@@ -76,4 +80,5 @@ module.exports = {
   extract,
   extractInfo,
   extractInfoBrute,
+  getTokenFromReq,
 };

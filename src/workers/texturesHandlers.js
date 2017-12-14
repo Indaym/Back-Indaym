@@ -21,7 +21,7 @@ const getHandler = (req, res, next) => {
   req.app.models.textures.find({
     select: ['uuid', 'name'],
     or: [
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
     ]
   })
   .then((results) => {
@@ -40,7 +40,7 @@ const getOneHandler = (req, res, next) => {
   req.app.models.textures.findOne({
     uuid: req.params.idTexture,
     or: [
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
     ]
   })
   .then((results) => {
@@ -76,7 +76,7 @@ const postHandler = (req, res, next) => {
       name: req.file.originalname,
       image: req.file.buffer,
       format: req.file.mimetype,
-      owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+      owner: req.user.uuid
     };
     req.app.models.textures.create(createTexture)
     .then((resu) => {
@@ -94,7 +94,7 @@ const postHandler = (req, res, next) => {
 const deleteHandler = (req, res, next) => {
   req.app.models.textures.destroy({
     uuid: req.params.idTexture,
-    owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+    owner: req.user.uuid
   })
   .then((resu) => {
     if (resu.length == 0)

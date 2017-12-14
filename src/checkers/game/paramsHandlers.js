@@ -8,7 +8,7 @@ const idGame = (req, res, next) => {
   urlIdChecker(req, res, next, 'idGame', 'game', (params) => {
     return {
       uuid: params.idGame,
-      owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+      owner: req.user.uuid,
     };
   });
 };
@@ -40,10 +40,9 @@ const idObject = (req, res, next) => {
   });
 };
 
-
 module.exports = {
   idGame,
   idScene,
   idScript,
-  idObject
+  idObject,
 };

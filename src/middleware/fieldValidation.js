@@ -1,13 +1,18 @@
 const createRes = require('../helpers').createRes;
 const fieldsIsValid = require('../helpers/authHelper').dataIsValid;
 
-const validationField = (opt = []) => async (req, res, next) => {
-  const validation = fieldsIsValid(req.body.data, opt);
+const validationField = (fileds, data, res, next) => {
+  const validation = fieldsIsValid(data, fileds);
   if (validation.error)
     return createRes(res, 403, { status: 'error', message: validation.message });
   next();
 }
 
+const bodyValidation = (fileds = []) => (req, res, next) => validationField(fileds, req.body.data, res, next);
+
+const queryValidation = (fileds = []) => (req, res, next) => validationField(fileds, req.query, res, next);
+
 module.exports = {
-  validationField,
+  bodyValidation,
+  queryValidation,
 }
