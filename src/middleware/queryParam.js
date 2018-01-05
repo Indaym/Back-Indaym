@@ -5,6 +5,20 @@ const getOrElse = (val, fallback) => {
   return val ? val : fallback;
 }
 
+module.exports.orderBy = (req, res, next) => {
+  const fileds = fieldsIsValid(req.query, [ 'orderBy' ]);
+  if (fileds.errors)
+    next();
+
+  req.filterQuery = {
+    ...req.filterQuery,
+    ...{
+      sort: req.query.orderBy,
+    }
+  };
+  next();
+}
+
 module.exports.pagination = (req, res, next) => {
   const fileds = fieldsIsValid(req.query, ['limit', 'offset']);
   if (fileds.errors)

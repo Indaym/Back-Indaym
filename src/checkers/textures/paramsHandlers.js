@@ -9,7 +9,7 @@ const idTexture = (req, res, next) => {
     return {
       uuid: req.params.idTexture,
       or: [
-        { owner: res.user.uuid },
+        { owner: req.user.uuid },
       ]
     };
   });

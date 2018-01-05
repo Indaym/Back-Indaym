@@ -31,6 +31,7 @@ gamesRouter.param('idGame', paramsHandlers.idGame);
 
 gamesRouter.route('/')
   .get([
+    queryParams.orderBy,
     queryParams.owner,
     queryParams.pagination,
     gamesWorkers.getHandler,
@@ -43,6 +44,10 @@ gamesRouter.route('/')
   );
 
 gamesRouter.get('/publicGames', []);
+
+gamesRouter.post('/:idGame/add', [
+  gamesWorkers.addOne,
+])
 
 gamesRouter.route('/:idGame')
   .get(gamesWorkers.getOneHandler)

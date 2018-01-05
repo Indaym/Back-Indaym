@@ -11,7 +11,7 @@ function cb(val) {
     process.emitWarning(`Unkown environment "${val}" set to default "production"`, {
       code: 'ENVIRONMENT CONFIG',
     });
-    val = 'production';      
+    val = 'production';
   }
   console.log(databaseConfig[val].connections);
   return val;

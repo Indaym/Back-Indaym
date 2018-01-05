@@ -51,6 +51,6 @@ module.exports = waterline.Collection.extend({
     },
     games: {
       collection: 'game'
-    }
+    },
   },
 });
