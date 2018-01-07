@@ -17,7 +17,7 @@ const dataIsValid = (data, opt) => {
   }
 
   opt.map((item) => {
-    if (!data[item]) {
+    if (!data || !data[item]) {
       errors.error = true;
       errors.message.push(`${item} is missing`);
     }

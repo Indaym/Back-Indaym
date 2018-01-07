@@ -20,6 +20,26 @@ const getHandler = async (req, res, next) => {
 };
 
 /**
+ * Get playable games
+ */
+const playHandler = async (req, res, next) => {
+  try {
+    const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games')
+    const games = await req.app.models.game.find({
+      ...req.filterQuery,
+      or: [
+        {owner: req.user.uuid},
+        {uuid: userPopulate.games.map((e) => e.uuid)}
+      ]
+    });
+    return createRes(res, 200, games);
+  } catch (err) {
+    console.log(err);
+    errorHandler.errorExecutor(next);
+  }
+};
+
+/**
  * Get only one game
  */
 const getOneHandler = (req, res, next) => {
@@ -56,21 +76,6 @@ const postHandler = (req, res, next) => {
       console.log(err.message);
       errorHandler.errorExecutor(next);
     });
-};
-
-const addOne = async (req, res, next) => {
-  const gameId = paramHandler.paramExtract(req.body, ['gameId']);
-
-  try {
-    const game = await req.app.model.games.findOne({
-      uuid: gameId,
-    });
-    const result = await req.app.model.user.update({
-      games: game,
-    });
-  } catch (err) {
-    return createRes(res, 500);
-  }
 };
 
 /**
@@ -125,10 +130,11 @@ const count = async (req, res, next) => {
 
 module.exports = {
   getHandler,
+  playHandler,
   getOneHandler,
   postHandler,
   putHandler,
-  deleteHandler,
+  deleteHandler, 
   addOne,
   count,
 };
