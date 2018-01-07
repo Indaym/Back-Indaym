@@ -19,16 +19,17 @@ const upload = multer({
  */
 const getHandler = (req, res, next) => {
   req.app.models.textures.find({
-    select: ['uuid', 'name'],
+    select: ['uuid', 'name', 'published'],
     or: [
       { owner: req.user.uuid },
+      { published: true }
     ]
   })
   .then((results) => {
     res.status(200).send(results);
   })
   .catch((error) => {
-    console.log(error);      
+    console.log(error);
     errorHandler.errorExecutor(next);
   });
 };
@@ -38,9 +39,10 @@ const getHandler = (req, res, next) => {
  */
 const getOneHandler = (req, res, next) => {
   req.app.models.textures.findOne({
-    uuid: req.params.idTexture,
+    uuid: req.params.idPublicTexture,
     or: [
       { owner: req.user.uuid },
+      { published: true }
     ]
   })
   .then((results) => {
@@ -89,6 +91,28 @@ const postHandler = (req, res, next) => {
 };
 
 /**
+ * Update an existing texture
+ */
+const putHandler = async (req, res, next) => {
+  try {
+    let updateObj = paramHandler.paramExtract(req.body, ['published', 'name']);
+    const textures = await req.app.models.textures.update({
+      uuid: req.params.idTexture,
+      owner: req.user.uuid,
+    }, updateObj);
+
+    if (textures.length == 0)
+      errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this game"));
+    else
+      res.status(200).json({ status: 'ok' });
+  }
+  catch (err) {
+    console.log(err.message);
+    errorHandler.errorExecutor(next);
+  }
+};
+
+/**
  * Delete a Texture
  */
 const deleteHandler = (req, res, next) => {
@@ -113,5 +137,6 @@ module.exports = {
   getOneHandler,
   postHandler,
   postFileDownload,
+  putHandler,
   deleteHandler
 };

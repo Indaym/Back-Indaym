@@ -15,6 +15,19 @@ const idTexture = (req, res, next) => {
   });
 };
 
+const idPublicTexture = (req, res, next) => {
+  urlIdChecker(req, res, next, 'idPublicTexture', 'textures', (params) => {
+    return {
+      uuid: req.params.idPublicTexture,
+      or: [
+        { owner: req.user.uuid },
+        { published: true }
+      ]
+    };
+  });
+};
+
 module.exports = {
-  idTexture
+  idTexture,
+  idPublicTexture
 };

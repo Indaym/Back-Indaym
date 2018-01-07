@@ -17,6 +17,7 @@ const passport = require('passport');
 const texturesRouter = express.Router(config.routerConfig);
 
 texturesRouter.param('idTexture', paramsHandlers.idTexture);
+texturesRouter.param('idPublicTexture', paramsHandlers.idPublicTexture);
 
 texturesRouter.route('/')
   .get(textureWorkers.getHandler)
@@ -32,8 +33,11 @@ texturesRouter.route('/')
   });
 
 texturesRouter.route('/:idTexture')
-  .get(textureWorkers.getOneHandler)
+  .put(textureWorkers.putHandler)
   .delete(textureWorkers.deleteHandler);
+
+texturesRouter.route('/:idPublicTexture')
+  .get(textureWorkers.getOneHandler);
 
 module.exports = {
   texturesRouter
