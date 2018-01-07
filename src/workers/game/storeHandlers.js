@@ -22,7 +22,7 @@ const getHandler = async (req, res, next) => {
 
     // Add a field 'added' to know if it is already in our library
     const userGamesId = userPopulate.games.map((game) => game.uuid);
-    games.forEach((el) => el['added'] = (userGamesId.includes(el.uuid)));
+    games.forEach((el) => el['added'] = (userGamesId.includes(el.uuid) || el.owner === req.user.uuid));
 
     return createRes(res, 200, games);
   } catch (err) {
@@ -35,12 +35,12 @@ const getHandler = async (req, res, next) => {
  */
 const postHandler = async(req, res, next) => {
   try {
-    let params = paramHandler.paramExtract(req.body, ['gameId']);
     const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games');
+    const game = await req.app.models.game.findOne({uuid: req.params.idPublicGame});
 
-    if (userPopulate.games.find((el) => el.uuid === params.gameId) !== undefined)
+    if (userPopulate.games.find((el) => el.uuid === req.params.idPublicGame) !== undefined || game.owner === req.user.uuid)
       return createRes(res, 302, "Already added to your library");
-    userPopulate.games.add(params.gameId);
+    userPopulate.games.add(req.params.idPublicGame);
     userPopulate.save((er) => {
       createRes(res, 200);
     });
@@ -54,12 +54,11 @@ const postHandler = async(req, res, next) => {
  */
 const deleteHandler = async (req, res, next) => {
   try {
-    let params = paramHandler.paramExtract(req.body, ['gameId']);
     const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games');
-
-    if (userPopulate.games.find((el) => el.uuid === params.gameId) === undefined)
+    
+    if (userPopulate.games.find((el) => el.uuid === req.params.idPublicGame) === undefined)
       return createRes(res, 404);
-    userPopulate.games.remove(params.gameId);
+    userPopulate.games.remove(req.params.idPublicGame);
     userPopulate.save((er) => {
       createRes(res, 200);
     });

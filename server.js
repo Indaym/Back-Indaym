@@ -49,6 +49,7 @@ const DBconfig = databaseConfig[commander.config || 'production'];
 const forum = require('./src/API/forum/forum');
 const library = require('./src/API/library');
 const games = require('./src/API/game/games');
+const store = require('./src/API/game/store');
 const auth = require('./src/API/auth/auth');
 const textures = require('./src/API/textures');
 
@@ -116,6 +117,7 @@ app.use('/forum', forum.forumRouter);
 app.use('/auth', auth.authRouter);
 app.use('/library', ...middlewares, library.libraryRouter);
 app.use('/games', ...middlewares, games.gamesRouter);
+app.use('/store', ...middlewares, store.storeRouter);
 app.use('/textures', ...middlewares, textures.texturesRouter);
 
 /**

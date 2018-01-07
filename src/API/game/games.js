@@ -9,7 +9,6 @@
 
 const express = require('express');
 const gamesWorkers = require('../../workers/game/gamesHandlers');
-const storeWorkers = require('../../workers/game/storeHandlers');
 const paramsHandlers = require('../../checkers/game/paramsHandlers');
 const gameCheckers = require('../../checkers/game/gameCheckers');
 const config = require('../../../config/config');
@@ -51,15 +50,6 @@ gamesRouter.get('/play', [
   queryParams.pagination,
   gamesWorkers.playHandler,
 ])
-
-gamesRouter.route('/store')
-  .get([
-    queryParams.orderBy,
-    queryParams.pagination,
-    storeWorkers.getHandler
-  ])
-  .post(storeWorkers.postHandler)
-  .delete(storeWorkers.deleteHandler);
 
 gamesRouter.route('/:idGame')
   .get(gamesWorkers.getOneHandler)

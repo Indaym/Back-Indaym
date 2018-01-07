@@ -13,6 +13,18 @@ const idGame = (req, res, next) => {
   });
 };
 
+const idPublicGame = (req, res, next) => {
+  urlIdChecker(req, res, next, 'idPublicGame', 'game', (params) => {
+    return {
+      uuid: params.idPublicGame,
+      or: [
+        { owner: req.user.uuid },
+        { published: true },
+      ],
+    };
+  });
+};
+
 const idScene = (req, res, next) => {
   urlIdChecker(req, res, next, 'idScene', 'scene', (params) => {
     return {
@@ -42,6 +54,7 @@ const idObject = (req, res, next) => {
 
 module.exports = {
   idGame,
+  idPublicGame,
   idScene,
   idScript,
   idObject,
