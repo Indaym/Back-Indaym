@@ -58,21 +58,6 @@ const postHandler = (req, res, next) => {
     });
 };
 
-const addOne = async (req, res, next) => {
-  const gameId = paramHandler.paramExtract(req.body, ['gameId']);
-
-  try {
-    const game = await req.app.model.games.findOne({
-      uuid: gameId,
-    });
-    const result = await req.app.model.user.update({
-      games: game,
-    });
-  } catch (err) {
-    return createRes(res, 500);
-  }
-};
-
 /**
  * Update an existing game
  */
@@ -119,5 +104,4 @@ module.exports = {
   postHandler,
   putHandler,
   deleteHandler,
-  addOne,
 };

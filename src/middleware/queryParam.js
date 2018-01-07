@@ -36,6 +36,19 @@ module.exports.pagination = (req, res, next) => {
   next();
 }
 
+module.exports.ownerOrPublic = (req, res, next) => {
+  req.filterQuery = {
+    ...req.filterQuery,
+    ...{
+      or: [
+        { owner: req.user.uuid },
+        { published: true },
+      ],
+    },
+  };
+  next();
+}
+
 module.exports.public = (req, res, next) => {
   req.filterQuery = {
     ...req.filterQuery,

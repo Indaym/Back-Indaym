@@ -9,6 +9,7 @@
 
 const express = require('express');
 const gamesWorkers = require('../../workers/game/gamesHandlers');
+const storeWorkers = require('../../workers/game/storeHandlers');
 const paramsHandlers = require('../../checkers/game/paramsHandlers');
 const gameCheckers = require('../../checkers/game/gameCheckers');
 const config = require('../../../config/config');
@@ -32,7 +33,7 @@ gamesRouter.param('idGame', paramsHandlers.idGame);
 gamesRouter.route('/')
   .get([
     queryParams.orderBy,
-    queryParams.owner,
+    queryParams.ownerOrPublic,
     queryParams.pagination,
     gamesWorkers.getHandler,
   ])
@@ -43,11 +44,14 @@ gamesRouter.route('/')
     ],
   );
 
-gamesRouter.get('/publicGames', []);
-
-gamesRouter.post('/:idGame/add', [
-  gamesWorkers.addOne,
-])
+gamesRouter.route('/store')
+  .get([
+    queryParams.orderBy,
+    queryParams.pagination,
+    storeWorkers.getHandler
+  ])
+  .post(storeWorkers.postHandler)
+  .delete(storeWorkers.deleteHandler);
 
 gamesRouter.route('/:idGame')
   .get(gamesWorkers.getOneHandler)
