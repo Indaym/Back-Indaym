@@ -113,6 +113,16 @@ const deleteHandler = (req, res, next) => {
     });
 };
 
+const count = async (req, res, next) => {
+  try {
+    const nbGames = await req.app.models.game.count();
+    return createRes(res, 200, { nbGames })
+  } catch (e) {
+    console.log(e);
+    return createRes(res, 500);
+  }
+}
+
 module.exports = {
   getHandler,
   getOneHandler,
@@ -120,4 +130,5 @@ module.exports = {
   putHandler,
   deleteHandler,
   addOne,
+  count,
 };

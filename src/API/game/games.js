@@ -45,6 +45,8 @@ gamesRouter.route('/')
 
 gamesRouter.get('/publicGames', []);
 
+gamesRouter.get('/count', gamesWorkers.count);
+
 gamesRouter.post('/:idGame/add', [
   gamesWorkers.addOne,
 ])

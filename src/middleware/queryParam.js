@@ -24,7 +24,7 @@ module.exports.pagination = (req, res, next) => {
   if (fileds.errors)
     return createRes(res, 403, { status: 'error', message: fileds.message });
 
-  const skip = getOrElse(req.query.offset, 1) * getOrElse(req.query.limite, 1);
+  const skip = getOrElse(req.query.offset, 1) * getOrElse(req.query.limite, 10);
 
   req.filterQuery = {
     ...req.filterQuery,
