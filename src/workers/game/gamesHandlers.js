@@ -135,6 +135,5 @@ module.exports = {
   postHandler,
   putHandler,
   deleteHandler, 
-  addOne,
   count,
 };
