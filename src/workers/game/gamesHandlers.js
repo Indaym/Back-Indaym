@@ -20,6 +20,26 @@ const getHandler = async (req, res, next) => {
 };
 
 /**
+ * Get playable games
+ */
+const playHandler = async (req, res, next) => {
+  try {
+    const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games')
+    const games = await req.app.models.game.find({
+      ...req.filterQuery,
+      or: [
+        {owner: req.user.uuid},
+        {uuid: userPopulate.games.map((e) => e.uuid)}
+      ]
+    });
+    return createRes(res, 200, games);
+  } catch (err) {
+    console.log(err);
+    errorHandler.errorExecutor(next);
+  }
+};
+
+/**
  * Get only one game
  */
 const getOneHandler = (req, res, next) => {
@@ -100,6 +120,7 @@ const deleteHandler = (req, res, next) => {
 
 module.exports = {
   getHandler,
+  playHandler,
   getOneHandler,
   postHandler,
   putHandler,

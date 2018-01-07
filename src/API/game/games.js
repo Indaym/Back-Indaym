@@ -33,7 +33,7 @@ gamesRouter.param('idGame', paramsHandlers.idGame);
 gamesRouter.route('/')
   .get([
     queryParams.orderBy,
-    queryParams.ownerOrPublic,
+    queryParams.owner,
     queryParams.pagination,
     gamesWorkers.getHandler,
   ])
@@ -43,6 +43,12 @@ gamesRouter.route('/')
       gamesWorkers.postHandler
     ],
   );
+
+gamesRouter.get('/play', [
+  queryParams.orderBy,
+  queryParams.pagination,
+  gamesWorkers.playHandler,
+])
 
 gamesRouter.route('/store')
   .get([
