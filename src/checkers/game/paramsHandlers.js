@@ -25,6 +25,22 @@ const idPublicGame = (req, res, next) => {
   });
 };
 
+const idAddedGame = (req, res, next) => {
+  (async () => {
+    const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games');
+    urlIdChecker(req, res, next, 'idAddedGame', 'game', (params) => {
+      return {
+        uuid: params.idAddedGame,
+        or: [
+          { uuid: userPopulate.games.map((e) => e.uuid) },
+          { owner: req.user.uuid },
+        ],
+      };
+    });
+  })()
+};
+
+
 const idScene = (req, res, next) => {
   urlIdChecker(req, res, next, 'idScene', 'scene', (params) => {
     return {
@@ -55,6 +71,7 @@ const idObject = (req, res, next) => {
 module.exports = {
   idGame,
   idPublicGame,
+  idAddedGame,
   idScene,
   idScript,
   idObject,

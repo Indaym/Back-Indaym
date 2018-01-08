@@ -62,24 +62,24 @@ const playCounter = async (req, res, next) => {
 /**
  * Get only one game
  */
-const getOneHandler = (req, res, next) => {
-  req.app.models.game.findOne({
-    uuid: req.params.idGame,
-    or: [
-      { published: true },
-      { owner: req.user.uuid },
-    ]
-  })
-  .then((results) => {
-    if (results === undefined)
+const getOneHandler = async (req, res, next) => {
+  try {
+    const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games');
+    const game = await req.app.models.game.findOne({
+      uuid: req.params.idAddedGame,
+      or: [
+        { uuid: userPopulate.games.map((e) => e.uuid) },
+        { owner: req.user.uuid },
+      ]
+    })
+    if (game === undefined)
       errorHandler.errorExecutor(next, new errorHandler.errorCustom(404, "Game not found"));
     else
-      res.status(200).send(results);
-  })
-  .catch((err) => {
+      res.status(200).send(game);
+  } catch (err) {
     console.log(err);
     errorHandler.errorExecutor(next);
-  });
+  };
 };
 
 /**

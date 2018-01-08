@@ -28,6 +28,7 @@ const getUserFromToken = require('../../helpers').getUserFromToken;
 const gamesRouter = express.Router(config.routerConfig);
 
 gamesRouter.param('idGame', paramsHandlers.idGame);
+gamesRouter.param('idAddedGame', paramsHandlers.idAddedGame);
 
 gamesRouter.route('/')
   .get([
@@ -44,9 +45,7 @@ gamesRouter.route('/')
   );
 
 gamesRouter.get('/count', [
-  queryParams.orderBy,
   queryParams.owner,
-  queryParams.pagination,
   gamesWorkers.count,
 ]);
 
@@ -56,18 +55,15 @@ gamesRouter.get('/play', [
   gamesWorkers.playHandler,
 ])
 
-gamesRouter.get('/play/count', [
-  queryParams.orderBy,
-  queryParams.pagination,
-  gamesWorkers.playCounter,
-])
+gamesRouter.get('/play/count', gamesWorkers.playCounter)
+
+gamesRouter.get('/:idAddedGame', gamesWorkers.getOneHandler)
 
 gamesRouter.route('/:idGame')
-  .get(gamesWorkers.getOneHandler)
   .put(gamesWorkers.putHandler)
   .delete(gamesWorkers.deleteHandler);
 
-gamesRouter.use('/:idGame/scenes', scenes.scenesRouter);
+gamesRouter.use('/:idAddedGame/scenes', scenes.scenesRouter);
 
 module.exports = {
   gamesRouter

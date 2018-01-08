@@ -26,12 +26,7 @@ storeRouter.route('/')
     storeWorkers.getHandler
   ]);
 
-storeRouter.route('/count')
-  .get([
-    queryParams.orderBy,
-    queryParams.pagination,
-    storeWorkers.getCounter
-  ]);
+storeRouter.get('/count', storeWorkers.getCounter);
 
 storeRouter.route('/:idPublicGame')
   .post(storeWorkers.postHandler)
