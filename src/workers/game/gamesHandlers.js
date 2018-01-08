@@ -40,6 +40,26 @@ const playHandler = async (req, res, next) => {
 };
 
 /**
+ * Get count playable games
+ */
+const playCounter = async (req, res, next) => {
+  try {
+    const userPopulate = await req.app.models.user.findOne({uuid: req.user.uuid}).populate('games')
+    const nbGames = await req.app.models.game.count({
+      ...req.filterQuery,
+      or: [
+        {owner: req.user.uuid},
+        {uuid: userPopulate.games.map((e) => e.uuid)}
+      ]
+    });
+    return createRes(res, 200, { nbGames });
+  } catch (err) {
+    console.log(err);
+    errorHandler.errorExecutor(next);
+  }
+}
+
+/**
  * Get only one game
  */
 const getOneHandler = (req, res, next) => {
@@ -120,7 +140,7 @@ const deleteHandler = (req, res, next) => {
 
 const count = async (req, res, next) => {
   try {
-    const nbGames = await req.app.models.game.count();
+    const nbGames = await req.app.models.game.count(req.filterQuery);
     return createRes(res, 200, { nbGames })
   } catch (e) {
     console.log(e);
@@ -136,4 +156,5 @@ module.exports = {
   putHandler,
   deleteHandler, 
   count,
+  playCounter,
 };

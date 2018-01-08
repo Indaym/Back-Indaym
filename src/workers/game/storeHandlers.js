@@ -31,6 +31,21 @@ const getHandler = async (req, res, next) => {
 };
 
 /**
+ * Get count of public games
+ */
+const getCounter = async (req, res, next) => {
+  try {
+    const nbGames = await req.app.models.game.count({
+      ...req.filterQuery,
+      published: true,
+    });
+    return createRes(res, 200, { nbGames });
+  } catch (err) {
+    errorHandler.errorExecutor(next);
+  }
+};
+
+/**
  * Add game in library
  */
 const postHandler = async(req, res, next) => {
@@ -71,4 +86,5 @@ module.exports = {
   getHandler,
   postHandler,
   deleteHandler,
+  getCounter,
 };

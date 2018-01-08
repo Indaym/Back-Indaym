@@ -43,12 +43,23 @@ gamesRouter.route('/')
     ],
   );
 
-gamesRouter.get('/count', gamesWorkers.count);
+gamesRouter.get('/count', [
+  queryParams.orderBy,
+  queryParams.owner,
+  queryParams.pagination,
+  gamesWorkers.count,
+]);
 
 gamesRouter.get('/play', [
   queryParams.orderBy,
   queryParams.pagination,
   gamesWorkers.playHandler,
+])
+
+gamesRouter.get('/play/count', [
+  queryParams.orderBy,
+  queryParams.pagination,
+  gamesWorkers.playCounter,
 ])
 
 gamesRouter.route('/:idGame')
