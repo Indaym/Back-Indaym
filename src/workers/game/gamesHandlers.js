@@ -104,7 +104,7 @@ const postHandler = (req, res, next) => {
 const putHandler = (req, res, next) => {
   let updateObj = paramHandler.paramExtract(req.body, ['published', 'name', 'tags', 'price', 'comments', 'rate', 'description']);
   req.app.models.game.update({
-    uuid: req.params.idAddedGame,
+    uuid: req.params.idGame,
     owner: req.user.uuid,
   }, updateObj)
     .then((results) => {
@@ -124,7 +124,7 @@ const putHandler = (req, res, next) => {
  */
 const deleteHandler = (req, res, next) => {
   req.app.models.game.destroy({
-    uuid: req.params.idAddedGame,
+    uuid: req.params.idGame,
     owner: req.user.uuid
   })
     .then((results) => {
