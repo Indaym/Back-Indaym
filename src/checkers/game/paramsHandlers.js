@@ -45,7 +45,7 @@ const idScene = (req, res, next) => {
   urlIdChecker(req, res, next, 'idScene', 'scene', (params) => {
     return {
       uuid: params.idScene,
-      gameRef: params.idGame
+      gameRef: params.idAddedGame
     };
   });
 };
