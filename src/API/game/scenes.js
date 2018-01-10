@@ -14,6 +14,7 @@ const sceneCheckers = require('../../checkers/game/sceneCheckers');
 const config = require('../../../config/config');
 const objects = require('./objects');
 const scripts = require('./scripts');
+const passport = require('passport');
 
 const scenesRouter = express.Router(config.routerConfig);
 
@@ -21,10 +22,12 @@ scenesRouter.param('idScene', paramsHandlers.idScene);
 
 scenesRouter.route('/')
   .get(scenesWorkers.getHandler)
-  .post([
-    sceneCheckers.postChecker,
-    scenesWorkers.postHandler
-  ]);
+  .post(
+    [
+      sceneCheckers.postChecker,
+      scenesWorkers.postHandler
+    ],
+  );
 
 scenesRouter.route('/:idScene')
   .get(scenesWorkers.getOneHandler)

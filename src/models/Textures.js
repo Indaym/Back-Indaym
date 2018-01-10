@@ -25,6 +25,10 @@ module.exports = waterline.Collection.extend({
       unique: true,
       required: true
     },
+    published: {
+      type: 'boolean',
+      defaultsTo: false
+    },
     format: {
       type: 'string',
       defaultsTo: 'image/jpeg'

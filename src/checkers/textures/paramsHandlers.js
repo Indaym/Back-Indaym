@@ -9,12 +9,25 @@ const idTexture = (req, res, next) => {
     return {
       uuid: req.params.idTexture,
       or: [
-        { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+        { owner: req.user.uuid },
+      ]
+    };
+  });
+};
+
+const idPublicTexture = (req, res, next) => {
+  urlIdChecker(req, res, next, 'idPublicTexture', 'textures', (params) => {
+    return {
+      uuid: req.params.idPublicTexture,
+      or: [
+        { owner: req.user.uuid },
+        { published: true }
       ]
     };
   });
 };
 
 module.exports = {
-  idTexture
+  idTexture,
+  idPublicTexture
 };

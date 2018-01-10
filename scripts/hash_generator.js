@@ -25,8 +25,6 @@ const digest = (value = pwd, salt = defaultSalt) => {
   return hash(hash(value) + salt);
 };
 
-console.log(digest(pwd));
-
 module.exports = {
   digest
 };

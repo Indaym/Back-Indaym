@@ -1,6 +1,27 @@
 /**
  * Import
  */
+
+// checking arguments
+const commander = require('commander');
+const databaseConfig = require('./config/waterlineConfig');
+
+function cb(val) {
+  if (!val || !databaseConfig[val]) {
+    process.emitWarning(`Unkown environment "${val}" set to default "production"`, {
+      code: 'ENVIRONMENT CONFIG',
+    });
+    val = 'production';
+  }
+  console.log(databaseConfig[val].connections);
+  return val;
+}
+
+commander
+  .version('0.1.0')
+  .option('-c, --config <env>', 'Choose DB config', cb)
+  .parse(process.argv);
+
 // main import
 const express = require('express');
 const waterline = require('waterline');
@@ -15,11 +36,12 @@ const cors = require('cors');
 // Auth
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwt = require('jsonwebtoken');
 
 // configuration files
-const DBconfig = require('./config/waterlineConfig').DBconfig;
 const config = require('./config/config');
 const collections = require('./src/models');
+const DBconfig = databaseConfig[commander.config || 'production'];
 
 /**
  * API imports
@@ -27,6 +49,7 @@ const collections = require('./src/models');
 const forum = require('./src/API/forum/forum');
 const library = require('./src/API/library');
 const games = require('./src/API/game/games');
+const store = require('./src/API/game/store');
 const auth = require('./src/API/auth/auth');
 const textures = require('./src/API/textures');
 
@@ -76,13 +99,26 @@ app.use(passport.initialize());
 app.use(middleware.logCall);
 
 /**
+ * middleware
+ */
+
+ const middlewares = [
+  passport.authenticate('jwt', { session: false }),
+  middleware.header.getHeader('Authorization', (header) => header.split(' ').slice(1)[0]),
+  middleware.token.extractToken(),
+  middleware.token.tokenIsValide('Authorization'),
+  middleware.getUser.getUserFromToken,
+ ]
+
+ /**
  * router loading
  */
 app.use('/forum', forum.forumRouter);
 app.use('/auth', auth.authRouter);
-app.use('/library', library.libraryRouter);
-app.use('/games', games.gamesRouter);
-app.use('/textures', textures.texturesRouter);
+app.use('/library', ...middlewares, library.libraryRouter);
+app.use('/games', ...middlewares, games.gamesRouter);
+app.use('/store', ...middlewares, store.storeRouter);
+app.use('/textures', ...middlewares, textures.texturesRouter);
 
 /**
  * Handle errors
@@ -103,9 +139,6 @@ orm.initialize(DBconfig, (err, models) => {
 
   // passport strategy
   passport.use(new JwtStrategy(opt, (jwt_payload, done) => {
-    //TODO: NUKE IT WHEN AUTH IS FINISHED
-    console.log(jwt_payload);
-
     models.collections.user.findOne()
       .where({
         username: jwt_payload.iss,
@@ -116,11 +149,10 @@ orm.initialize(DBconfig, (err, models) => {
         if (user === undefined) {
           done(null, false);
         }
-        console.log(user);
         done(null, user);
       })
       .catch((err) => {
-        console.error(`${err}`);
+        console.error(err);
         done(err, false);
       })
   }));

@@ -19,16 +19,17 @@ const upload = multer({
  */
 const getHandler = (req, res, next) => {
   req.app.models.textures.find({
-    select: ['uuid', 'name'],
+    select: ['uuid', 'name', 'published'],
     or: [
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
+      { published: true }
     ]
   })
   .then((results) => {
     res.status(200).send(results);
   })
   .catch((error) => {
-    console.log(error);      
+    console.log(error);
     errorHandler.errorExecutor(next);
   });
 };
@@ -38,9 +39,10 @@ const getHandler = (req, res, next) => {
  */
 const getOneHandler = (req, res, next) => {
   req.app.models.textures.findOne({
-    uuid: req.params.idTexture,
+    uuid: req.params.idPublicTexture,
     or: [
-      { owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be' },
+      { owner: req.user.uuid },
+      { published: true }
     ]
   })
   .then((results) => {
@@ -76,7 +78,7 @@ const postHandler = (req, res, next) => {
       name: req.file.originalname,
       image: req.file.buffer,
       format: req.file.mimetype,
-      owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+      owner: req.user.uuid
     };
     req.app.models.textures.create(createTexture)
     .then((resu) => {
@@ -89,18 +91,40 @@ const postHandler = (req, res, next) => {
 };
 
 /**
+ * Update an existing texture
+ */
+const putHandler = async (req, res, next) => {
+  try {
+    let updateObj = paramHandler.paramExtract(req.body, ['published', 'name']);
+    const textures = await req.app.models.textures.update({
+      uuid: req.params.idTexture,
+      owner: req.user.uuid,
+    }, updateObj);
+
+    if (textures.length == 0)
+      errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this game"));
+    else
+      res.status(200).json({ status: 'ok' });
+  }
+  catch (err) {
+    console.log(err.message);
+    errorHandler.errorExecutor(next);
+  }
+};
+
+/**
  * Delete a Texture
  */
 const deleteHandler = (req, res, next) => {
   req.app.models.textures.destroy({
     uuid: req.params.idTexture,
-    owner: '4d24a2d2-0ab5-4348-a779-672eb557a6be'
+    owner: req.user.uuid
   })
   .then((resu) => {
     if (resu.length == 0)
       errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this texture"));
     else
-      res.status(200).end();
+      res.status(200).json({ status: 'ok' });
   })
   .catch((error) => {
     console.log(error);      
@@ -113,5 +137,6 @@ module.exports = {
   getOneHandler,
   postHandler,
   postFileDownload,
+  putHandler,
   deleteHandler
 };

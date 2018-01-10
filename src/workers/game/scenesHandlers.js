@@ -11,7 +11,7 @@ const errorHandler = require('../../middleware/errorHandler');
  */
 const getHandler = (req, res, next) => {
   req.app.models.scene.find({
-    gameRef: req.params.idGame
+    gameRef: req.params.idAddedGame
   })
     .then((results) => {
       res.status(200).send(results);
@@ -46,7 +46,7 @@ const getOneHandler = (req, res, next) => {
  */
 const postHandler = (req, res, next) => {
   let createObj = paramHandler.paramExtract(req.body, ['name']);
-  createObj.gameRef = req.params.idGame;
+  createObj.gameRef = req.params.idAddedGame;
   req.app.models.scene.create(createObj)
     .then((results) => {
       res.status(201).json({uuid : results.uuid});
@@ -69,7 +69,7 @@ const putHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't update this Scene"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       console.log(err);
@@ -88,7 +88,7 @@ const deleteHandler = (req, res, next) => {
       if (results.length == 0)
         errorHandler.errorExecutor(next, new errorHandler.errorCustom(403, "Can't delete this Scene"));
       else
-        res.status(200).end();
+        res.status(200).json({ status: 'ok' });
     })
     .catch((err) => {
       console.log(err);
