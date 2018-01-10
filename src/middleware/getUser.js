@@ -8,7 +8,7 @@ const getUserRegister = async (req, res, next) => {
   const userCollection = req.app.models.user;
 
   const query = {
-    username: data.username,
+    // username: data.username,
     email: data.email,
   }
 
