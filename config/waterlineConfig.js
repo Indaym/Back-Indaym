@@ -43,14 +43,24 @@ function setup(connection) {
  * Environments
  */
 
-// Production
-const production = setup({
+// Kevin Production
+const kevin_production = setup({
   database: 'bnc4cnogpb2rxwd',
   host: 'bnc4cnogpb2rxwd-postgresql.services.clever-cloud.com',
   user: 'uy0rfk0tyaulc9garili',
   password: 'IdTezRfmU1Onx6NhynUf',
   port: 5432,
   ssl: false,
+});
+
+// Production
+const production = setup({
+  database: 'bvgounok1',
+  host: 'bvgounok1-postgresql.services.clever-cloud.com',
+  user: 'uxjtwyx5sqb6ffyvcj21',
+  password: 'A0ek6R0dOt2K1IFRRZn',
+  port: 1380,
+  ssl: false
 });
 
 // Development / Local docker
@@ -69,4 +79,5 @@ const development = setup({
 module.exports = {
   production,
   development,
+  kevin_production
 };
