@@ -79,5 +79,5 @@ const development = setup({
 module.exports = {
   production,
   development,
-  nicoduction
+  kevin_production
 };
