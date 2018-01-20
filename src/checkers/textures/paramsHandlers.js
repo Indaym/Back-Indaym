@@ -19,10 +19,6 @@ const idPublicTexture = (req, res, next) => {
   urlIdChecker(req, res, next, 'idPublicTexture', 'textures', (params) => {
     return {
       uuid: req.params.idPublicTexture,
-      or: [
-        { owner: req.user.uuid },
-        { published: true }
-      ]
     };
   });
 };

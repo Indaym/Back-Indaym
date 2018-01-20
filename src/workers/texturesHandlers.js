@@ -40,10 +40,6 @@ const getHandler = (req, res, next) => {
 const getOneHandler = (req, res, next) => {
   req.app.models.textures.findOne({
     uuid: req.params.idPublicTexture,
-    or: [
-      { owner: req.user.uuid },
-      { published: true }
-    ]
   })
   .then((results) => {
     if (results === undefined)
