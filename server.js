@@ -158,6 +158,6 @@ orm.initialize(DBconfig, (err, models) => {
   }));
 
   app.listen(process.env.PORT, () => {
-    console.log(`listen on port ${process.env.port}`);
+    console.log(`listen on port ${process.env.PORT}`);
   });
 });
