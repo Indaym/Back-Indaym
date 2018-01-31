@@ -51,7 +51,7 @@ const getUser = (query, errorMessage, req, res, next) => {
       req.user = user;
       next();
     })
-    .catch(err => createRes(res, 403, { status: 'error', message: errorMessage }));
+    .catch(err => createRes(res, 400, { status: 'error', message: errorMessage }));
 }
 
 module.exports = {
