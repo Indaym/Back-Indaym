@@ -19,7 +19,7 @@ const upload = multer({
  */
 const getHandler = (req, res, next) => {
   req.app.models.textures.find({
-    select: ['uuid', 'name', 'published'],
+    select: ['uuid', 'name', 'published', 'owner'],
     or: [
       { owner: req.user.uuid },
       { published: true }

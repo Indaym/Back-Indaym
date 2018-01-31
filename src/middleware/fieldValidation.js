@@ -4,7 +4,7 @@ const fieldsIsValid = require('../helpers/authHelper').dataIsValid;
 const validationField = (fileds, data, res, next) => {
   const validation = fieldsIsValid(data, fileds);
   if (validation.error)
-    return createRes(res, 403, { status: 'error', message: validation.message });
+    return createRes(res, 400, { status: 'error', message: validation.message });
   next();
 }
 

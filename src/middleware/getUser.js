@@ -13,7 +13,7 @@ const getUserRegister = async (req, res, next) => {
   }
 
   userCollection.findOne().where(query)
-    .then(user => createRes(res, 403, `user ${user.username} or ${user.email} already exist`))
+    .then(user => createRes(res, 409, `user ${user.email} already exist`))
     .catch(err => next());
 }
 
